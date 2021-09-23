@@ -28,8 +28,7 @@
               placeholder="可以添加三个标签"
               @keyup.enter.native="addTag"
               @blur="addTag"
-            >
-            </el-input>
+            ></el-input>
             <el-button
               v-else
               class="button-new-tag"
@@ -37,7 +36,8 @@
               @click="showAddTag"
               type="primary"
               plain
-              >+ 标签
+            >
+              + 标签
             </el-button>
           </div>
         </div>
@@ -140,7 +140,8 @@ export default {
       if (this.noteTags.indexOf(tagValue) !== -1) {
         this.$message({
           message: '重复标签！',
-          type: 'warning'
+          type: 'warning',
+          showClose: true
         })
         return
       }
@@ -155,21 +156,24 @@ export default {
       if (this.noteTitle === '') {
         this.$message({
           message: '文章标题为空！',
-          type: 'warning'
+          type: 'warning',
+          showClose: true
         })
         return
       }
       if (this.noteTags.length === 0) {
         this.$message({
           message: '文章标签为空！',
-          type: 'warning'
+          type: 'warning',
+          showClose: true
         })
         return
       }
       if (this.content === '') {
         this.$message({
           message: '文章内容为空！',
-          type: 'warning'
+          type: 'warning',
+          showClose: true
         })
         return
       }

@@ -1,54 +1,36 @@
 <template>
   <div class="learn-container">
     <div class="left-container">
-      <el-button
-        type="primary"
-        icon="el-icon-edit"
-        @click="enterMarkdown"
-      ></el-button>
-    </div>
-    <div class="middle-container">
-      <div class="note-content">
-        <div class="content-header">
-          <div class="content-time">一年前</div>
-          <div class="content-container">
-            <div class="content-tag">
-              <span> JavaScript </span>
-              <span>·</span>
-              <span> CSS </span>
-            </div>
-          </div>
+      <div class="left-content">
+        <div @click="enterMarkdown">
+          <svg-icon
+            iconClass="blog-markdown"
+            style="width: 28px; height: 28px"
+          ></svg-icon>
+          <span>新建笔记</span>
         </div>
-        <div class="content-title">Vue移动端完美适配方案</div>
-        <div class="content-brief">
-          object.entries()转换一个objec为array。但是，如果你想做相反的事情怎么办？不用再想了！使用
-          Object.fromEntries() 来把array转。
-        </div>
-        <div class="content-svg">
-          <div class="look-svg">
-            <svg-icon
-              iconClass="blog-look"
-              style="width: 18px; height: 18px"
-            ></svg-icon>
-            <div class="look-count">308</div>
-          </div>
-          <div class="good-svg">
-            <svg-icon
-              iconClass="blog-good"
-              style="width: 17px; height: 17px"
-            ></svg-icon>
-            <div class="good-count">112</div>
-          </div>
+        <div>
+          <svg-icon
+            iconClass="blog-draft"
+            style="width: 28px; height: 28px"
+          ></svg-icon>
+          <span>草稿箱</span>
         </div>
       </div>
-      <div class="note-content">
+    </div>
+    <div class="middle-container">
+      <div
+        class="note-content"
+        v-for="(key, index) in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+        :key="index"
+      >
         <div class="content-header">
           <div class="content-time">一年前</div>
           <div class="content-container">
             <div class="content-tag">
-              <span> JavaScript </span>
+              <span>JavaScript</span>
               <span>·</span>
-              <span> CSS </span>
+              <span>CSS</span>
             </div>
           </div>
         </div>
@@ -77,6 +59,11 @@
     </div>
     <div class="right-container">
       <div>标签</div>
+      <div class="tag-group">
+        <el-tag effect="dark">JavaScript</el-tag>
+        <el-tag effect="dark">HTML</el-tag>
+        <el-tag effect="dark">CSS</el-tag>
+      </div>
     </div>
   </div>
 </template>
@@ -99,39 +86,33 @@ export default {
 .learn-container {
   display: flex;
 }
+.left-container {
+  flex: 1;
+  margin-top: 15px;
+}
+.left-content {
+  background-color: #fff;
+  width: 200px;
+  height: 200px;
+  margin-left: 20px;
+  padding: 10px;
+}
 .middle-container {
   width: 676px;
+  background-color: #fff;
+  padding: 0 20px;
+  margin: 15px 0;
 }
 .note-content {
   width: 100%;
   height: 140px;
   position: relative;
   padding: 10px;
-  margin: 15px 0;
-  border: 2px solid #efefef;
-  // background-image: url('../../assets/images/paper.png');
-  background-color: #fffffd;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.27), 0 0 40px rgba(0, 0, 0, 0.06) inset;
+  margin: 20px 0;
   box-sizing: border-box;
+  border-bottom: 1px solid #e5e6eb;
 }
-.note-content::before,
-.note-content::after {
-  content: '';
-  z-index: -1;
-  position: absolute;
-  left: 10px;
-  bottom: 10px;
-  width: 30%;
-  height: 55%;
-  max-height: 100px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-  transform: skew(-15deg) rotate(-4deg);
-}
-.note-content::after {
-  left: auto;
-  right: 10px;
-  transform: skew(15deg) rotate(4deg);
-}
+
 .content-header {
   color: #86909c;
   font-size: 14px;
@@ -197,10 +178,10 @@ export default {
   color: #86909c;
   margin-left: 2px;
 }
-.left-container {
-  flex: 1;
-}
+
 .right-container {
   flex: 1;
+  margin-top: 15px;
+  margin-left: 20px;
 }
 </style>

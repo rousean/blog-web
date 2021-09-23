@@ -6,27 +6,57 @@
       @click="falseShowAudio"
     >
       <div class="header-container">
-        <div class="tab-router">
-          <el-tabs v-model="currentTab" @tab-click="handleClick">
-            <el-tab-pane label="首页" name="home"></el-tab-pane>
-            <el-tab-pane label="学习笔记" name="learn"></el-tab-pane>
-            <el-tab-pane label="个人作品" name="material"></el-tab-pane>
-            <el-tab-pane label="关于我的" name="person"></el-tab-pane>
-          </el-tabs>
-        </div>
-      </div>
-      <div class="github-svg">
-        <div class="github-hover">
-          <a href="https://github.com/rousean" target="_blank">
-            <svg-icon
-              iconClass="blog-github"
-              style="width: 36px; height: 36px"
-            ></svg-icon>
-          </a>
-        </div>
+        <el-tabs v-model="currentTab" @tab-click="handleClick">
+          <el-tab-pane label="首页" name="home">
+            <span slot="label" class="label-content">
+              <svg-icon
+                iconClass="blog-home"
+                style="width: 16px; height: 16px"
+              ></svg-icon>
+              首页
+            </span>
+          </el-tab-pane>
+          <el-tab-pane label="学习笔记" name="learn">
+            <span class="label-content" slot="label">
+              <svg-icon
+                iconClass="blog-learn"
+                style="width: 16px; height: 16px"
+              ></svg-icon>
+              学习笔记
+            </span>
+          </el-tab-pane>
+          <el-tab-pane label="作品展示" name="material">
+            <span class="label-content" slot="label">
+              <svg-icon
+                iconClass="blog-material"
+                style="width: 16px; height: 16px"
+              ></svg-icon>
+              作品展示
+            </span>
+          </el-tab-pane>
+          <el-tab-pane label="个人中心" name="person">
+            <span class="label-content" slot="label">
+              <svg-icon
+                iconClass="blog-person"
+                style="width: 16px; height: 16px"
+              ></svg-icon>
+              个人中心
+            </span>
+          </el-tab-pane>
+        </el-tabs>
       </div>
       <div>
         <router-view />
+      </div>
+    </div>
+    <div class="github-svg">
+      <div class="github-hover">
+        <a href="https://github.com/rousean" target="_blank">
+          <svg-icon
+            iconClass="blog-github"
+            style="width: 36px; height: 36px"
+          ></svg-icon>
+        </a>
       </div>
     </div>
     <div
@@ -124,30 +154,23 @@ export default {
 }
 .header-container {
   width: 100%;
-  height: 413px;
+  height: 60px;
+  line-height: 60px;
   font-family: Chao-zi;
-  margin-bottom: 10px;
-}
-.header-container::before {
-  content: '';
-  position: absolute;
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+  position: sticky;
   top: 0;
-  left: 0;
-  width: 100%;
-  height: 413px;
-  background: transparent url('../../assets/images/header-bg.jpg') center center
-    no-repeat;
-  filter: blur(1px);
-  z-index: -1;
-  background-size: cover;
+  z-index: 100;
 }
-.tab-router {
-  margin-left: 20px;
+.label-content {
+  display: flex;
+  align-items: center;
 }
 .github-svg {
-  position: absolute;
-  top: 1px;
-  left: 1px;
+  position: fixed;
+  top: 2px;
+  left: 2px;
   width: 36px;
   height: 36px;
   -webkit-animation: heartbeat 1.5s ease-in-out infinite both;
@@ -311,5 +334,8 @@ export default {
 ::v-deep .el-tabs__nav {
   float: right;
   margin-right: 20px;
+}
+::v-deep .el-tabs__active-bar {
+  background-color: transparent;
 }
 </style>
