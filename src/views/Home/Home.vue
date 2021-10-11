@@ -1,107 +1,6 @@
 <template>
   <div>
     <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
-    <div>首页</div>
   </div>
 </template>
 
@@ -114,4 +13,4 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped></style>

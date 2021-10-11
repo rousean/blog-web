@@ -1,46 +1,40 @@
 <template>
   <div ref="layoutContainer" class="layout-container">
     <div
-      class="content-container"
       :style="isShowAudio ? 'filter: blur(5px);' : 'filter: blur(0px);'"
       @click="falseShowAudio"
     >
       <div class="header-container">
-        <el-tabs v-model="currentTab" @tab-click="handleClick">
-          <el-tab-pane label="首页" name="home">
-            <span slot="label" class="label-content">
-              <svg-icon
-                iconClass="blog-home"
-                style="width: 16px; height: 16px"
-              ></svg-icon>
+        <el-tabs
+          v-model="currentTab"
+          @tab-click="handleClick"
+          tab-position="top"
+        >
+          <el-tab-pane name="home">
+            <span slot="label">
+              <svg-icon className="tab-icon" iconClass="blog-home"></svg-icon>
               首页
             </span>
           </el-tab-pane>
-          <el-tab-pane label="学习笔记" name="learn">
-            <span class="label-content" slot="label">
-              <svg-icon
-                iconClass="blog-learn"
-                style="width: 16px; height: 16px"
-              ></svg-icon>
+          <el-tab-pane name="learn">
+            <span slot="label">
+              <svg-icon className="tab-icon" iconClass="blog-learn"></svg-icon>
               学习笔记
             </span>
           </el-tab-pane>
-          <el-tab-pane label="作品展示" name="material">
-            <span class="label-content" slot="label">
+          <el-tab-pane name="material">
+            <span slot="label">
               <svg-icon
+                className="tab-icon"
                 iconClass="blog-material"
-                style="width: 16px; height: 16px"
               ></svg-icon>
-              作品展示
+              开源项目
             </span>
           </el-tab-pane>
-          <el-tab-pane label="个人中心" name="person">
-            <span class="label-content" slot="label">
-              <svg-icon
-                iconClass="blog-person"
-                style="width: 16px; height: 16px"
-              ></svg-icon>
-              个人中心
+          <el-tab-pane name="person">
+            <span slot="label">
+              <svg-icon className="tab-icon" iconClass="blog-person"></svg-icon>
+              关于我
             </span>
           </el-tab-pane>
         </el-tabs>
@@ -156,16 +150,17 @@ export default {
   width: 100%;
   height: 60px;
   line-height: 60px;
-  font-family: Chao-zi;
+  text-align: center;
   background-color: #fff;
   border-bottom: 1px solid #eee;
   position: sticky;
   top: 0;
   z-index: 100;
 }
-.label-content {
-  display: flex;
-  align-items: center;
+.tab-icon {
+  width: 22px;
+  height: 22px;
+  vertical-align: text-bottom;
 }
 .github-svg {
   position: fixed;
@@ -329,13 +324,19 @@ export default {
   background-color: transparent;
 }
 ::v-deep .el-tabs__item {
-  font-size: 18px;
+  font-size: 16px;
 }
 ::v-deep .el-tabs__nav {
   float: right;
   margin-right: 20px;
+  height: 60px;
+  display: flex;
+  align-items: center;
 }
 ::v-deep .el-tabs__active-bar {
   background-color: transparent;
+}
+::v-deep .el-tabs__item.is-active {
+  color: #1389ff90;
 }
 </style>

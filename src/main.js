@@ -8,6 +8,9 @@ import { isChrome } from './utils/utils'
 // 重置样式
 import 'normalize.css/normalize.css'
 
+// 引入svg
+import './icons/index.js'
+
 // 引入element-ui
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
@@ -22,9 +25,6 @@ Vue.use(mavonEditor)
 import * as d3 from 'd3'
 Vue.prototype.$d3 = d3
 window.d3 = d3
-
-// 引入svg
-import './icons'
 
 // 引入字体
 import './assets/styles/font.scss'

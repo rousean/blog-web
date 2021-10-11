@@ -2,18 +2,15 @@
   <div class="learn-container">
     <div class="left-container">
       <div class="left-content">
-        <div @click="enterMarkdown">
+        <div class="markdown-content" @click="enterMarkdown">
           <svg-icon
+            className="markdown-icon"
             iconClass="blog-markdown"
-            style="width: 28px; height: 28px"
           ></svg-icon>
           <span>新建笔记</span>
         </div>
-        <div>
-          <svg-icon
-            iconClass="blog-draft"
-            style="width: 28px; height: 28px"
-          ></svg-icon>
+        <div class="markdown-content">
+          <svg-icon className="markdown-icon" iconClass="blog-draft"></svg-icon>
           <span>草稿箱</span>
         </div>
       </div>
@@ -39,20 +36,38 @@
           object.entries()转换一个objec为array。但是，如果你想做相反的事情怎么办？不用再想了！使用
           Object.fromEntries() 来把array转。
         </div>
-        <div class="content-svg">
-          <div class="look-svg">
-            <svg-icon
-              iconClass="blog-look"
-              style="width: 18px; height: 18px"
-            ></svg-icon>
-            <div class="look-count">308</div>
+        <div class="content-operate">
+          <div>
+            <span>
+              <svg-icon
+                iconClass="blog-look"
+                style="width: 16px; height: 16px"
+              ></svg-icon>
+              <span>308</span>
+            </span>
+            <span>
+              <svg-icon
+                iconClass="blog-good"
+                style="width: 16px; height: 16px"
+              ></svg-icon>
+              <span>112</span>
+            </span>
           </div>
-          <div class="good-svg">
-            <svg-icon
-              iconClass="blog-good"
-              style="width: 17px; height: 17px"
-            ></svg-icon>
-            <div class="good-count">112</div>
+          <div>
+            <span>
+              <svg-icon
+                iconClass="blog-delete"
+                style="width: 16px; height: 16px"
+              ></svg-icon>
+              <span>删除</span>
+            </span>
+            <span>
+              <svg-icon
+                iconClass="blog-edit"
+                style="width: 16px; height: 16px"
+              ></svg-icon>
+              <span>编辑</span>
+            </span>
           </div>
         </div>
       </div>
@@ -92,16 +107,35 @@ export default {
 }
 .left-content {
   background-color: #fff;
-  width: 200px;
-  height: 200px;
+  width: 160px;
+  height: 180px;
   margin-left: 20px;
-  padding: 10px;
+  border-radius: 5px;
+  padding-top: 10px;
+}
+.markdown-content {
+  width: 100%;
+  height: 30px;
+  line-height: 20px;
+  cursor: pointer;
+  text-align: left;
+  padding-top: 10px;
+}
+.markdown-content:hover {
+  background-color: rgba(0, 183, 255, 0.39);
+}
+.markdown-icon {
+  width: 22px;
+  height: 22px;
+  vertical-align: bottom;
+  margin: 0 10px 0 5px;
 }
 .middle-container {
-  width: 676px;
+  width: 700px;
   background-color: #fff;
   padding: 0 20px;
   margin: 15px 0;
+  border-radius: 5px;
 }
 .note-content {
   width: 100%;
@@ -112,7 +146,6 @@ export default {
   box-sizing: border-box;
   border-bottom: 1px solid #e5e6eb;
 }
-
 .content-header {
   color: #86909c;
   font-size: 14px;
@@ -155,30 +188,21 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.content-svg {
-  margin-top: 10px;
+.content-operate {
   display: flex;
-}
-.look-svg {
-  display: flex;
-  align-items: center;
+  margin-top: 15px;
+  justify-content: space-between;
 }
 .look-count {
-  font-size: 14px;
+  font-size: 12px;
   color: #86909c;
   margin-left: 2px;
-}
-.good-svg {
-  display: flex;
-  align-items: center;
-  margin-left: 10px;
 }
 .good-count {
-  font-size: 14px;
+  font-size: 12px;
   color: #86909c;
   margin-left: 2px;
 }
-
 .right-container {
   flex: 1;
   margin-top: 15px;
