@@ -34,7 +34,7 @@
           <el-tab-pane name="person">
             <span slot="label">
               <svg-icon className="tab-icon" iconClass="blog-person"></svg-icon>
-              关于我
+              关于我的
             </span>
           </el-tab-pane>
         </el-tabs>
