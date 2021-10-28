@@ -86,9 +86,6 @@
 <script>
 export default {
   name: 'Learn',
-  data() {
-    return {}
-  },
   methods: {
     enterMarkdown() {
       this.$router.push('markdown')
