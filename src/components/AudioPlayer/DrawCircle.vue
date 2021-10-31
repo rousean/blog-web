@@ -10,7 +10,7 @@ export default {
   },
   methods: {
     draw() {
-      // 全局svg对象
+      // 全局svg
       let margin = { top: 0, right: 0, bottom: 0, left: 0 }
       let width = 260 - margin.left - margin.right
       let height = 260 - margin.top - margin.bottom
