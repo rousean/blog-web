@@ -3,14 +3,11 @@
     <div class="left-container">
       <div class="left-content">
         <div class="markdown-content" @click="enterMarkdown">
-          <svg-icon
-            className="markdown-icon"
-            iconClass="blog-markdown"
-          ></svg-icon>
+          <svg-icon class="markdown-icon" iconClass="blog-markdown"></svg-icon>
           <span>新建笔记</span>
         </div>
         <div class="markdown-content">
-          <svg-icon className="markdown-icon" iconClass="blog-draft"></svg-icon>
+          <svg-icon class="markdown-icon" iconClass="blog-draft"></svg-icon>
           <span>草稿箱</span>
         </div>
       </div>
@@ -39,33 +36,21 @@
         <div class="content-operate">
           <div>
             <span>
-              <svg-icon
-                iconClass="blog-look"
-                style="width: 16px; height: 16px"
-              ></svg-icon>
+              <svg-icon iconClass="blog-look" style="width: 16px; height: 16px"></svg-icon>
               <span>308</span>
             </span>
             <span>
-              <svg-icon
-                iconClass="blog-good"
-                style="width: 16px; height: 16px"
-              ></svg-icon>
+              <svg-icon iconClass="blog-good" style="width: 16px; height: 16px"></svg-icon>
               <span>112</span>
             </span>
           </div>
           <div>
             <span>
-              <svg-icon
-                iconClass="blog-delete"
-                style="width: 16px; height: 16px"
-              ></svg-icon>
+              <svg-icon iconClass="blog-delete" style="width: 16px; height: 16px"></svg-icon>
               <span>删除</span>
             </span>
             <span>
-              <svg-icon
-                iconClass="blog-edit"
-                style="width: 16px; height: 16px"
-              ></svg-icon>
+              <svg-icon iconClass="blog-edit" style="width: 16px; height: 16px"></svg-icon>
               <span>编辑</span>
             </span>
           </div>
@@ -88,7 +73,7 @@ export default {
   name: 'Learn',
   methods: {
     enterMarkdown() {
-      this.$router.push('markdown')
+      this.$router.push('/markdown')
     }
   }
 }

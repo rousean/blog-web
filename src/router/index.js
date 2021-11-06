@@ -6,30 +6,31 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    redirect: '/home'
+    redirect: '/layout'
   },
   {
     path: '/layout',
     name: 'Layout',
+    redirect: '/layout/home',
     component: () => import('../views/Layout/Layout.vue'),
     children: [
       {
-        path: '/home',
+        path: 'home',
         name: 'Home',
         component: () => import('../views/Home/Home.vue')
       },
       {
-        path: '/learn',
+        path: 'learn',
         name: 'Learn',
         component: () => import('../views/Learn/Learn.vue')
       },
       {
-        path: '/material',
+        path: 'material',
         name: 'Material',
         component: () => import('../views/Material/Material.vue')
       },
       {
-        path: '/person',
+        path: 'person',
         name: 'Person',
         component: () => import('../views/Person/Person.vue')
       }
@@ -53,7 +54,6 @@ const routes = [
 
 const router = new VueRouter({
   mode: 'history',
-  base: process.env.BASE_URL,
   routes
 })
 

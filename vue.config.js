@@ -7,9 +7,9 @@ const resolve = (dir) => path.join(__dirname, './', dir)
 
 module.exports = {
   productionSourceMap: false,
-  publicPath: './',
+  publicPath: '/',
   outputDir: 'dist',
-  assetsDir: 'assets',
+  assetsDir: '.',
   devServer: {
     port: 8888,
     host: '0.0.0.0',

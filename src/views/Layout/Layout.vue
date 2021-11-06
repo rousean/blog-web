@@ -1,40 +1,26 @@
 <template>
   <div ref="layoutContainer" class="layout-container">
-    <div
-      :style="isShowAudio ? 'filter: blur(5px);' : 'filter: blur(0px);'"
-      @click="falseShowAudio"
-    >
+    <div :style="isShowAudio ? 'filter: blur(5px);' : 'filter: blur(0px);'" @click="falseShowAudio">
       <div class="header-container">
-        <el-tabs
-          v-model="currentTab"
-          @tab-click="handleClick"
-          tab-position="top"
-        >
+        <el-tabs v-model="currentTab" @tab-click="handleClick" tab-position="top">
           <el-tab-pane name="home">
             <span slot="label">
-              <svg-icon className="tab-icon" iconClass="blog-home"></svg-icon>
-              首页
+              <svg-icon class="tab-icon" iconClass="blog-home"></svg-icon>首页
             </span>
           </el-tab-pane>
           <el-tab-pane name="learn">
             <span slot="label">
-              <svg-icon className="tab-icon" iconClass="blog-learn"></svg-icon>
-              学习笔记
+              <svg-icon class="tab-icon" iconClass="blog-learn"></svg-icon>学习笔记
             </span>
           </el-tab-pane>
           <el-tab-pane name="material">
             <span slot="label">
-              <svg-icon
-                className="tab-icon"
-                iconClass="blog-material"
-              ></svg-icon>
-              开源项目
+              <svg-icon class="tab-icon" iconClass="blog-material"></svg-icon>开源项目
             </span>
           </el-tab-pane>
           <el-tab-pane name="person">
             <span slot="label">
-              <svg-icon className="tab-icon" iconClass="blog-person"></svg-icon>
-              关于我的
+              <svg-icon class="tab-icon" iconClass="blog-person"></svg-icon>关于我的
             </span>
           </el-tab-pane>
         </el-tabs>
@@ -46,10 +32,7 @@
     <div class="github-svg">
       <div class="github-hover">
         <a href="https://github.com/rousean" target="_blank">
-          <svg-icon
-            iconClass="blog-github"
-            style="width: 36px; height: 36px"
-          ></svg-icon>
+          <svg-icon iconClass="blog-github" style="width: 36px; height: 36px"></svg-icon>
         </a>
       </div>
     </div>
@@ -60,10 +43,7 @@
       @click="changeShowAudio"
       draggable="true"
     >
-      <svg-icon
-        iconClass="audio-mark"
-        style="width: 36px; height: 36px"
-      ></svg-icon>
+      <svg-icon iconClass="audio-mark" style="width: 36px; height: 36px"></svg-icon>
     </div>
     <div class="audio-player" v-show="isShowAudio">
       <AudioPlayer @listenChildValue="changeAudioPlay"></AudioPlayer>
