@@ -10,17 +10,17 @@
           </el-tab-pane>
           <el-tab-pane name="learn">
             <span slot="label">
-              <svg-icon class="tab-icon" iconClass="blog-learn"></svg-icon>学习笔记
+              <svg-icon class="tab-icon" iconClass="blog-learn"></svg-icon>学习
             </span>
           </el-tab-pane>
           <el-tab-pane name="material">
             <span slot="label">
-              <svg-icon class="tab-icon" iconClass="blog-material"></svg-icon>开源项目
+              <svg-icon class="tab-icon" iconClass="blog-material"></svg-icon>项目
             </span>
           </el-tab-pane>
           <el-tab-pane name="person">
             <span slot="label">
-              <svg-icon class="tab-icon" iconClass="blog-person"></svg-icon>关于我的
+              <svg-icon class="tab-icon" iconClass="blog-person"></svg-icon>关于
             </span>
           </el-tab-pane>
         </el-tabs>
@@ -136,12 +136,15 @@ export default {
   position: sticky;
   top: 0;
   z-index: 100;
+  display: flex;
+  justify-content: center;
+  .tab-icon {
+    width: 22px;
+    height: 22px;
+    vertical-align: text-bottom;
+  }
 }
-.tab-icon {
-  width: 22px;
-  height: 22px;
-  vertical-align: text-bottom;
-}
+
 .github-svg {
   position: fixed;
   top: 2px;
@@ -307,11 +310,7 @@ export default {
   font-size: 16px;
 }
 ::v-deep .el-tabs__nav {
-  float: right;
-  margin-right: 20px;
   height: 60px;
-  display: flex;
-  align-items: center;
 }
 ::v-deep .el-tabs__active-bar {
   background-color: transparent;
