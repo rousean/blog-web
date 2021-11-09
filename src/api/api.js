@@ -5,7 +5,10 @@ export const reqUploadFile = (formData) =>
   http('/material/uploadSingle', formData, 'POST')
 
 // 文章笔记保存
-export const reqSaveNote = (data) => http('/learn/saveNote', data, 'POST')
+export const reqSaveNote = (params) => http('/learn/saveNote', params, 'POST')
+
+// 获取文章列表
+export const reqGetNote = (params) => http('learn/getNote', params, 'POST')
 
 // 获取背景音乐列表
 export const reqAudioList = () => http('/audio/audioList')

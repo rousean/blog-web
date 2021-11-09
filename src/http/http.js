@@ -5,7 +5,7 @@ const config = {
   timeout: 1000
 }
 
-function http(url, params = {}, type = 'GET') {
+function http (url, params = {}, type = 'GET') {
   return new Promise((resolve, reject) => {
     let promise
     if (type === 'GET') {

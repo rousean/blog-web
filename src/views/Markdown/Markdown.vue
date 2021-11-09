@@ -1,62 +1,46 @@
 <template>
-  <!-- 表头信息 -->
   <div class="markdown-container">
     <header class="markdown-header">
-      <el-input
-        style="flex: 1"
-        v-model="noteTitle"
-        placeholder="请输入文章标题"
-      ></el-input>
+      <el-input v-model="noteTitle" placeholder="请输入文章标题"></el-input>
       <div class="header-right">
-        <div style="display: flex">
-          <el-tag
-            :key="tag"
-            v-for="tag in noteTags"
-            closable
-            :disable-transitions="false"
-            @close="deleteTag(tag)"
-          >
-            {{ tag }}
-          </el-tag>
-          <div v-if="computerTagNum">
-            <el-input
-              v-if="ifAddTag"
-              class="input-new-tag"
-              ref="saveTagInput"
-              v-model="tagValue"
-              size="small"
-              placeholder="可以添加三个标签"
-              @keyup.enter.native="addTag"
-              @blur="addTag"
-            ></el-input>
-            <el-button
-              v-else
-              class="button-new-tag"
-              size="small"
-              @click="showAddTag"
-              type="primary"
-              plain
-            >
-              + 标签
-            </el-button>
-          </div>
-        </div>
-        <div class="save-container">
-          <div class="text-draft">文章将自动保存到草稿箱</div>
-          <el-button type="info" plain>草稿箱</el-button>
-          <el-button type="primary" @click="saveNote">保存</el-button>
-        </div>
+        <el-button type="primary" plain @click="showDrawer">保存</el-button>
+        <el-drawer :visible.sync="drawer" :with-header="false">
+          <el-form class="form-container" label-width="50px">
+            <el-form-item label="标签">
+              <el-select
+                v-model="noteTag"
+                multiple
+                filterable
+                allow-create
+                default-first-option
+                placeholder="请选择文章标签"
+              >
+                <el-option
+                  v-for="item in noteTagOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="摘要">
+              <el-input type="textarea" :rows="3" placeholder="请输入摘要内容" v-model="noteAbstract"></el-input>
+            </el-form-item>
+            <el-button type="primary" plain @click="saveNote">确定</el-button>
+          </el-form>
+        </el-drawer>
       </div>
     </header>
-    <!-- markdown编辑 -->
-    <mavon-editor
-      ref="md"
-      class="mavon-editor"
-      v-model="noteContent"
-      @save="save"
-      fontSize="16px"
-      :toolbars="toolbars"
-    />
+    <main class="editor-container">
+      <mavon-editor
+        ref="md"
+        class="mavon-editor"
+        v-model="noteContent"
+        @save="save"
+        fontSize="16px"
+        :toolbars="toolbars"
+      ></mavon-editor>
+    </main>
   </div>
 </template>
 
@@ -64,14 +48,13 @@
 import { reqSaveNote } from '../../api/api'
 export default {
   name: 'Markdown',
-
   data() {
     return {
       noteTitle: '', // 文章标题
-      noteTags: [], // 文章标签
+      noteTag: [], // 文章标签
       noteContent: '', // 文章内容
-      ifAddTag: false, // 是否显示添加标签
-      tagValue: '', // 标签值
+      noteAbstract: '', // 文章摘要
+      drawer: false,
       toolbars: {
         bold: true, // 粗体
         italic: true, // 斜体
@@ -102,54 +85,48 @@ export default {
         subfield: true, // 单双栏模式
         htmlcode: true, // 展示html源码
         help: true // 帮助
-      }
-    }
-  },
-  props: {
-    //生成一个用不重复的ID
-    noteId: {
-      type: String,
-      default: function getUUID(randomLength) {
-        return Number(
-          Math.random().toString().substr(2, 10) + Date.now()
-        ).toString(36)
-      }
+      },
+      noteTagOptions: [
+        {
+          value: 'JavaScript',
+          label: 'JavaScript'
+        },
+        {
+          value: 'HTML',
+          label: 'HTML'
+        },
+        {
+          value: 'CSS',
+          label: 'CSS'
+        },
+        {
+          value: 'TypeScript',
+          label: 'TypeScript'
+        },
+        {
+          value: 'Node',
+          label: 'Node'
+        },
+        {
+          value: 'Vue',
+          label: 'Vue'
+        },
+        {
+          value: 'Deno',
+          label: 'Deno'
+        }
+      ]
     }
   },
   computed: {
     // 判断标签的个数,最多可以添加三个标签
     computerTagNum() {
-      return !(this.noteTags.length >= 3)
+      return !(this.noteTag.length >= 3)
     }
   },
   methods: {
-    // 删除标签
-    deleteTag(tag) {
-      this.noteTags.splice(this.noteTags.indexOf(tag), 1)
-    },
-    // 显示添加标签
-    showAddTag() {
-      this.ifAddTag = true
-      this.$nextTick((_) => {
-        this.$refs.saveTagInput.$refs.input.focus()
-      })
-    },
-    // 添加标签
-    addTag() {
-      let tagValue = this.tagValue
-      if (this.noteTags.indexOf(tagValue) !== -1) {
-        this.$message({
-          message: '重复标签！',
-          type: 'warning',
-          showClose: true
-        })
-        return
-      }
-      if (tagValue) {
-        this.noteTags.push(tagValue)
-      }
-      this.ifAddTag = false
-      this.tagValue = ''
+    showDrawer() {
+      this.drawer = !this.drawer
     },
     // 点击保存
     async saveNote() {
@@ -161,7 +138,7 @@ export default {
         })
         return
       }
-      if (this.noteTags.length === 0) {
+      if (this.noteTag.length === 0) {
         this.$message({
           message: '文章标签为空！',
           type: 'warning',
@@ -177,15 +154,29 @@ export default {
         })
         return
       }
-      const note = {
-        note_id: this.noteId,
-        note_title: this.noteTitle,
-        note_tag: this.noteTags,
-        note_filename: this.noteTitle + '_' + this.noteId,
-        note_content: this.noteContent
+      if (this.noteAbstract === '') {
+        this.$message({
+          message: '文章摘要为空！',
+          type: 'warning',
+          showClose: true
+        })
+        return
       }
-      const result = await reqSaveNote(note)
-      console.log(result)
+      const note = {
+        noteTitle: this.noteTitle,
+        noteTag: this.noteTag,
+        noteContent: this.noteContent,
+        noteAbstract: this.noteAbstract
+      }
+      const res = await reqSaveNote(note)
+      if (res.code === 1) {
+        this.$message({
+          message: '文章保存成功',
+          type: 'success',
+          showClose: true
+        })
+        this.$router.push('/layout/learn')
+      }
     },
     // 保存文章内容
     save(value, render) {
@@ -196,8 +187,32 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.markdown-container {
+  .markdown-header {
+    display: flex;
+    align-items: center;
+    margin: 10px;
+  }
+  .header-right {
+    margin-left: 10px;
+    .form-container {
+      padding: 20px;
+      text-align: center;
+    }
+  }
+  .editor-container {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    .mavon-editor {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
 ::v-deep .el-input__inner {
-  border: 0px solid #dcdfe6;
+  border: 1px solid #dcdfe6;
   font-size: 14px;
 }
 ::v-deep .el-button {
@@ -206,45 +221,7 @@ export default {
 ::v-deep .el-tag {
   margin-left: 10px;
 }
-.markdown-header {
-  display: flex;
-  margin: 10px;
-}
-.header-right {
-  display: flex;
-  align-items: center;
-  align-content: center;
-  justify-content: space-between;
-  flex: 1;
-}
-.button-new-tag {
-  height: 32px;
-  line-height: 30px;
-  margin-left: 10px;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-.input-new-tag {
-  width: 150px;
-  margin-left: 10px;
-  vertical-align: bottom;
-}
-.save-container {
-  display: flex;
-  align-items: center;
-}
-.text-draft {
-  color: #c9cdd4;
-  margin-right: 10px;
-  font-size: 12px;
-}
-.markdown-container {
-  height: 100%;
+::v-deep .el-select {
   width: 100%;
-  position: fixed;
-}
-.mavon-editor {
-  width: 100%;
-  height: 100%;
 }
 </style>

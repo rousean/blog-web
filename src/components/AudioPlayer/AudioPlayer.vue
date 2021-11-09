@@ -1,7 +1,7 @@
 <template>
   <div class="audio-container">
     <!-- 音乐来源 -->
-    <audio ref="audio" :src="audioUrl" autoplay></audio>
+    <audio ref="audio" :src="audioUrl"></audio>
     <!-- 作曲名与作者 -->
     <div class="audio-title-author" v-if="audioList">
       <div class="audio-title">{{ audioList[audioId].audioTitle }}</div>
@@ -28,10 +28,7 @@
       </div>
       <div class="audio-button">
         <div @click="controlBack">
-          <svg-icon
-            iconClass="audio-back"
-            style="width: 20px; height: 20px"
-          ></svg-icon>
+          <svg-icon iconClass="audio-back" style="width: 20px; height: 20px"></svg-icon>
         </div>
         <div @click="controlaudio">
           <svg-icon
@@ -40,10 +37,7 @@
           ></svg-icon>
         </div>
         <div @click="controlFore">
-          <svg-icon
-            iconClass="audio-fore"
-            style="width: 20px; height: 20px"
-          ></svg-icon>
+          <svg-icon iconClass="audio-fore" style="width: 20px; height: 20px"></svg-icon>
         </div>
       </div>
     </div>
@@ -62,11 +56,13 @@
       <div class="next-content" v-if="audioList">
         <span class="next-content-num">{{ audioId + 2 }}</span>
         <span class="next-content-line">|</span>
-        <span class="next-content-title">{{
+        <span class="next-content-title">
+          {{
           audioId === audioList.length - 1
-            ? audioList[audioId].audioName.split('.')[0]
-            : audioList[audioId + 1].audioName.split('.')[0]
-        }}</span>
+          ? audioList[audioId].audioName.split('.')[0]
+          : audioList[audioId + 1].audioName.split('.')[0]
+          }}
+        </span>
       </div>
       <div class="next-line"></div>
     </div>
