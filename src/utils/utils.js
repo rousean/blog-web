@@ -52,3 +52,7 @@ export function isChrome() {
     return false
   }
 }
+
+export function dayDif(startTime, endTime) {
+  return Math.ceil(Math.abs(startTime.getTime() - endTime.getTime()) / 86400000)
+}

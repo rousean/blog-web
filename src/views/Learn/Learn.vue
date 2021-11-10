@@ -1,68 +1,78 @@
 <template>
-  <div class="learn-container">
-    <div class="left-container">
-      <div class="left-content">
-        <div class="markdown-content" @click="enterMarkdown">
-          <svg-icon class="markdown-icon" iconClass="blog-markdown"></svg-icon>
-          <span>新建笔记</span>
-        </div>
-        <div class="markdown-content">
-          <svg-icon class="markdown-icon" iconClass="blog-draft"></svg-icon>
-          <span>草稿箱</span>
-        </div>
-      </div>
-    </div>
-    <div class="middle-container">
-      <div class="note-container">
-        <div class="note-content" v-for="note in noteData" :key="note.id">
-          <div class="content-header">
-            <div class="content-time">{{dayDif(new Date(), new Date(note.createdAt))}}天前</div>
-            <div class="content-container">
-              <div
-                v-for="(tag, index) in note.noteTag"
-                :key="tag"
-                :class="[index === note.noteTag.length - 1 ? 'content-tag-last': 'content-tag']"
-              >{{tag}}</div>
-            </div>
-          </div>
-          <div class="content-title">{{note.noteTitle}}</div>
-          <div class="content-brief">{{note.noteAbstract}}</div>
-          <div class="content-operate">
-            <div>
-              <svg-icon iconClass="blog-delete" style="width: 16px; height: 16px"></svg-icon>
-              <span>删除</span>
-            </div>
-            <div>
-              <svg-icon iconClass="blog-edit" style="width: 16px; height: 16px"></svg-icon>
-              <span>编辑</span>
+  <div>
+    <keep-alive>
+      <div class="learn-container" v-if="$route.path === '/layout/learn'">
+        <div class="left-container">
+          <div class="left-content">
+            <div class="markdown-content" @click="enterMarkdown">
+              <svg-icon class="markdown-icon" iconClass="blog-markdown"></svg-icon>
+              <span>新建笔记</span>
             </div>
           </div>
         </div>
+        <div class="middle-container">
+          <div class="note-container" v-if="noteData.length > 0">
+            <div
+              class="note-content"
+              v-for="note in noteData"
+              :key="note._id"
+              @click="showNote(note._id)"
+            >
+              <div class="content-header">
+                <div class="content-time">{{dayDif(new Date(), new Date(note.createdAt))}}天前</div>
+                <div class="content-container">
+                  <div
+                    v-for="(tag, index) in note.noteTag"
+                    :key="tag"
+                    :class="[index === note.noteTag.length - 1 ? 'content-tag-last': 'content-tag']"
+                  >{{tag}}</div>
+                </div>
+                <div class="content-operate">
+                  <div>
+                    <svg-icon
+                      iconClass="blog-delete"
+                      style="width: 16px; height: 16px; margin-right: 10px;"
+                    ></svg-icon>
+                  </div>
+                  <div>
+                    <svg-icon iconClass="blog-edit" style="width: 16px; height: 16px"></svg-icon>
+                  </div>
+                </div>
+              </div>
+              <div class="content-title">{{note.noteTitle}}</div>
+              <div class="content-brief">{{note.noteAbstract}}</div>
+            </div>
+          </div>
+          <el-empty v-else :image-size="100"></el-empty>
+          <el-pagination
+            style="text-align: center;"
+            @current-change="handleCurChange"
+            :current-page="pageNum"
+            :page-size="pageSize"
+            layout="prev, next"
+            :total="pageTotal"
+            prev-text="上一页"
+            next-text="下一页"
+            hide-on-single-page
+          ></el-pagination>
+        </div>
+        <div class="right-container">
+          <div class="tag-group">
+            <el-tag
+              class="tag-item"
+              ref="elTag"
+              v-for="item in tagOptions"
+              :key="item.label"
+              :type="item.type"
+              :style="{background: (selectTag === item.label ? '#000' : '')}"
+              effect="plain"
+              @click="handleNoteTag(item.label)"
+            >{{ item.label }}</el-tag>
+          </div>
+        </div>
       </div>
-      <el-pagination
-        style="text-align: center;"
-        @current-change="handleCurChange"
-        :current-page="pageNum"
-        :page-size="pageSize"
-        layout="prev, next"
-        :total="pageTotal"
-        prev-text="上一页"
-        next-text="下一页"
-      ></el-pagination>
-    </div>
-    <div class="right-container">
-      <div class="tag-group">
-        <el-tag
-          class="tag-item"
-          ref="elTag"
-          v-for="(item, index) in tagOptions"
-          :key="item.label"
-          :type="item.type"
-          effect="plain"
-          @click="handleNoteTag(item.label, index)"
-        >{{ item.label }}</el-tag>
-      </div>
-    </div>
+    </keep-alive>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -76,6 +86,7 @@ export default {
       pageNum: 1,
       pageSize: 5,
       pageTotal: 0,
+      selectTag: '',
       tagOptions: [
         {
           type: 'success',
@@ -95,11 +106,11 @@ export default {
         },
         {
           type: 'success',
-          label: 'Node'
+          label: 'Vue'
         },
         {
           type: 'danger',
-          label: 'Vue'
+          label: 'Node'
         },
         {
           type: 'warning',
@@ -108,54 +119,67 @@ export default {
       ]
     }
   },
-  methods: {
-    async handleCurChange(val) {
-      const res = await reqGetNote({
-        pageNum: val,
-        pageSize: this.pageSize
-      })
-      if (res.code === 1) {
-        this.noteData = res.data.content
-        this.pageSize = res.data.pageSize
-        this.pageNum = res.data.pageNum
-        this.pageTotal = res.data.pageTotal
-      }
-    },
-    async handleNoteTag(tag, index) {
-      const res = await reqGetNote({
-        pageNum: this.pageNum,
-        pageSize: this.pageSize,
-        condition: { noteTag: { $elemMatch: { $eq: tag } } }
-      })
-      if (res.code === 1) {
-        this.noteData = res.data.content
-        this.pageSize = res.data.pageSize
-        this.pageNum = res.data.pageNum
-        this.pageTotal = res.data.pageTotal
-      }
-      this.$nextTick(() => {
-        this.$refs.elTag[index].$el.style.background = '#000'
-      })
-    },
-    enterMarkdown() {
-      this.$router.push('/markdown')
-    },
-    dayDif(startTime, endTime) {
-      return Math.ceil(
-        Math.abs(startTime.getTime() - endTime.getTime()) / 86400000
-      )
-    }
-  },
   async mounted() {
     const res = await reqGetNote({
       pageNum: this.pageNum,
-      pageSize: this.pageSize
+      pageSize: this.pageSize,
+      condition: this.selectTag
+        ? { noteTag: { $elemMatch: { $eq: this.selectTag } } }
+        : ''
     })
     if (res.code === 1) {
       this.noteData = res.data.content
       this.pageSize = res.data.pageSize
       this.pageNum = res.data.pageNum
       this.pageTotal = res.data.pageTotal
+    }
+  },
+  methods: {
+    dayDif(startTime, endTime) {
+      return Math.ceil(
+        Math.abs(startTime.getTime() - endTime.getTime()) / 86400000
+      )
+    },
+    // 查看文章内容
+    showNote(id) {
+      this.$router.push({ path: '/layout/learn/note', query: { id: id } })
+    },
+    // 编辑文章
+    enterMarkdown() {
+      this.$router.push('/markdown')
+    },
+    // 处理页面变化回调
+    async handleCurChange(val) {
+      const res = await reqGetNote({
+        pageNum: val,
+        pageSize: this.pageSize,
+        condition: this.selectTag
+          ? { noteTag: { $elemMatch: { $eq: this.selectTag } } }
+          : ''
+      })
+      if (res.code === 1) {
+        this.noteData = res.data.content
+        this.pageSize = res.data.pageSize
+        this.pageNum = res.data.pageNum
+        this.pageTotal = res.data.pageTotal
+      }
+    },
+    // 点击标签回调
+    async handleNoteTag(tag) {
+      this.selectTag = tag
+      const res = await reqGetNote({
+        pageNum: this.pageNum,
+        pageSize: this.pageSize,
+        condition: this.selectTag
+          ? { noteTag: { $elemMatch: { $eq: this.selectTag } } }
+          : ''
+      })
+      if (res.code === 1) {
+        this.noteData = res.data.content
+        this.pageSize = res.data.pageSize
+        this.pageNum = res.data.pageNum
+        this.pageTotal = res.data.pageTotal
+      }
     }
   }
 }
@@ -194,7 +218,8 @@ export default {
     }
   }
   .middle-container {
-    width: 750px;
+    width: 850px;
+    min-height: 800px;
     background-color: #fff;
     padding: 10px 20px;
     margin: 15px 0;
@@ -239,7 +264,7 @@ export default {
               align-items: center;
               flex-shrink: 0;
               font-size: 13px;
-              padding: 0 10px;
+              padding: 0 5px;
               color: #86909c;
             }
             .content-tag-last {
@@ -248,7 +273,7 @@ export default {
               align-items: center;
               flex-shrink: 0;
               font-size: 13px;
-              padding: 0 10px;
+              padding: 0 5px;
               color: #86909c;
             }
             .content-tag:after {
@@ -261,6 +286,11 @@ export default {
               border-radius: 50%;
               background: #4e5969;
             }
+          }
+          .content-operate {
+            display: flex;
+            justify-content: flex-end;
+            flex: 2;
           }
         }
         .content-title {
@@ -278,13 +308,12 @@ export default {
           color: #86909c;
           font-size: 14px;
           line-height: 22px;
-          white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
-        }
-        .content-operate {
-          display: flex;
-          margin-top: 10px;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          overflow: hidden;
+          -webkit-box-orient: vertical;
         }
       }
       .note-content:hover {
@@ -300,6 +329,7 @@ export default {
       width: 260px;
       height: 300px;
       background: #fff;
+      border-radius: 5px;
       .tag-item {
         cursor: pointer;
         margin: 8px;

@@ -15,8 +15,8 @@ export default {
 
 <style lang="scss" scoped>
 .home-container {
-  width: 1176px;
-  min-height: 800px;
+  width: 850px;
+  min-height: 880px;
   margin-left: auto;
   margin-right: auto;
   margin-top: 20px;
@@ -24,5 +24,6 @@ export default {
   background-color: #fff;
   padding: 10px;
   box-sizing: border-box;
+  border-radius: 5px;
 }
 </style>

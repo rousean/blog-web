@@ -3,10 +3,7 @@
   <div class="browser-container">
     <div class="browser-text">
       <a href="https://www.google.com/intl/zh-CN/chrome/" target="_blank">
-        <svg-icon
-          iconClass="blog-google"
-          style="width: 144px; height: 36px"
-        ></svg-icon>
+        <svg-icon iconClass="blog-google" style="width: 144px; height: 36px"></svg-icon>
       </a>
       <div>当前网页推荐Google浏览器预览!</div>
       <div>请点击图标前往官网下载!</div>
@@ -60,19 +57,19 @@ export default {
 <style lang="scss" scoped>
 .browser-container {
   position: relative;
-}
-.browser-text {
-  width: 380px;
-  height: 80px;
-  position: absolute;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  font-family: Saint-Andrews;
-  font-size: 20px;
+  .browser-text {
+    width: 380px;
+    height: 80px;
+    font-family: Saint-Andrews;
+    font-size: 20px;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+  }
 }
 </style>

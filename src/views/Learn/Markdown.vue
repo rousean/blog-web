@@ -39,13 +39,14 @@
         @save="save"
         fontSize="16px"
         :toolbars="toolbars"
+        @imgAdd="$imgAdd"
       ></mavon-editor>
     </main>
   </div>
 </template>
 
 <script>
-import { reqSaveNote } from '../../api/api'
+import { reqSaveNote, reqUploadImage } from '../../api/api'
 export default {
   name: 'Markdown',
   data() {
@@ -118,13 +119,21 @@ export default {
       ]
     }
   },
-  computed: {
-    // 判断标签的个数,最多可以添加三个标签
-    computerTagNum() {
-      return !(this.noteTag.length >= 3)
-    }
-  },
   methods: {
+    // 绑定@imgAdd event
+    async $imgAdd(pos, $file) {
+      // 第一步.将图片上传到服务器.
+      let formdata = new FormData()
+      formdata.set('file', $file)
+      const result = await reqUploadImage(formdata)
+      if (resulr.code === 1) {
+        this.$refs.md.$img2Url(
+          pos,
+          `http://localhost:3000/images/${$file.name}`
+        )
+      }
+    },
+    // 是否显示保存弹窗页面
     showDrawer() {
       this.drawer = !this.drawer
     },

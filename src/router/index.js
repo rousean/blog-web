@@ -22,7 +22,14 @@ const routes = [
       {
         path: 'learn',
         name: 'Learn',
-        component: () => import('../views/Learn/Learn.vue')
+        component: () => import('../views/Learn/Learn.vue'),
+        children: [
+          {
+            path: 'note',
+            name: 'Note',
+            component: () => import('../views/Learn/Note.vue')
+          },
+        ]
       },
       {
         path: 'material',
@@ -33,19 +40,21 @@ const routes = [
         path: 'person',
         name: 'Person',
         component: () => import('../views/Person/Person.vue')
-      }
+      },
+
     ]
-  },
-  {
-    path: '/markdown',
-    name: 'Markdown',
-    component: () => import('../views/Markdown/Markdown.vue')
   },
   {
     path: '/browser',
     name: 'Browser',
     component: () => import('../views/Browser/Browser.vue')
   },
+  {
+    path: '/markdown',
+    name: 'Markdown',
+    component: () => import('../views/Learn/Markdown.vue')
+  },
+
   {
     path: '*',
     redirect: '/home'

@@ -12,6 +12,7 @@ html {
   font-family: -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell,
     Noto Sans, sans-serif, BlinkMacSystemFont, 'Helvetica Neue', 'PingFang SC',
     'Hiragino Sans GB', 'Microsoft YaHei', Arial;
+  letter-spacing: 1px;
 }
 body {
   width: 100%;
