@@ -9,9 +9,8 @@ html {
   width: 100%;
   height: 100%;
   background-color: #f4f5f5;
-  font-family: -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell,
-    Noto Sans, sans-serif, BlinkMacSystemFont, 'Helvetica Neue', 'PingFang SC',
-    'Hiragino Sans GB', 'Microsoft YaHei', Arial;
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
   letter-spacing: 1px;
 }
 body {

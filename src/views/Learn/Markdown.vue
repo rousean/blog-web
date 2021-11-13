@@ -1,46 +1,50 @@
 <template>
   <div class="markdown-container">
     <header class="markdown-header">
-      <el-input v-model="noteTitle" placeholder="请输入文章标题"></el-input>
+      <el-input v-model="noteTitle"
+                placeholder="请输入文章标题"></el-input>
       <div class="header-right">
-        <el-button type="primary" plain @click="showDrawer">保存</el-button>
-        <el-drawer :visible.sync="drawer" :with-header="false">
-          <el-form class="form-container" label-width="50px">
+        <el-button type="primary"
+                   plain
+                   @click="showDrawer">保存</el-button>
+        <el-drawer :visible.sync="drawer"
+                   :with-header="false">
+          <el-form class="form-container"
+                   label-width="50px">
             <el-form-item label="标签">
-              <el-select
-                v-model="noteTag"
-                multiple
-                filterable
-                allow-create
-                default-first-option
-                placeholder="请选择文章标签"
-              >
-                <el-option
-                  v-for="item in noteTagOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
+              <el-select v-model="noteTag"
+                         multiple
+                         filterable
+                         allow-create
+                         default-first-option
+                         placeholder="请选择文章标签">
+                <el-option v-for="item in noteTagOptions"
+                           :key="item.value"
+                           :label="item.label"
+                           :value="item.value"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="摘要">
-              <el-input type="textarea" :rows="3" placeholder="请输入摘要内容" v-model="noteAbstract"></el-input>
+              <el-input type="textarea"
+                        :rows="3"
+                        placeholder="请输入摘要内容"
+                        v-model="noteAbstract"></el-input>
             </el-form-item>
-            <el-button type="primary" plain @click="saveNote">确定</el-button>
+            <el-button type="primary"
+                       plain
+                       @click="saveNote">确定</el-button>
           </el-form>
         </el-drawer>
       </div>
     </header>
     <main class="editor-container">
-      <mavon-editor
-        ref="md"
-        class="mavon-editor"
-        v-model="noteContent"
-        @save="save"
-        fontSize="16px"
-        :toolbars="toolbars"
-        @imgAdd="$imgAdd"
-      ></mavon-editor>
+      <mavon-editor ref="md"
+                    class="mavon-editor"
+                    v-model="noteContent"
+                    @save="save"
+                    fontSize="16px"
+                    :toolbars="toolbars"
+                    @imgAdd="$imgAdd"></mavon-editor>
     </main>
   </div>
 </template>
@@ -126,7 +130,7 @@ export default {
       let formdata = new FormData()
       formdata.set('file', $file)
       const result = await reqUploadImage(formdata)
-      if (resulr.code === 1) {
+      if (result.code === 1) {
         this.$refs.md.$img2Url(
           pos,
           `http://localhost:3000/images/${$file.name}`

@@ -11,7 +11,7 @@ const routes = [
   {
     path: '/layout',
     name: 'Layout',
-    redirect: '/layout/home',
+    redirect: '/layout/learn',
     component: () => import('../views/Layout/Layout.vue'),
     children: [
       {
@@ -28,7 +28,7 @@ const routes = [
             path: 'note',
             name: 'Note',
             component: () => import('../views/Learn/Note.vue')
-          },
+          }
         ]
       },
       {
@@ -40,8 +40,7 @@ const routes = [
         path: 'person',
         name: 'Person',
         component: () => import('../views/Person/Person.vue')
-      },
-
+      }
     ]
   },
   {

@@ -1,5 +1,12 @@
 <template>
-  <div class="person-container">关于我的</div>
+  <div class="person-container">
+    <el-avatar :size="100"
+               src="http://localhost:3000/images/rousean.jpg"></el-avatar>
+    <div style="margin-top:10px">
+      <span>张海东</span>
+      <span style="margin-left:10px;font-size:12px;color:#8c8c8c;vertical-align: bottom;">Rousean</span>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -15,7 +22,7 @@ export default {}
   margin-top: 20px;
   margin-bottom: 20px;
   background-color: #fff;
-  padding: 10px;
+  padding: 20px;
   box-sizing: border-box;
   border-radius: 5px;
 }

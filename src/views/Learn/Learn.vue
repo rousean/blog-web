@@ -1,77 +1,70 @@
 <template>
   <div>
-    <keep-alive>
-      <div class="learn-container" v-if="$route.path === '/layout/learn'">
-        <div class="left-container">
-          <div class="left-content">
-            <div class="markdown-content" @click="enterMarkdown">
-              <svg-icon class="markdown-icon" iconClass="blog-markdown"></svg-icon>
-              <span>新建笔记</span>
-            </div>
-          </div>
-        </div>
-        <div class="middle-container">
-          <div class="note-container" v-if="noteData.length > 0">
-            <div
-              class="note-content"
-              v-for="note in noteData"
-              :key="note._id"
-              @click="showNote(note._id)"
-            >
-              <div class="content-header">
-                <div class="content-time">{{dayDif(new Date(), new Date(note.createdAt))}}天前</div>
-                <div class="content-container">
-                  <div
-                    v-for="(tag, index) in note.noteTag"
-                    :key="tag"
-                    :class="[index === note.noteTag.length - 1 ? 'content-tag-last': 'content-tag']"
-                  >{{tag}}</div>
-                </div>
-                <div class="content-operate">
-                  <div>
-                    <svg-icon
-                      iconClass="blog-delete"
-                      style="width: 16px; height: 16px; margin-right: 10px;"
-                    ></svg-icon>
-                  </div>
-                  <div>
-                    <svg-icon iconClass="blog-edit" style="width: 16px; height: 16px"></svg-icon>
-                  </div>
-                </div>
-              </div>
-              <div class="content-title">{{note.noteTitle}}</div>
-              <div class="content-brief">{{note.noteAbstract}}</div>
-            </div>
-          </div>
-          <el-empty v-else :image-size="100"></el-empty>
-          <el-pagination
-            style="text-align: center;"
-            @current-change="handleCurChange"
-            :current-page="pageNum"
-            :page-size="pageSize"
-            layout="prev, next"
-            :total="pageTotal"
-            prev-text="上一页"
-            next-text="下一页"
-            hide-on-single-page
-          ></el-pagination>
-        </div>
-        <div class="right-container">
-          <div class="tag-group">
-            <el-tag
-              class="tag-item"
-              ref="elTag"
-              v-for="item in tagOptions"
-              :key="item.label"
-              :type="item.type"
-              :style="{background: (selectTag === item.label ? '#000' : '')}"
-              effect="plain"
-              @click="handleNoteTag(item.label)"
-            >{{ item.label }}</el-tag>
-          </div>
+
+    <div class="learn-container"
+         v-if="$route.path === '/layout/learn'">
+      <div class="left-container">
+        <div class="left-content"
+             @click="enterMarkdown"
+             v-if="true">
+          <svg-icon class="markdown-icon"
+                    iconClass="blog-markdown"></svg-icon>
         </div>
       </div>
-    </keep-alive>
+      <div class="middle-container">
+        <div class="note-container"
+             v-if="noteData.length > 0">
+          <div class="note-content"
+               v-for="note in noteData"
+               :key="note._id"
+               @click="showNote(note._id)">
+            <div class="content-header">
+              <div class="content-time">{{dayDif(new Date(), new Date(note.createdAt))}}天前</div>
+              <div class="content-container">
+                <div v-for="(tag, index) in note.noteTag"
+                     :key="tag"
+                     :class="[index === note.noteTag.length - 1 ? 'content-tag-last': 'content-tag']">{{tag}}</div>
+              </div>
+              <div class="content-operate">
+                <div>
+                  <svg-icon iconClass="blog-delete"
+                            style="width: 16px; height: 16px; margin-right: 10px;"></svg-icon>
+                </div>
+                <div>
+                  <svg-icon iconClass="blog-edit"
+                            style="width: 16px; height: 16px"></svg-icon>
+                </div>
+              </div>
+            </div>
+            <div class="content-title">{{note.noteTitle}}</div>
+            <div class="content-brief">{{note.noteAbstract}}</div>
+          </div>
+        </div>
+        <el-empty v-else
+                  :image-size="100"></el-empty>
+        <el-pagination style="text-align: center;"
+                       @current-change="handleCurChange"
+                       :current-page="pageNum"
+                       :page-size="pageSize"
+                       layout="prev, next"
+                       :total="pageTotal"
+                       prev-text="上一页"
+                       next-text="下一页"
+                       hide-on-single-page></el-pagination>
+      </div>
+      <div class="right-container">
+        <div class="tag-group">
+          <el-tag class="tag-item"
+                  ref="elTag"
+                  v-for="item in tagOptions"
+                  :key="item.label"
+                  :type="item.type"
+                  :style="{background: (selectTag === item.label ? '#000' : '')}"
+                  effect="plain"
+                  @click="handleNoteTag(item.label)">{{ item.label }}</el-tag>
+        </div>
+      </div>
+    </div>
     <router-view></router-view>
   </div>
 </template>
@@ -168,8 +161,8 @@ export default {
     async handleNoteTag(tag) {
       this.selectTag = tag
       const res = await reqGetNote({
-        pageNum: this.pageNum,
-        pageSize: this.pageSize,
+        pageNum: 1,
+        pageSize: 5,
         condition: this.selectTag
           ? { noteTag: { $elemMatch: { $eq: this.selectTag } } }
           : ''
@@ -192,28 +185,19 @@ export default {
     flex: 1;
     margin-top: 15px;
     .left-content {
-      background-color: #fff;
       width: 160px;
-      height: 180px;
+      height: 100px;
       margin-left: 20px;
       border-radius: 5px;
-      padding-top: 10px;
-      .markdown-content {
-        width: 100%;
-        height: 30px;
-        line-height: 20px;
-        cursor: pointer;
-        text-align: left;
-        padding-top: 10px;
-      }
-      .markdown-content:hover {
-        background-color: rgba(0, 183, 255, 0.39);
-      }
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      background-color: #fff;
       .markdown-icon {
-        width: 22px;
-        height: 22px;
+        width: 36px;
+        height: 36px;
         vertical-align: bottom;
-        margin: 0 10px 0 5px;
       }
     }
   }
