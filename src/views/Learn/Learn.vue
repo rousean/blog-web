@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <div class="learn-container"
          v-if="$route.path === '/layout/learn'">
       <div class="left-container">

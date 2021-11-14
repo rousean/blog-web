@@ -133,7 +133,7 @@ export default {
       if (result.code === 1) {
         this.$refs.md.$img2Url(
           pos,
-          `http://localhost:3000/images/${$file.name}`
+          `${process.env.VUE_APP_IMAGE_PATH}/${$file.name}`
         )
       }
     },

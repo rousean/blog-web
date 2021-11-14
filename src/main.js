@@ -27,9 +27,6 @@ import * as d3 from 'd3'
 Vue.prototype.$d3 = d3
 window.d3 = d3
 
-// 引入字体
-import './assets/styles/font.scss'
-
 Vue.config.productionTip = false
 
 // router.beforeEach((to, from, next) => {

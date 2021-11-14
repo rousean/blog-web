@@ -1,11 +1,11 @@
 import axios from 'axios'
 
 const config = {
-  baseURL: 'http://localhost:3000/',
+  baseURL: process.env.VUE_APP_BASE_URL,
   timeout: 1000
 }
 
-function http (url, params = {}, type = 'GET') {
+function http(url, params = {}, type = 'GET') {
   return new Promise((resolve, reject) => {
     let promise
     if (type === 'GET') {
@@ -28,9 +28,7 @@ function http (url, params = {}, type = 'GET') {
       promise = axios.post(url, params, config)
     }
     // 返回Promise
-    promise
-      .then((response) => resolve(response.data))
-      .catch((error) => reject(error))
+    promise.then((res) => resolve(res.data)).catch((err) => reject(err))
   })
 }
 

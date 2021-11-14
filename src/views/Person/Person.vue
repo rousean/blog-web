@@ -1,7 +1,7 @@
 <template>
   <div class="person-container">
     <el-avatar :size="100"
-               src="http://localhost:3000/images/rousean.jpg"></el-avatar>
+               :src="url"></el-avatar>
     <div style="margin-top:10px">
       <span>张海东</span>
       <span style="margin-left:10px;font-size:12px;color:#8c8c8c;vertical-align: bottom;">Rousean</span>
@@ -10,7 +10,14 @@
 </template>
 
 <script>
-export default {}
+export default {
+  name: 'Person',
+  data() {
+    return {
+      url: process.env.VUE_APP_IMAGE_PATH + '/rousean.jpg'
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

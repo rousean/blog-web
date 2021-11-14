@@ -3,18 +3,21 @@ const path = require('path')
 const HotHashWebpackPlugin = require('hot-hash-webpack-plugin')
 const WebpackBar = require('webpackbar')
 
-const resolve = (dir) => path.join(__dirname, './', dir)
+function resolve(dir) {
+  return path.join(__dirname, dir)
+}
 
 module.exports = {
   productionSourceMap: false,
   publicPath: '/',
-  outputDir: 'dist',
-  assetsDir: '.',
+  outputDir: 'web',
+  assetsDir: 'static',
   devServer: {
+    open: true,
     port: 8888,
-    host: '0.0.0.0',
+    host: '',
     https: false,
-    open: true
+    hotOnly: false
   },
   pwa: {
     iconPaths: {
@@ -25,16 +28,11 @@ module.exports = {
       msTileImage: 'favicon.ico'
     }
   },
-  configureWebpack: {},
+  configureWebpack: {
+    plugins: []
+  },
   chainWebpack: (config) => {
-    // 文件别名
     config.resolve.alias.set('@', resolve('src'))
-    config.plugin('define').tap((args) => [
-      {
-        ...args,
-        'window.isDefine': JSON.stringify(true)
-      }
-    ])
     // svg处理
     const svgRule = config.module.rule('svg') // 找到svg-loader
     svgRule.uses.clear() // 清除已有的loader, 如果不这样做会添加在此loader之后
