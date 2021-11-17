@@ -15,8 +15,7 @@
              v-if="noteData.length > 0">
           <div class="note-content"
                v-for="note in noteData"
-               :key="note._id"
-               @click="showNote(note._id)">
+               :key="note._id">
             <div class="content-header">
               <div class="content-time">{{dayDif(new Date(), new Date(note.createdAt))}}天前</div>
               <div class="content-container">
@@ -25,18 +24,20 @@
                      :class="[index === note.noteTag.length - 1 ? 'content-tag-last': 'content-tag']">{{tag}}</div>
               </div>
               <div class="content-operate">
-                <div>
+                <div @click="deleteNote(note._id)">
                   <svg-icon iconClass="blog-delete"
                             style="width: 16px; height: 16px; margin-right: 10px;"></svg-icon>
                 </div>
-                <div>
+                <div @click="editNote(note._id)">
                   <svg-icon iconClass="blog-edit"
                             style="width: 16px; height: 16px"></svg-icon>
                 </div>
               </div>
             </div>
-            <div class="content-title">{{note.noteTitle}}</div>
-            <div class="content-brief">{{note.noteAbstract}}</div>
+            <div @click="showNote(note._id)">
+              <div class="content-title">{{note.noteTitle}}</div>
+              <div class="content-brief">{{note.noteAbstract}}</div>
+            </div>
           </div>
         </div>
         <el-empty v-else
@@ -69,7 +70,7 @@
 </template>
 
 <script>
-import { reqGetNote } from '../../api/api'
+import { reqGetNote, reqDeleteNote } from '../../api/api'
 export default {
   name: 'Learn',
   data() {
@@ -112,25 +113,54 @@ export default {
     }
   },
   async mounted() {
-    const res = await reqGetNote({
-      pageNum: this.pageNum,
-      pageSize: this.pageSize,
-      condition: this.selectTag
-        ? { noteTag: { $elemMatch: { $eq: this.selectTag } } }
-        : ''
-    })
-    if (res.code === 1) {
-      this.noteData = res.data.content
-      this.pageSize = res.data.pageSize
-      this.pageNum = res.data.pageNum
-      this.pageTotal = res.data.pageTotal
-    }
+    this.getData()
   },
   methods: {
+    async getData() {
+      const res = await reqGetNote({
+        pageNum: this.pageNum,
+        pageSize: this.pageSize,
+        condition: this.selectTag
+          ? { noteTag: { $elemMatch: { $eq: this.selectTag } } }
+          : ''
+      })
+      if (res.code === 1) {
+        this.noteData = res.data.content
+        this.pageSize = res.data.pageSize
+        this.pageNum = res.data.pageNum
+        this.pageTotal = res.data.pageTotal
+      }
+    },
+    editNote(id) {
+      this.$router.push({ path: '/markdown', query: { id: id } })
+    },
     dayDif(startTime, endTime) {
       return Math.ceil(
         Math.abs(startTime.getTime() - endTime.getTime()) / 86400000
       )
+    },
+    deleteNote(id) {
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(async () => {
+          const res = await reqDeleteNote({ id: id })
+          if (res.code === 1) {
+            this.getData()
+            this.$message({
+              message: '删除成功！',
+              type: 'success'
+            })
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
     },
     // 查看文章内容
     showNote(id) {
@@ -274,6 +304,7 @@ export default {
             display: flex;
             justify-content: flex-end;
             flex: 2;
+            z-index: 100;
           }
         }
         .content-title {
@@ -299,9 +330,9 @@ export default {
           -webkit-box-orient: vertical;
         }
       }
-      .note-content:hover {
-        box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.35);
-      }
+      // .note-content:hover {
+      //   box-shadow: 1px 0px 1px 0px rgba(0, 0, 0, 0.35);
+      // }
     }
   }
   .right-container {

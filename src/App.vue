@@ -9,8 +9,8 @@ html {
   width: 100%;
   height: 100%;
   background-color: #f4f5f5;
-  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
-    'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+  font-family: 'Microsoft YaHei', Arial, 'Helvetica Neue', Helvetica,
+    'PingFang SC', 'Hiragino Sans GB', '微软雅黑', sans-serif;
   letter-spacing: 1px;
 }
 body {

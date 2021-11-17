@@ -26,7 +26,7 @@
             </el-form-item>
             <el-form-item label="摘要">
               <el-input type="textarea"
-                        :rows="3"
+                        :rows="6"
                         placeholder="请输入摘要内容"
                         v-model="noteAbstract"></el-input>
             </el-form-item>
@@ -41,16 +41,22 @@
       <mavon-editor ref="md"
                     class="mavon-editor"
                     v-model="noteContent"
-                    @save="save"
                     fontSize="16px"
                     :toolbars="toolbars"
+                    :externalLink="externalLink"
+                    :code_style="code_style"
                     @imgAdd="$imgAdd"></mavon-editor>
     </main>
   </div>
 </template>
 
 <script>
-import { reqSaveNote, reqUploadImage } from '../../api/api'
+import {
+  reqGetNoteById,
+  reqUploadImage,
+  reqSaveNote,
+  reqUpdateNote
+} from '../../api/api'
 export default {
   name: 'Markdown',
   data() {
@@ -120,7 +126,47 @@ export default {
           value: 'Deno',
           label: 'Deno'
         }
-      ]
+      ],
+      code_style: 'solarized-dark',
+      externalLink: {
+        markdown_css: function () {
+          // 这是你的markdown css文件路径
+          return '/markdown/github-markdown.min.css'
+        },
+        hljs_js: function () {
+          // 这是你的hljs文件路径
+          return '/highlightjs/highlight.min.js'
+        },
+        hljs_css: function (css) {
+          // 这是你的代码高亮配色文件路径
+          return '/highlightjs/styles/' + css + '.min.css'
+        },
+        hljs_lang: function (lang) {
+          // 这是你的代码高亮语言解析路径
+          return '/highlightjs/languages/' + lang + '.min.js'
+        },
+        katex_css: function () {
+          // 这是你的katex配色方案路径路径
+          return '/katex/katex.min.css'
+        },
+        katex_js: function () {
+          // 这是你的katex.js路径
+          return '/katex/katex.min.js'
+        }
+      }
+    }
+  },
+  async mounted() {
+    const id = this.$route.query.id
+    if (id) {
+      const res = await reqGetNoteById({ id: id })
+      if (res.code === 1) {
+        this.noteContent = res.data.noteContent
+        this.noteTitle = res.data.noteTitle
+        this.noteTag = res.data.noteTag
+        this.noteContent = res.data.noteContent
+        this.noteAbstract = res.data.noteAbstract
+      }
     }
   },
   methods: {
@@ -176,24 +222,26 @@ export default {
         return
       }
       const note = {
+        id: this.$route.query.id || '',
         noteTitle: this.noteTitle,
         noteTag: this.noteTag,
         noteContent: this.noteContent,
         noteAbstract: this.noteAbstract
       }
-      const res = await reqSaveNote(note)
+      let res = ''
+      if (this.$route.query.id) {
+        res = await reqUpdateNote(note)
+      } else {
+        res = await reqSaveNote(note)
+      }
       if (res.code === 1) {
         this.$message({
-          message: '文章保存成功',
+          message: res.msg,
           type: 'success',
           showClose: true
         })
         this.$router.push('/layout/learn')
       }
-    },
-    // 保存文章内容
-    save(value, render) {
-      console.log(value)
     }
   }
 }
