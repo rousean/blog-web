@@ -1,6 +1,6 @@
 <template>
   <div class="markdown-container">
-    <header class="markdown-header">
+    <div class="markdown-header">
       <el-input v-model="noteTitle"
                 placeholder="请输入文章标题"></el-input>
       <div class="header-right">
@@ -36,17 +36,27 @@
           </el-form>
         </el-drawer>
       </div>
-    </header>
-    <main class="editor-container">
+    </div>
+    <div class="editor-container">
       <mavon-editor ref="md"
                     class="mavon-editor"
                     v-model="noteContent"
                     fontSize="16px"
                     :toolbars="toolbars"
+                    :ishljs="true"
                     :externalLink="externalLink"
-                    :code_style="code_style"
-                    @imgAdd="$imgAdd"></mavon-editor>
-    </main>
+                    :codeStyle="codeStyle"></mavon-editor>
+    </div>
+    <div class="select-container">
+      <el-select v-model="codeStyle"
+                 placeholder="请选择">
+        <el-option v-for="item in options"
+                   :key="item"
+                   :label="item"
+                   :value="item">
+        </el-option>
+      </el-select>
+    </div>
   </div>
 </template>
 
@@ -66,6 +76,7 @@ export default {
       noteContent: '', // 文章内容
       noteAbstract: '', // 文章摘要
       drawer: false,
+      codeStyle: '',
       toolbars: {
         bold: true, // 粗体
         italic: true, // 斜体
@@ -127,31 +138,113 @@ export default {
           label: 'Deno'
         }
       ],
-      code_style: 'solarized-dark',
+      options: [
+        'agate',
+        'androidstudio',
+        'arduino-light',
+        'arta',
+        'ascetic',
+        'atelier-cave-dark',
+        'atelier-cave-light',
+        'atelier-dune-dark',
+        'atelier-dune-light',
+        'atelier-estuary-dark',
+        'atelier-estuary-light',
+        'atelier-forest-dark',
+        'atelier-forest-light',
+        'atelier-heath-dark',
+        'atelier-heath-light',
+        'atelier-lakeside-dark',
+        'atelier-lakeside-light',
+        'atelier-plateau-dark',
+        'atelier-plateau-light',
+        'atelier-savanna-dark',
+        'atelier-savanna-light',
+        'atelier-seaside-dark',
+        'atelier-seaside-light',
+        'atelier-sulphurpool-dark',
+        'atelier-sulphurpool-light',
+        'atom-one-dark',
+        'atom-one-light',
+        'brown-paper',
+        'codepen-embed',
+        'color-brewer',
+        'darcula',
+        'dark',
+        'darkula',
+        'default',
+        'docco',
+        'dracula',
+        'far',
+        'foundation',
+        'github-gist',
+        'github',
+        'googlecode',
+        'grayscale',
+        'gruvbox-dark',
+        'gruvbox-light',
+        'hopscotch',
+        'hybrid',
+        'idea',
+        'ir-black',
+        'kimbie.dark',
+        'kimbie.light',
+        'magula',
+        'mono-blue',
+        'monokai-sublime',
+        'monokai',
+        'obsidian',
+        'ocean',
+        'paraiso-dark',
+        'paraiso-light',
+        'pojoaque',
+        'purebasic',
+        'qtcreator_dark',
+        'qtcreator_light',
+        'railscasts',
+        'rainbow',
+        'routeros',
+        'school-book',
+        'solarized-dark',
+        'solarized-light',
+        'sunburst',
+        'tomorrow-night-blue',
+        'tomorrow-night-bright',
+        'tomorrow-night-eighties',
+        'tomorrow-night',
+        'tomorrow',
+        'vs',
+        'vs2015',
+        'xcode',
+        'xt256',
+        'zenburn'
+      ],
       externalLink: {
         markdown_css: function () {
           // 这是你的markdown css文件路径
-          return '/markdown/github-markdown.min.css'
+          return 'http://localhost:3000/markdown/github-markdown.min.css'
         },
         hljs_js: function () {
           // 这是你的hljs文件路径
-          return '/highlightjs/highlight.min.js'
+          return 'http://localhost:3000/highlightjs/highlight.min.js'
         },
         hljs_css: function (css) {
           // 这是你的代码高亮配色文件路径
-          return '/highlightjs/styles/' + css + '.min.css'
+          return 'http://localhost:3000/highlightjs/styles/' + css + '.min.css'
         },
         hljs_lang: function (lang) {
           // 这是你的代码高亮语言解析路径
-          return '/highlightjs/languages/' + lang + '.min.js'
+          return (
+            'http://localhost:3000/highlightjs/languages/' + lang + '.min.js'
+          )
         },
         katex_css: function () {
           // 这是你的katex配色方案路径路径
-          return '/katex/katex.min.css'
+          return 'http://localhost:3000/katex/katex.min.css'
         },
         katex_js: function () {
           // 这是你的katex.js路径
-          return '/katex/katex.min.js'
+          return 'http://localhost:3000/katex/katex.min.js'
         }
       }
     }
@@ -249,10 +342,12 @@ export default {
 
 <style lang="scss" scoped>
 .markdown-container {
+  position: relative;
+  height: 100%;
   .markdown-header {
     display: flex;
     align-items: center;
-    margin: 10px;
+    padding: 10px;
   }
   .header-right {
     margin-left: 10px;
@@ -269,6 +364,11 @@ export default {
       width: 100%;
       height: 100%;
     }
+  }
+  .select-container {
+    position: absolute;
+    top: 62px;
+    left: 39%;
   }
 }
 

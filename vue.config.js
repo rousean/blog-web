@@ -10,7 +10,7 @@ function resolve(dir) {
 module.exports = {
   productionSourceMap: false,
   publicPath: '/',
-  outputDir: 'web',
+  outputDir: 'dist',
   assetsDir: 'static',
   devServer: {
     open: true,
