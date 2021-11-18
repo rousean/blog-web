@@ -3,7 +3,6 @@
     <router-view></router-view>
   </div>
 </template>
-
 <style lang="scss">
 html {
   width: 100%;

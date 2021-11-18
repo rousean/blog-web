@@ -18,7 +18,8 @@
                :key="note._id">
             <div class="content-header">
               <div class="content-time">{{dayDif(new Date(), new Date(note.createdAt))}}天前</div>
-              <div class="content-container">
+              <div class="content-container"
+                   v-if="tagOptions">
                 <!-- <div v-for="(tag, index) in note.noteTag"
                      :key="tag"
                      :class="[index === note.noteTag.length - 1 ? 'content-tag-last': 'content-tag']">{{tag}}</div> -->
@@ -57,7 +58,8 @@
                        hide-on-single-page></el-pagination>
       </div>
       <div class="right-container">
-        <div class="tag-group">
+        <div class="tag-group"
+             v-if="tagOptions">
           <el-tag class="tag-item"
                   ref="elTag"
                   v-for="item in tagOptions"
@@ -74,7 +76,7 @@
 </template>
 
 <script>
-import { reqGetNote, reqDeleteNote } from '../../api/api'
+import { reqGetNote, reqDeleteNote, reqTagOptions } from '../../api/api'
 export default {
   name: 'Learn',
   data() {
@@ -84,40 +86,15 @@ export default {
       pageSize: 5,
       pageTotal: 0,
       selectTag: '',
-      tagOptions: [
-        {
-          type: 'success',
-          label: 'JavaScript'
-        },
-        {
-          type: 'danger',
-          label: 'HTML'
-        },
-        {
-          type: 'warning',
-          label: 'CSS'
-        },
-        {
-          type: 'danger',
-          label: 'TypeScript'
-        },
-        {
-          type: 'success',
-          label: 'Vue'
-        },
-        {
-          type: 'danger',
-          label: 'Node'
-        },
-        {
-          type: 'warning',
-          label: 'Deno'
-        }
-      ]
+      tagOptions: ''
     }
   },
   async mounted() {
     this.getData()
+    const res = await reqTagOptions()
+    if (res.code === 1) {
+      this.tagOptions = res.data
+    }
   },
   methods: {
     async getData() {
@@ -242,6 +219,7 @@ export default {
     margin: 20px 0;
     border-radius: 5px;
     box-shadow: rgb(0 0 0 / 10%) 0px 2px 12px 0px;
+    box-sizing: border-box;
     .note-container {
       min-height: 800px;
       .note-content {
@@ -310,9 +288,8 @@ export default {
           }
           .content-operate {
             display: flex;
-            justify-content: flex-end;
             flex: 2;
-            z-index: 100;
+            justify-content: flex-end;
           }
         }
         .content-title {
@@ -346,13 +323,15 @@ export default {
   .right-container {
     flex: 1;
     margin-top: 20px;
-    margin-left: 30px;
     .tag-group {
       width: 260px;
       height: 300px;
       background: #fff;
       border-radius: 5px;
       box-shadow: rgb(0 0 0 / 10%) 0px 2px 12px 0px;
+      margin-left: 20px;
+      padding: 10px;
+      box-sizing: border-box;
       .tag-item {
         cursor: pointer;
         margin: 10px;

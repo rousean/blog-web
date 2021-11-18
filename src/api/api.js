@@ -30,3 +30,6 @@ export const reqUpdateNote = (params) =>
 // Markdown上传图片接口
 export const reqUploadImage = (params) =>
   http('/learn/uploadImage', params, 'POST')
+
+// 获取文章标签接口
+export const reqTagOptions = () => http('/learn/tagOptions')

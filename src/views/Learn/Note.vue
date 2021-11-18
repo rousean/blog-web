@@ -28,7 +28,6 @@
                     boxShadowStyle="0px 10px 12px 0px rgba(0, 0, 0, 0.1)"></mavon-editor>
 
     </div>
-
   </div>
 </template>
 <script>
@@ -164,7 +163,7 @@ export default {
     }
   }
   .editor-container {
-    width: 900px;
+    width: 850px;
     .note-title {
       height: 50px;
       line-height: 50px;

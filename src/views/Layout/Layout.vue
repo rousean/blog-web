@@ -4,35 +4,62 @@
     <div :style="isShowAudio ? 'filter: blur(5px);' : 'filter: blur(0px);'"
          @click="falseShowAudio">
       <div class="header-container">
-        <el-tabs :value="$route.matched[1].path"
-                 @tab-click="handleClick"
-                 tab-position="top">
-          <!-- <el-tab-pane name="/layout/home">
-            <span slot="label">
-              <svg-icon class="tab-icon" iconClass="blog-home"></svg-icon>首页
-            </span>
-          </el-tab-pane> -->
-          <el-tab-pane name="/layout/learn">
-            <span slot="label">
-              <svg-icon class="tab-icon"
-                        iconClass="blog-learn"></svg-icon>随笔
-            </span>
-          </el-tab-pane>
-          <el-tab-pane name="/layout/material">
-            <span slot="label">
-              <svg-icon class="tab-icon"
-                        iconClass="blog-material"></svg-icon>项目
-            </span>
-          </el-tab-pane>
-          <el-tab-pane name="/layout/person">
-            <span slot="label">
-              <svg-icon class="tab-icon"
-                        iconClass="blog-person"></svg-icon>关于
-            </span>
-          </el-tab-pane>
-        </el-tabs>
+        <div class="header-wrapper">
+          <div>
+            <svg-icon class="R"
+                      iconClass="blog-R"></svg-icon>
+          </div>
+          <el-tabs :value="$route.matched[1].path"
+                   @tab-click="handleClick"
+                   tab-position="top">
+            <!-- <el-tab-pane name="/layout/home">
+              <span slot="label">
+                <svg-icon class="tab-icon" iconClass="blog-home"></svg-icon>首页
+              </span>
+              </el-tab-pane> -->
+            <el-tab-pane name="/layout/learn">
+              <span slot="label">
+                <svg-icon class="tab-icon"
+                          iconClass="blog-learn"></svg-icon>随笔
+              </span>
+            </el-tab-pane>
+            <el-tab-pane name="/layout/material">
+              <span slot="label">
+                <svg-icon class="tab-icon"
+                          iconClass="blog-material"></svg-icon>项目
+              </span>
+            </el-tab-pane>
+            <el-tab-pane name="/layout/person">
+              <span slot="label">
+                <svg-icon class="tab-icon"
+                          iconClass="blog-person"></svg-icon>关于
+              </span>
+            </el-tab-pane>
+          </el-tabs>
+          <div>
+            <div @click="handelBack">
+              <svg-icon class="return"
+                        :iconClass="$route.matched.length === 3 ? 'blog-return' : 'blog-re'"></svg-icon>
+            </div>
+            <div @click="changeFullScreen">
+              <svg-icon class="screen"
+                        :iconClass="fullScreen ? 'blog-exitscreen' : 'blog-fullscreen'"></svg-icon>
+            </div>
+            <el-dropdown size="small"
+                         @command="handleDialog">
+              <span class="el-dropdown-link">
+                <el-avatar :size="24"
+                           src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>
+                <i class="el-icon-arrow-down el-icon--right"></i>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item>登录</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
+        </div>
       </div>
-      <router-view />
+      <router-view></router-view>
     </div>
     <div class="github-svg">
       <div class="github-hover">
@@ -55,6 +82,41 @@
          v-show="isShowAudio">
       <AudioPlayer @listenChildValue="changeAudioPlay"></AudioPlayer>
     </div>
+    <el-dialog :visible.sync="dialogVisible"
+               width="25%">
+      <span slot="title">
+        <svg-icon class="dialog-login"
+                  iconClass="blog-login"></svg-icon>
+        <span class="admin">管理员登录</span>
+      </span>
+      <el-form>
+        <el-form-item>
+          <el-input v-model="username">
+            <svg-icon slot="prefix"
+                      iconClass="blog-username"></svg-icon>
+          </el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-input :type="inputType"
+                    v-model="password">
+            <svg-icon slot="prefix"
+                      iconClass="blog-password"></svg-icon>
+            <span slot="suffix"
+                  @click="handleInput">
+              <svg-icon class="eye"
+                        :iconClass="inputType === 'password' ? 'blog-eyeclose' : 'blog-eyeopen'"></svg-icon>
+            </span>
+          </el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer">
+        <el-button plain
+                   @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary"
+                   plain
+                   @click="dialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -64,7 +126,12 @@ export default {
   data() {
     return {
       isShowAudio: false, // 是否显示音乐播放器页面
-      isAudioPlay: false // 音乐是否在播放,以此来判断是否开启播放动画
+      isAudioPlay: false, // 音乐是否在播放,以此来判断是否开启播放动画
+      fullScreen: false, // 全屏状态
+      dialogVisible: false,
+      inputType: 'password',
+      username: '',
+      password: ''
     }
   },
   components: {
@@ -74,6 +141,32 @@ export default {
     this.$refs.audioMark.addEventListener('dragend', this.dragentEvent)
     this.$once('hook:beforeDestroy', () => {
       this.$refs.audioMark.removeEventListener('dragend', this.dragentEvent)
+    })
+    window.addEventListener('resize', () => {
+      if (this.timer) {
+        return
+      }
+      this.timer = setTimeout(() => {
+        if (!this.checkFullScreen() && this.fullScreen) {
+          this.fullScreen = false
+        }
+        clearTimeout(this.timer)
+        this.timer = null
+      }, 0)
+    })
+    this.$once('hook:beforeDestroy', () => {
+      window.removeEventListener('resize', () => {
+        if (this.timer) {
+          return
+        }
+        this.timer = setTimeout(() => {
+          if (!this.checkFullScreen() && this.fullScreen) {
+            this.fullScreen = false
+          }
+          clearTimeout(this.timer)
+          this.timer = null
+        }, 0)
+      })
     })
   },
   methods: {
@@ -123,6 +216,75 @@ export default {
     // 监听子组件的音乐播放器状态
     changeAudioPlay(value) {
       this.isAudioPlay = value
+    },
+    handelBack() {
+      if (this.$route.matched.length === 3) {
+        this.$router.go(-1)
+      } else {
+        this.$message({
+          showClose: true,
+          type: 'warning',
+          message: '您还处于主页面状态！'
+        })
+      }
+    },
+    // 切换全屏
+    changeFullScreen() {
+      this.fullScreen = !this.fullScreen
+      if (this.fullScreen) {
+        this.windowFullScreen()
+      } else {
+        this.windowExitFullScreen()
+      }
+    },
+    // 进入全屏
+    windowFullScreen() {
+      let docElm = document.documentElement
+      if (docElm.requestFullscreen) {
+        docElm.requestFullscreen()
+      } else if (docElm.msRequestFullscreen) {
+        docElm.msRequestFullscreen()
+      } else if (docElm.mozRequestFullScreen) {
+        docElm.mozRequestFullScreen()
+      } else if (docElm.webkitRequestFullScreen) {
+        docElm.webkitRequestFullScreen()
+      }
+    },
+    // 退出全屏
+    windowExitFullScreen() {
+      if (document.exitFullscreen) {
+        document.exitFullscreen()
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen()
+      } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen()
+      } else if (document.webkitCancelFullScreen) {
+        document.webkitCancelFullScreen()
+      }
+    },
+    // 检查全屏状态
+    checkFullScreen() {
+      let isFull =
+        document.mozFullScreen ||
+        document.fullScreen ||
+        document.webkitIsFullScreen ||
+        document.webkitRequestFullScreen ||
+        document.mozRequestFullScreen ||
+        document.msFullscreenEnabled
+      if (isFull === undefined) {
+        isFull = false
+      }
+      return isFull
+    },
+    handleDialog() {
+      this.dialogVisible = true
+    },
+    handleInput() {
+      if (this.inputType === 'password') {
+        this.inputType = 'text'
+      } else {
+        this.inputType = 'password'
+      }
     }
   }
 }
@@ -130,24 +292,62 @@ export default {
 
 <style lang="scss" scoped>
 .layout-container {
+  width: 100%;
   position: relative;
   .header-container {
     width: 100%;
     height: 60px;
     line-height: 60px;
-    text-align: center;
     background-color: #fff;
     border-bottom: 1px solid #eee;
     position: sticky;
     top: 0;
     z-index: 100;
-    display: flex;
-    justify-content: center;
-    .tab-icon {
-      width: 22px;
-      height: 22px;
-      vertical-align: text-bottom;
-      margin-right: 5px;
+    .header-wrapper {
+      width: 850px;
+      height: 100%;
+      margin: 0 auto;
+      display: flex;
+      > div:nth-child(2) {
+        flex: 2;
+      }
+      .R {
+        width: 34px;
+        height: 34px;
+        vertical-align: middle;
+        margin-right: 20px;
+      }
+      > div:nth-child(3) {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        cursor: pointer;
+        .return {
+          width: 24px;
+          height: 24px;
+          margin-right: 20px;
+          vertical-align: middle;
+        }
+        > div:nth-child(2) {
+          .screen {
+            width: 26px;
+            height: 26px;
+            margin-right: 20px;
+            vertical-align: middle;
+          }
+        }
+        .el-dropdown-link {
+          display: flex;
+          align-items: center;
+        }
+      }
+      .tab-icon {
+        width: 22px;
+        height: 22px;
+        vertical-align: text-bottom;
+        margin-right: 5px;
+      }
     }
   }
   .github-svg {
@@ -308,10 +508,28 @@ export default {
     top: 50%;
     transform: translate(-50%, -50%);
   }
+  .dialog-login {
+    width: 26px;
+    height: 26px;
+    vertical-align: text-bottom;
+    margin-right: 5px;
+  }
+  .admin {
+    font-size: 13px;
+    color: #5e5e5e;
+    font-weight: 700;
+  }
+  .eye {
+    width: 22px;
+    height: 22px;
+    vertical-align: middle;
+  }
 }
-
 ::v-deep .el-tabs__nav-wrap::after {
   background-color: transparent;
+}
+::v-deep .el-tabs__header {
+  padding-top: 10px;
 }
 ::v-deep .el-tabs__item {
   font-size: 16px;
@@ -324,5 +542,11 @@ export default {
 }
 ::v-deep .el-tabs__item.is-active {
   color: #1389ff90;
+}
+::v-deep .el-dialog__footer {
+  text-align: center;
+}
+::v-deep .el-dialog__body {
+  padding: 20px;
 }
 </style>

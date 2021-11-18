@@ -18,10 +18,10 @@
                          allow-create
                          default-first-option
                          placeholder="请选择文章标签">
-                <el-option v-for="item in noteTagOptions"
-                           :key="item.value"
+                <el-option v-for="item in tagOptions"
+                           :key="item.label"
                            :label="item.label"
-                           :value="item.value"></el-option>
+                           :value="item.label"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="摘要">
@@ -50,7 +50,7 @@
     <div class="select-container">
       <el-select v-model="codeStyle"
                  placeholder="请选择">
-        <el-option v-for="item in options"
+        <el-option v-for="item in styleOptions"
                    :key="item"
                    :label="item"
                    :value="item">
@@ -65,7 +65,8 @@ import {
   reqGetNoteById,
   reqUploadImage,
   reqSaveNote,
-  reqUpdateNote
+  reqUpdateNote,
+  reqTagOptions
 } from '../../api/api'
 import './xcode.min.css'
 export default {
@@ -109,37 +110,8 @@ export default {
         htmlcode: true, // 展示html源码
         help: true // 帮助
       },
-      noteTagOptions: [
-        {
-          value: 'JavaScript',
-          label: 'JavaScript'
-        },
-        {
-          value: 'HTML',
-          label: 'HTML'
-        },
-        {
-          value: 'CSS',
-          label: 'CSS'
-        },
-        {
-          value: 'TypeScript',
-          label: 'TypeScript'
-        },
-        {
-          value: 'Node',
-          label: 'Node'
-        },
-        {
-          value: 'Vue',
-          label: 'Vue'
-        },
-        {
-          value: 'Deno',
-          label: 'Deno'
-        }
-      ],
-      options: [
+      tagOptions: [],
+      styleOptions: [
         'agate',
         'androidstudio',
         'arduino-light',
@@ -245,6 +217,10 @@ export default {
         this.noteContent = res.data.noteContent
         this.noteAbstract = res.data.noteAbstract
       }
+    }
+    const res = await reqTagOptions()
+    if (res.code === 1) {
+      this.tagOptions = res.data
     }
   },
   methods: {
@@ -358,7 +334,7 @@ export default {
 }
 
 ::v-deep .el-input__inner {
-  border: 0px solid #dcdfe6;
+  border: 1px solid #dcdfe6;
   font-size: 14px;
 }
 ::v-deep .el-button {
