@@ -67,6 +67,7 @@ import {
   reqSaveNote,
   reqUpdateNote
 } from '../../api/api'
+import './xcode.min.css'
 export default {
   name: 'Markdown',
   data() {
@@ -76,7 +77,7 @@ export default {
       noteContent: '', // 文章内容
       noteAbstract: '', // 文章摘要
       drawer: false,
-      codeStyle: '',
+      codeStyle: 'xcode',
       toolbars: {
         bold: true, // 粗体
         italic: true, // 斜体
@@ -220,32 +221,16 @@ export default {
         'zenburn'
       ],
       externalLink: {
-        markdown_css: function () {
-          // 这是你的markdown css文件路径
-          return 'http://localhost:3000/markdown/github-markdown.min.css'
-        },
-        hljs_js: function () {
-          // 这是你的hljs文件路径
-          return 'http://localhost:3000/highlightjs/highlight.min.js'
-        },
-        hljs_css: function (css) {
-          // 这是你的代码高亮配色文件路径
-          return 'http://localhost:3000/highlightjs/styles/' + css + '.min.css'
-        },
-        hljs_lang: function (lang) {
-          // 这是你的代码高亮语言解析路径
-          return (
-            'http://localhost:3000/highlightjs/languages/' + lang + '.min.js'
-          )
-        },
-        katex_css: function () {
-          // 这是你的katex配色方案路径路径
-          return 'http://localhost:3000/katex/katex.min.css'
-        },
-        katex_js: function () {
-          // 这是你的katex.js路径
-          return 'http://localhost:3000/katex/katex.min.js'
-        }
+        markdown_css: () =>
+          `${process.env.VUE_APP_BASE_URL}/markdown/github-markdown.min.css`,
+        hljs_js: () =>
+          `${process.env.VUE_APP_BASE_URL}/highlightjs/highlight.min.js`,
+        hljs_css: (css) =>
+          `${process.env.VUE_APP_BASE_URL}/highlightjs/styles/${css}.min.css`,
+        hljs_lang: (lang) =>
+          `${process.env.VUE_APP_BASE_URL}/highlightjs/languages/${lang}.min.js`,
+        katex_css: () => `${process.env.VUE_APP_BASE_URL}/katex/katex.min.css`,
+        katex_js: () => `${process.env.VUE_APP_BASE_URL}/katex/katex.min.js`
       }
     }
   },
@@ -368,12 +353,12 @@ export default {
   .select-container {
     position: absolute;
     top: 62px;
-    left: 39%;
+    left: 40%;
   }
 }
 
 ::v-deep .el-input__inner {
-  border: 1px solid #dcdfe6;
+  border: 0px solid #dcdfe6;
   font-size: 14px;
 }
 ::v-deep .el-button {
@@ -383,6 +368,12 @@ export default {
   margin-left: 10px;
 }
 ::v-deep .el-select {
-  width: 100%;
+  width: 80%;
+}
+::v-deep .markdown-body .highlight pre {
+  padding: 0px;
+}
+::v-deep .markdown-body pre {
+  padding: 0px;
 }
 </style>

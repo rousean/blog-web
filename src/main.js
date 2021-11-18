@@ -29,19 +29,19 @@ window.d3 = d3
 
 Vue.config.productionTip = false
 
-// router.beforeEach((to, from, next) => {
-//   document.title = 'Rousean'
-//   // 判断是不是桌面端谷歌浏览器访问
-//   if (to.path === '/browser') {
-//     next()
-//   } else {
-//     if (isChrome()) {
-//       next()
-//     } else {
-//       next({ path: '/browser' })
-//     }
-//   }
-// })
+router.beforeEach((to, from, next) => {
+  document.title = 'Rousean'
+  // 判断是不是桌面端谷歌浏览器访问
+  if (to.path === '/browser') {
+    next()
+  } else {
+    if (isChrome()) {
+      next()
+    } else {
+      next({ path: '/browser' })
+    }
+  }
+})
 
 new Vue({
   router,

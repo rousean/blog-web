@@ -19,9 +19,13 @@
             <div class="content-header">
               <div class="content-time">{{dayDif(new Date(), new Date(note.createdAt))}}天前</div>
               <div class="content-container">
-                <div v-for="(tag, index) in note.noteTag"
+                <!-- <div v-for="(tag, index) in note.noteTag"
                      :key="tag"
-                     :class="[index === note.noteTag.length - 1 ? 'content-tag-last': 'content-tag']">{{tag}}</div>
+                     :class="[index === note.noteTag.length - 1 ? 'content-tag-last': 'content-tag']">{{tag}}</div> -->
+                <el-tag v-for="item in note.noteTag"
+                        :key="item"
+                        :type="tagOptions.find(v => v.label === item).type"
+                        effect="plain">{{ item }}</el-tag>
               </div>
               <div class="content-operate">
                 <div @click="deleteNote(note._id)">
@@ -212,7 +216,7 @@ export default {
   display: flex;
   .left-container {
     flex: 1;
-    margin-top: 15px;
+    margin-top: 20px;
     .left-content {
       width: 160px;
       height: 100px;
@@ -235,8 +239,9 @@ export default {
     min-height: 800px;
     background-color: #fff;
     padding: 10px 20px;
-    margin: 15px 0;
+    margin: 20px 0;
     border-radius: 5px;
+    box-shadow: rgb(0 0 0 / 10%) 0px 2px 12px 0px;
     .note-container {
       min-height: 800px;
       .note-content {
@@ -257,6 +262,7 @@ export default {
             padding-right: 10px;
             line-height: 22px;
             flex-shrink: 0;
+            font-size: 12px;
           }
           .content-time:after {
             position: absolute;
@@ -271,6 +277,8 @@ export default {
           }
           .content-container {
             display: flex;
+            margin-left: 10px;
+            zoom: 0.8;
             .content-tag {
               position: relative;
               display: flex;
@@ -320,7 +328,7 @@ export default {
         }
         .content-brief {
           color: #86909c;
-          font-size: 14px;
+          font-size: 12px;
           line-height: 22px;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -330,28 +338,35 @@ export default {
           -webkit-box-orient: vertical;
         }
       }
-      // .note-content:hover {
-      //   box-shadow: 1px 0px 1px 0px rgba(0, 0, 0, 0.35);
-      // }
+      .note-content:hover {
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 12px 0px;
+      }
     }
   }
   .right-container {
     flex: 1;
-    margin-top: 15px;
-    margin-left: 20px;
+    margin-top: 20px;
+    margin-left: 30px;
     .tag-group {
       width: 260px;
       height: 300px;
       background: #fff;
       border-radius: 5px;
+      box-shadow: rgb(0 0 0 / 10%) 0px 2px 12px 0px;
       .tag-item {
         cursor: pointer;
-        margin: 8px;
+        margin: 10px;
       }
       .tag-item:hover {
         background: aliceblue;
       }
     }
   }
+}
+::v-deep .el-tag {
+  margin-right: 5px;
+  padding: 0 5px;
+  height: 25px;
+  line-height: 25px;
 }
 </style>

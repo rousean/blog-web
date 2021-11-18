@@ -32,5 +32,6 @@ export default {
   padding: 20px;
   box-sizing: border-box;
   border-radius: 5px;
+  box-shadow: rgb(0 0 0 / 10%) 0px 2px 12px 0px;
 }
 </style>
