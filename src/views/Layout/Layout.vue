@@ -49,11 +49,11 @@
                          @command="handleDialog">
               <span class="el-dropdown-link">
                 <el-avatar :size="24"
-                           src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"></el-avatar>
+                           :src="userUrl"></el-avatar>
                 <i class="el-icon-arrow-down el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>登录</el-dropdown-item>
+                <el-dropdown-item>{{$store.state.token ? '退出' : '登录' }}</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
@@ -83,7 +83,7 @@
       <AudioPlayer @listenChildValue="changeAudioPlay"></AudioPlayer>
     </div>
     <el-dialog :visible.sync="dialogVisible"
-               width="25%">
+               width="20%">
       <span slot="title">
         <svg-icon class="dialog-login"
                   iconClass="blog-login"></svg-icon>
@@ -91,7 +91,8 @@
       </span>
       <el-form>
         <el-form-item>
-          <el-input v-model="username">
+          <el-input ref="username"
+                    v-model="username">
             <svg-icon slot="prefix"
                       iconClass="blog-username"></svg-icon>
           </el-input>
@@ -114,7 +115,7 @@
                    @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary"
                    plain
-                   @click="dialogVisible = false">确 定</el-button>
+                   @click="login">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -122,6 +123,7 @@
 
 <script>
 import AudioPlayer from '../../components/AudioPlayer/AudioPlayer.vue'
+import { reqLogin } from '../../api/api'
 export default {
   data() {
     return {
@@ -131,7 +133,8 @@ export default {
       dialogVisible: false,
       inputType: 'password',
       username: '',
-      password: ''
+      password: '',
+      userUrl: `${process.env.VUE_APP_IMAGE_PATH}/user.jpg`
     }
   },
   components: {
@@ -277,13 +280,48 @@ export default {
       return isFull
     },
     handleDialog() {
-      this.dialogVisible = true
+      if (this.$store.state.token) {
+        this.$store.dispatch('setToken', '')
+        this.userUrl = `${process.env.VUE_APP_IMAGE_PATH}/user.jpg`
+        this.$message({
+          type: 'success',
+          message: '退出成功！',
+          showClose: true
+        })
+      } else {
+        this.dialogVisible = true
+        this.$nextTick(() => {
+          this.$refs.username.focus()
+        })
+      }
     },
     handleInput() {
       if (this.inputType === 'password') {
         this.inputType = 'text'
       } else {
         this.inputType = 'password'
+      }
+    },
+    async login() {
+      const res = await reqLogin({
+        username: this.username,
+        password: this.password
+      })
+      if (res.code === 1) {
+        this.$store.dispatch('setToken', res.token)
+        this.userUrl = `${process.env.VUE_APP_IMAGE_PATH}/rousean.jpg`
+        this.dialogVisible = false
+        this.$message({
+          type: 'success',
+          message: res.msg,
+          showClose: true
+        })
+      } else {
+        this.$message({
+          type: 'error',
+          message: res.msg,
+          showClose: true
+        })
       }
     }
   }
@@ -545,8 +583,9 @@ export default {
 }
 ::v-deep .el-dialog__footer {
   text-align: center;
+  padding: 10px;
 }
 ::v-deep .el-dialog__body {
-  padding: 20px;
+  padding: 20px 20px 5px 20px;
 }
 </style>

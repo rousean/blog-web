@@ -5,7 +5,7 @@
       <div class="left-container">
         <div class="left-content"
              @click="enterMarkdown"
-             v-if="true">
+             v-if="$store.state.token">
           <svg-icon class="markdown-icon"
                     iconClass="blog-markdown"></svg-icon>
         </div>
@@ -28,7 +28,8 @@
                         :type="tagOptions.find(v => v.label === item).type"
                         effect="plain">{{ item }}</el-tag>
               </div>
-              <div class="content-operate">
+              <div class="content-operate"
+                   v-if="$store.state.token">
                 <div @click="deleteNote(note._id)">
                   <svg-icon iconClass="blog-delete"
                             style="width: 16px; height: 16px; margin-right: 10px;"></svg-icon>

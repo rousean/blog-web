@@ -33,3 +33,6 @@ export const reqUploadImage = (params) =>
 
 // 获取文章标签接口
 export const reqTagOptions = () => http('/learn/tagOptions')
+
+// 登录接口
+export const reqLogin = (params) => http('/user/login', params, 'POST')

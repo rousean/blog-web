@@ -42,15 +42,16 @@ export default {
       codeStyle: 'xcode',
       externalLink: {
         markdown_css: () =>
-          `${process.env.VUE_APP_BASE_URL}/markdown/github-markdown.min.css`,
+          `${process.env.VUE_APP_MARKDOWN_URL}/markdown/github-markdown.min.css`,
         hljs_js: () =>
-          `${process.env.VUE_APP_BASE_URL}/highlightjs/highlight.min.js`,
+          `${process.env.VUE_APP_MARKDOWN_URL}/highlightjs/highlight.min.js`,
         hljs_css: (css) =>
-          `${process.env.VUE_APP_BASE_URL}/highlightjs/styles/${css}.min.css`,
+          `${process.env.VUE_APP_MARKDOWN_URL}/highlightjs/styles/${css}.min.css`,
         hljs_lang: (lang) =>
-          `${process.env.VUE_APP_BASE_URL}/highlightjs/languages/${lang}.min.js`,
-        katex_css: () => `${process.env.VUE_APP_BASE_URL}/katex/katex.min.css`,
-        katex_js: () => `${process.env.VUE_APP_BASE_URL}/katex/katex.min.js`
+          `${process.env.VUE_APP_MARKDOWN_URL}/highlightjs/languages/${lang}.min.js`,
+        katex_css: () =>
+          `${process.env.VUE_APP_MARKDOWN_URL}/katex/katex.min.css`,
+        katex_js: () => `${process.env.VUE_APP_MARKDOWN_URL}/katex/katex.min.js`
       },
       options: [
         'agate',
