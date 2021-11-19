@@ -1,7 +1,7 @@
 <template>
   <div class="person-container">
     <el-avatar :size="100"
-               :src="url"></el-avatar>
+               src="/onepiece.png"></el-avatar>
     <div style="margin-top:10px">
       <span>张海东</span>
       <span style="margin-left:10px;font-size:12px;color:#8c8c8c;vertical-align: bottom;">Rousean</span>
@@ -14,7 +14,7 @@ export default {
   name: 'Person',
   data() {
     return {
-      url: process.env.VUE_APP_IMAGE_PATH + '/rousean.jpg'
+      url: '/onepiece.jpg'
     }
   }
 }

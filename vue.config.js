@@ -3,21 +3,32 @@ const path = require('path')
 const HotHashWebpackPlugin = require('hot-hash-webpack-plugin')
 const WebpackBar = require('webpackbar')
 
+const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV)
+
+const BundleAnalyzerPlugin =
+  require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
 module.exports = {
-  productionSourceMap: false,
-  publicPath: '/',
+  productionSourceMap: !IS_PROD,
+  publicPath: IS_PROD ? process.env.VUE_APP_PUBLIC_PATH : '/',
   outputDir: 'dist',
   assetsDir: 'static',
+  parallel: require('os').cpus().length > 1,
+
   devServer: {
     open: true,
-    port: 8888,
-    host: '',
+    overlay: {
+      warnings: true,
+      errors: true
+    },
     https: false,
-    hotOnly: false
+    host: 'localhost',
+    port: 8888,
+    hotOnly: true
   },
   pwa: {
     iconPaths: {
@@ -28,23 +39,35 @@ module.exports = {
       msTileImage: 'favicon.ico'
     }
   },
-  configureWebpack: {
-    plugins: []
-  },
+  configureWebpack: {},
   chainWebpack: (config) => {
+    // 修复热更新
+    config.resolve.symlinks(true)
+    // 修复 Lazy loading routes Error
+    config.plugin('html').tap((args) => {
+      args[0].chunksSortMode = 'none'
+      return args
+    })
+    // 添加别名 alias
     config.resolve.alias.set('@', resolve('src'))
-    // svg处理
-    const svgRule = config.module.rule('svg') // 找到svg-loader
-    svgRule.uses.clear() //清除已有的loader, 如果不这样做会添加在此loader之后
-    svgRule.exclude.add(/node_modules/) // 正则匹配排除node_modules目录
-    svgRule // 添加svg新的loader处理
+    // 打包分析
+    if (process.env.IS_ANALY) {
+      config.plugin('webpack-report').use(BundleAnalyzerPlugin, [
+        {
+          analyzerMode: 'static'
+        }
+      ])
+    }
+    const svgRule = config.module.rule('svg')
+    svgRule.uses.clear()
+    svgRule.exclude.add(/node_modules/)
+    svgRule
       .test(/\.svg$/)
       .use('svg-sprite-loader')
       .loader('svg-sprite-loader')
       .options({
         symbolId: 'icon-[name]'
       })
-    // 修改images loader 添加svg处理
     const imagesRule = config.module.rule('images')
     imagesRule.exclude.add(resolve('src/icons'))
     config.module.rule('images').test(/\.(png|jpe?g|gif|svg)(\?.*)?$/)
@@ -61,7 +84,6 @@ module.exports = {
       ])
       config.plugin('hotHash').use(HotHashWebpackPlugin, [{ version: '1.0.0' }])
       config.plugin('webpackBar').use(WebpackBar)
-
       config.optimization
         .minimize(true)
         .minimizer('terser')
