@@ -8,7 +8,6 @@ import 'normalize.css/normalize.css'
 
 // 引入svg
 import './icons'
-// 引入
 
 // 引入element-ui
 import ElementUI from 'element-ui'

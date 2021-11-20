@@ -29,7 +29,7 @@
       <div class="audio-button">
         <div @click="controlBack">
           <svg-icon iconClass="audio-back"
-                    style="width: 20px; height: 20px"></svg-icon>
+                    className="audio-back"></svg-icon>
         </div>
         <div @click="controlaudio">
           <svg-icon :iconClass="isStart ? 'audio-start' : 'audio-stop'"
@@ -217,138 +217,137 @@ export default {
 
 <style lang="scss" scoped>
 .audio-container {
-  background-color: rgb(61, 61, 61);
+  background: #5c5c5c;
   width: 300px;
   height: 550px;
   margin: 0 auto;
   padding-top: 15px;
   border-radius: 10px;
-  box-shadow: 6px 6px 6px rgba(61, 61, 61, 0.8);
-}
-
-.audio-title-author {
-  color: aliceblue;
-  font-family: Saint-Andrews;
-  text-align: center;
-  margin-top: 35px;
-}
-.audio-title {
-  font-size: 26px;
-}
-.audio-author {
-  font-size: 18px;
-  margin-top: 5px;
-}
-.audio-handle {
-  position: relative;
-  width: 100%;
-  height: 300px;
-}
-.audio-circle {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-.audio-progress {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-.audio-timer {
-  position: absolute;
-  top: 80px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  justify-content: center;
-  color: #fff;
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-}
-.timer-now {
-  color: #20a0ff;
-}
-.timer-line {
-  color: #808a87;
-  margin: 0 5px 0 5px;
-}
-.timer-total {
-  color: #808a87;
-}
-.audio-button {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  align-content: center;
-  z-index: 999;
-}
-.audio-back {
-  width: 20px;
-  height: 20px;
-}
-.audio-voice {
-  display: flex;
-  align-items: center;
-  margin: 0 15px 0 15px;
-}
-.audio-next {
-  width: 80%;
-  height: 50px;
-  margin: 40px auto;
-}
-.next-text {
-  height: 10px;
-  font-size: 12px;
-  color: #808a87;
-  margin-bottom: 3px;
-}
-.next-line {
-  height: 1px;
-  background-color: rgba(100, 100, 100, 0.863);
-}
-.next-content {
-  height: 30px;
-  line-height: 30px;
-  font-size: 12px;
-}
-.next-content-num {
-  color: #4ae6ff;
-}
-.next-content-line {
-  margin: 0 10px 0 10px;
-  color: #fff;
-}
-.next-content-title {
-  color: #fff;
-  font-family: Saint-Andrews;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-.audio-slider {
-  width: 75%;
-  margin: 0 auto;
-}
-::v-deep .el-slider__runway {
-  height: 1px;
-  background-color: #000000;
-}
-::v-deep .el-slider__bar {
-  height: 1px;
-  background-color: #bfbfbf;
-}
-::v-deep .el-slider__button {
-  width: 10px;
-  height: 10px;
-  border: 3px solid #00ddff;
-  background-color: #4ae6ff;
-}
-::v-deep .el-slider__button-wrapper {
-  top: -18px;
+  box-shadow: 6px 6px 6px #5c5c5c81;
+  .audio-title-author {
+    color: aliceblue;
+    font-family: Saint-Andrews;
+    text-align: center;
+    margin-top: 35px;
+    .audio-title {
+      font-size: 26px;
+    }
+    .audio-author {
+      font-size: 18px;
+      margin-top: 5px;
+    }
+  }
+  .audio-handle {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    .audio-circle {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .audio-progress {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .audio-timer {
+      position: absolute;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      justify-content: center;
+      color: #fff;
+      font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+      .timer-now {
+        color: #20a0ff;
+      }
+      .timer-line {
+        color: #808a87;
+        margin: 0 5px 0 5px;
+      }
+      .timer-total {
+        color: #808a87;
+      }
+    }
+    .audio-button {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      align-content: center;
+      z-index: 999;
+      .audio-back {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+  .audio-voice {
+    display: flex;
+    align-items: center;
+    margin: 0 15px 0 15px;
+    .audio-slider {
+      width: 75%;
+      margin: 0 auto;
+    }
+  }
+  .audio-next {
+    width: 80%;
+    height: 50px;
+    margin: 40px auto;
+    .next-text {
+      height: 10px;
+      font-size: 12px;
+      color: #808a87;
+      margin-bottom: 3px;
+    }
+    .next-line {
+      height: 1px;
+      background-color: rgba(100, 100, 100, 0.863);
+    }
+    .next-content {
+      height: 30px;
+      line-height: 30px;
+      font-size: 12px;
+      .next-content-num {
+        color: #4ae6ff;
+      }
+      .next-content-line {
+        margin: 0 10px 0 10px;
+        color: #fff;
+      }
+      .next-content-title {
+        color: #fff;
+        font-family: Saint-Andrews;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
+  }
+  ::v-deep .el-slider__runway {
+    height: 1px;
+    background-color: #000000;
+  }
+  ::v-deep .el-slider__bar {
+    height: 1px;
+    background-color: #bfbfbf;
+  }
+  ::v-deep .el-slider__button {
+    width: 10px;
+    height: 10px;
+    border: 3px solid #00ddff;
+    background-color: #4ae6ff;
+  }
+  ::v-deep .el-slider__button-wrapper {
+    top: -18px;
+  }
 }
 </style>

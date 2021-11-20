@@ -1,10 +1,5 @@
 import http from '@/http'
 
-// 项目模块
-// 项目模块上传图片
-export const reqUploadFile = (formData) =>
-  http('/material/uploadSingle', formData, 'POST')
-
 // 首页模块
 // 获取背景音乐列表
 export const reqAudioList = () => http('/audio/audioList')
@@ -36,3 +31,8 @@ export const reqTagOptions = () => http('/learn/tagOptions')
 
 // 登录接口
 export const reqLogin = (params) => http('/user/login', params, 'POST')
+
+// 项目模块
+// 项目模块上传图片
+export const reqUploadFile = (formData) =>
+  http('/material/uploadSingle', formData, 'POST')
