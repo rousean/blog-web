@@ -3,13 +3,11 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
-import { isChrome } from './utils/utils'
-
 // 重置样式
 import 'normalize.css/normalize.css'
 
 // 引入svg
-import './icons/index.js'
+import './icons'
 // 引入
 
 // 引入element-ui
@@ -28,20 +26,6 @@ Vue.prototype.$d3 = d3
 window.d3 = d3
 
 Vue.config.productionTip = false
-
-router.beforeEach((to, from, next) => {
-  document.title = 'Rousean'
-  // 判断是不是桌面端谷歌浏览器访问
-  if (to.path === '/browser') {
-    next()
-  } else {
-    if (isChrome()) {
-      next()
-    } else {
-      next({ path: '/browser' })
-    }
-  }
-})
 
 new Vue({
   router,

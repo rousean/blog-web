@@ -77,7 +77,7 @@
 </template>
 
 <script>
-import { reqGetNote, reqDeleteNote, reqTagOptions } from '../../api/api'
+import { reqGetNote, reqDeleteNote, reqTagOptions } from '@/api'
 export default {
   name: 'Learn',
   data() {
@@ -86,25 +86,26 @@ export default {
       pageNum: 1,
       pageSize: 5,
       pageTotal: 0,
-      selectTag: '',
+      selectTag: 'All',
       tagOptions: ''
     }
   },
   async mounted() {
-    this.getData()
+    this.getData(this.pageNum, this.pageSize)
     const res = await reqTagOptions()
     if (res.code === 1) {
       this.tagOptions = res.data
     }
   },
   methods: {
-    async getData() {
+    async getData(pageNum, pageSize) {
       const res = await reqGetNote({
-        pageNum: this.pageNum,
-        pageSize: this.pageSize,
-        condition: this.selectTag
-          ? { noteTag: { $elemMatch: { $eq: this.selectTag } } }
-          : ''
+        pageNum: pageNum,
+        pageSize: pageSize,
+        condition:
+          this.selectTag === 'All'
+            ? ''
+            : { noteTag: { $elemMatch: { $eq: this.selectTag } } }
       })
       if (res.code === 1) {
         this.noteData = res.data.content
@@ -113,14 +114,24 @@ export default {
         this.pageTotal = res.data.pageTotal
       }
     },
-    editNote(id) {
-      this.$router.push({ path: '/markdown', query: { id: id } })
-    },
     dayDif(startTime, endTime) {
       return Math.ceil(
         Math.abs(startTime.getTime() - endTime.getTime()) / 86400000
       )
     },
+    // 编辑文章
+    editNote(id) {
+      this.$router.push({ path: '/markdown', query: { id: id } })
+    },
+    // 查看文章内容
+    showNote(id) {
+      this.$router.push({ path: '/layout/learn/note', query: { id: id } })
+    },
+    // 新增文章
+    enterMarkdown() {
+      this.$router.push('/markdown')
+    },
+    // 删除文章
     deleteNote(id) {
       this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
         confirmButtonText: '确定',
@@ -144,46 +155,14 @@ export default {
           })
         })
     },
-    // 查看文章内容
-    showNote(id) {
-      this.$router.push({ path: '/layout/learn/note', query: { id: id } })
-    },
-    // 编辑文章
-    enterMarkdown() {
-      this.$router.push('/markdown')
-    },
     // 处理页面变化回调
-    async handleCurChange(val) {
-      const res = await reqGetNote({
-        pageNum: val,
-        pageSize: this.pageSize,
-        condition: this.selectTag
-          ? { noteTag: { $elemMatch: { $eq: this.selectTag } } }
-          : ''
-      })
-      if (res.code === 1) {
-        this.noteData = res.data.content
-        this.pageSize = res.data.pageSize
-        this.pageNum = res.data.pageNum
-        this.pageTotal = res.data.pageTotal
-      }
+    handleCurChange(val) {
+      this.getData(val, this.pageSize)
     },
     // 点击标签回调
-    async handleNoteTag(tag) {
+    handleNoteTag(tag) {
       this.selectTag = tag
-      const res = await reqGetNote({
-        pageNum: 1,
-        pageSize: 5,
-        condition: this.selectTag
-          ? { noteTag: { $elemMatch: { $eq: this.selectTag } } }
-          : ''
-      })
-      if (res.code === 1) {
-        this.noteData = res.data.content
-        this.pageSize = res.data.pageSize
-        this.pageNum = res.data.pageNum
-        this.pageTotal = res.data.pageTotal
-      }
+      this.getData(1, 5)
     }
   }
 }

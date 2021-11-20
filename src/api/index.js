@@ -1,4 +1,4 @@
-import http from '../http/http'
+import http from '@/http'
 
 // 项目模块
 // 项目模块上传图片

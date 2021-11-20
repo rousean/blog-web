@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { reqUploadFile } from '../../api/api'
+import { reqUploadFile } from '@/api'
 export default {
   name: 'Material',
   data() {

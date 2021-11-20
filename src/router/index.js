@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
+import { isChrome } from '@/utils'
 Vue.use(VueRouter)
 
 const routes = [
@@ -63,6 +63,20 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  document.title = 'Rousean'
+  // 判断是不是桌面端谷歌浏览器访问
+  if (to.path === '/browser') {
+    next()
+  } else {
+    if (isChrome()) {
+      next()
+    } else {
+      next({ path: '/browser' })
+    }
+  }
 })
 
 export default router

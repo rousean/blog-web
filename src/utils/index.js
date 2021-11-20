@@ -32,7 +32,6 @@ export function timeHandle(time) {
 
 /**
  * 判断当前运行环境
- *
  */
 export function isChrome() {
   if (navigator.userAgentData) {

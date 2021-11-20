@@ -1,9 +1,11 @@
 <template>
   <div class="audio-container">
     <!-- 音乐来源 -->
-    <audio ref="audio" :src="audioUrl"></audio>
+    <audio ref="audio"
+           :src="audioUrl"></audio>
     <!-- 作曲名与作者 -->
-    <div class="audio-title-author" v-if="audioList">
+    <div class="audio-title-author"
+         v-if="audioList">
       <div class="audio-title">{{ audioList[audioId].audioTitle }}</div>
       <div class="audio-author">{{ audioList[audioId].audioAuthor }}</div>
     </div>
@@ -13,13 +15,11 @@
         <DrawCircle></DrawCircle>
       </div>
       <div class="audio-progress">
-        <el-progress
-          type="circle"
-          :percentage="autoPercentage"
-          :show-text="false"
-          :stroke-width="1"
-          :width="205"
-        ></el-progress>
+        <el-progress type="circle"
+                     :percentage="autoPercentage"
+                     :show-text="false"
+                     :stroke-width="1"
+                     :width="205"></el-progress>
       </div>
       <div class="audio-timer">
         <div class="timer-now">{{ audioNow }}</div>
@@ -28,16 +28,16 @@
       </div>
       <div class="audio-button">
         <div @click="controlBack">
-          <svg-icon iconClass="audio-back" style="width: 20px; height: 20px"></svg-icon>
+          <svg-icon iconClass="audio-back"
+                    style="width: 20px; height: 20px"></svg-icon>
         </div>
         <div @click="controlaudio">
-          <svg-icon
-            :iconClass="isStart ? 'audio-start' : 'audio-stop'"
-            style="width: 26px; height: 26px; margin: 0 40px 0 40px"
-          ></svg-icon>
+          <svg-icon :iconClass="isStart ? 'audio-start' : 'audio-stop'"
+                    style="width: 26px; height: 26px; margin: 0 40px 0 40px"></svg-icon>
         </div>
         <div @click="controlFore">
-          <svg-icon iconClass="audio-fore" style="width: 20px; height: 20px"></svg-icon>
+          <svg-icon iconClass="audio-fore"
+                    style="width: 20px; height: 20px"></svg-icon>
         </div>
       </div>
     </div>
@@ -45,7 +45,8 @@
     <div class="audio-voice">
       <svg-icon iconClass="audio-mute"></svg-icon>
       <div class="audio-slider">
-        <el-slider v-model="audioVoice" @change="controlVolume"></el-slider>
+        <el-slider v-model="audioVoice"
+                   @change="controlVolume"></el-slider>
       </div>
       <svg-icon iconClass="audio-voice"></svg-icon>
     </div>
@@ -53,7 +54,8 @@
     <div class="audio-next">
       <div class="next-text">NEXT</div>
       <div class="next-line"></div>
-      <div class="next-content" v-if="audioList">
+      <div class="next-content"
+           v-if="audioList">
         <span class="next-content-num">{{ audioId + 2 }}</span>
         <span class="next-content-line">|</span>
         <span class="next-content-title">
@@ -71,8 +73,8 @@
 
 <script>
 import DrawCircle from './DrawCircle'
-import { reqAudioList } from '../../api/api'
-import { throttle, timeHandle } from '../../utils/utils'
+import { reqAudioList } from '@/api'
+import { throttle, timeHandle } from '@/utils'
 const BASICURL = 'http://localhost:3000/audio/'
 
 export default {
@@ -148,14 +150,9 @@ export default {
   methods: {
     // 获取数据
     async getAudioList() {
-      try {
-        const result = await reqAudioList()
-        this.audioList = result.audioList
-      } catch (error) {
-        this.$message({
-          message: '音乐列表获取失败!',
-          type: 'error'
-        })
+      const res = await reqAudioList()
+      if (res.code === 1) {
+        this.audioList = res.data
       }
     },
     // 处理当前时间

@@ -8,6 +8,7 @@
           <div>
             <svg-icon class="R"
                       iconClass="blog-R"></svg-icon>
+            <span>路索生活</span>
           </div>
           <el-tabs :value="$route.matched[1].path"
                    @tab-click="handleClick"
@@ -23,12 +24,12 @@
                           iconClass="blog-learn"></svg-icon>随笔
               </span>
             </el-tab-pane>
-            <el-tab-pane name="/layout/material">
+            <!-- <el-tab-pane name="/layout/material">
               <span slot="label">
                 <svg-icon class="tab-icon"
                           iconClass="blog-material"></svg-icon>项目
               </span>
-            </el-tab-pane>
+            </el-tab-pane> -->
             <el-tab-pane name="/layout/person">
               <span slot="label">
                 <svg-icon class="tab-icon"
@@ -123,7 +124,7 @@
 
 <script>
 import AudioPlayer from '../../components/AudioPlayer/AudioPlayer.vue'
-import { reqLogin } from '../../api/api'
+import { reqLogin } from '@/api'
 export default {
   data() {
     return {
@@ -341,19 +342,32 @@ export default {
     position: sticky;
     top: 0;
     z-index: 100;
+    box-shadow: rgb(0 0 0 / 10%) 0px 2px 12px 0px;
     .header-wrapper {
       width: 850px;
       height: 100%;
       margin: 0 auto;
       display: flex;
+      > div:nth-child(1) {
+        margin-right: 40px;
+        .R {
+          width: 34px;
+          height: 34px;
+          vertical-align: middle;
+        }
+        span {
+          vertical-align: -webkit-baseline-middle;
+          font-size: 12px;
+          display: inline-block;
+          font-family: cursive;
+          color: #8c8c8c;
+          font-weight: 700;
+          padding-top: 12px;
+          box-sizing: border-box;
+        }
+      }
       > div:nth-child(2) {
         flex: 2;
-      }
-      .R {
-        width: 34px;
-        height: 34px;
-        vertical-align: middle;
-        margin-right: 20px;
       }
       > div:nth-child(3) {
         flex: 1;
@@ -378,6 +392,7 @@ export default {
         .el-dropdown-link {
           display: flex;
           align-items: center;
+          margin-top: 3px;
         }
       }
       .tab-icon {
@@ -565,9 +580,6 @@ export default {
 }
 ::v-deep .el-tabs__nav-wrap::after {
   background-color: transparent;
-}
-::v-deep .el-tabs__header {
-  padding-top: 10px;
 }
 ::v-deep .el-tabs__item {
   font-size: 16px;

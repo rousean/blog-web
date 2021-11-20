@@ -67,7 +67,7 @@ import {
   reqSaveNote,
   reqUpdateNote,
   reqTagOptions
-} from '../../api/api'
+} from '@/api'
 import './xcode.min.css'
 export default {
   name: 'Markdown',
@@ -194,16 +194,17 @@ export default {
       ],
       externalLink: {
         markdown_css: () =>
-          `${process.env.VUE_APP_MARKDOWN_URL}/markdown/github-markdown.min.css`,
+          `${process.env.VUE_APP_MARKDOWN_PATH}/markdown/github-markdown.min.css`,
         hljs_js: () =>
-          `${process.env.VUE_APP_MARKDOWN_URL}/highlightjs/highlight.min.js`,
+          `${process.env.VUE_APP_MARKDOWN_PATH}/highlightjs/highlight.min.js`,
         hljs_css: (css) =>
-          `${process.env.VUE_APP_MARKDOWN_URL}/highlightjs/styles/${css}.min.css`,
+          `${process.env.VUE_APP_MARKDOWN_PATH}/highlightjs/styles/${css}.min.css`,
         hljs_lang: (lang) =>
-          `${process.env.VUE_APP_MARKDOWN_URL}/highlightjs/languages/${lang}.min.js`,
+          `${process.env.VUE_APP_MARKDOWN_PATH}/highlightjs/languages/${lang}.min.js`,
         katex_css: () =>
-          `${process.env.VUE_APP_MARKDOWN_URL}/katex/katex.min.css`,
-        katex_js: () => `${process.env.VUE_APP_MARKDOWN_URL}/katex/katex.min.js`
+          `${process.env.VUE_APP_MARKDOWN_PATH}/katex/katex.min.css`,
+        katex_js: () =>
+          `${process.env.VUE_APP_MARKDOWN_PATH}/katex/katex.min.js`
       }
     }
   },
