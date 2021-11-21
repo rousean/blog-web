@@ -23,7 +23,7 @@ export default {
 <style lang="scss" scoped>
 .person-container {
   width: 850px;
-  min-height: 880px;
+  min-height: 800px;
   margin-left: auto;
   margin-right: auto;
   margin-top: 20px;

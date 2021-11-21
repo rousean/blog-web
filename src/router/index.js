@@ -68,15 +68,17 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   document.title = 'Rousean'
   // 判断是不是桌面端谷歌浏览器访问
-  if (to.path === '/browser') {
-    next()
-  } else {
-    if (isChrome()) {
-      next()
-    } else {
-      next({ path: '/browser' })
-    }
-  }
+  // if (to.path === '/browser') {
+  //   next()
+  // } else {
+  //   if (isChrome()) {
+  //     console.log(isChrome())
+  //     next()
+  //   } else {
+  //     next({ path: '/browser' })
+  //   }
+  // }
+  next()
 })
 
 export default router

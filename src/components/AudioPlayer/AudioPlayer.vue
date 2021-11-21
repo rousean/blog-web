@@ -75,7 +75,6 @@
 import DrawCircle from './DrawCircle'
 import { reqAudioList } from '@/api'
 import { throttle, timeHandle } from '@/utils'
-const BASICURL = 'http://localhost:3000/audio/'
 
 export default {
   name: 'AudioPlayer',
@@ -141,7 +140,8 @@ export default {
     // 计算属性,动态计算音乐的链接
     audioUrl() {
       if (this.audioList) {
-        return BASICURL + this.audioList[this.audioId]['audioName']
+        let audioName = this.audioList[this.audioId]['audioName']
+        return `${process.env.VUE_APP_AUDIO_PATH}/${audioName}`
       } else {
         return ''
       }

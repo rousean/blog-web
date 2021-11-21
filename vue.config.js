@@ -15,7 +15,7 @@ function resolve(dir) {
 module.exports = {
   productionSourceMap: !IS_PROD,
   publicPath: IS_PROD ? process.env.VUE_APP_PUBLIC_PATH : '/',
-  outputDir: 'dist',
+  outputDir: 'web',
   assetsDir: 'static',
   parallel: require('os').cpus().length > 1,
 
@@ -46,6 +46,7 @@ module.exports = {
     // 修复 Lazy loading routes Error
     config.plugin('html').tap((args) => {
       args[0].chunksSortMode = 'none'
+      args[0].title = 'Rousean'
       return args
     })
     // 添加别名 alias
