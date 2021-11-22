@@ -50,7 +50,7 @@
                          @command="handleDialog">
               <span class="el-dropdown-link">
                 <el-avatar :size="24"
-                           :src="userUrl"></el-avatar>
+                           :src="currentUrl"></el-avatar>
                 <i class="el-icon-arrow-down el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
@@ -134,8 +134,7 @@ export default {
       dialogVisible: false,
       inputType: 'password',
       username: '',
-      password: '',
-      userUrl: `${process.env.VUE_APP_IMAGE_PATH}/user.jpg`
+      password: ''
     }
   },
   components: {
@@ -172,6 +171,13 @@ export default {
         }, 0)
       })
     })
+  },
+  computed: {
+    currentUrl() {
+      return this.$store.state.token
+        ? `${process.env.VUE_APP_IMAGE_PATH}/rousean.jpg`
+        : `${process.env.VUE_APP_IMAGE_PATH}/user.jpg`
+    }
   },
   methods: {
     // 点击tab切换回调函数
@@ -283,7 +289,6 @@ export default {
     handleDialog() {
       if (this.$store.state.token) {
         this.$store.dispatch('setToken', '')
-        this.userUrl = `${process.env.VUE_APP_IMAGE_PATH}/user.jpg`
         this.$message({
           type: 'success',
           message: '退出成功！',
@@ -310,7 +315,6 @@ export default {
       })
       if (res.code === 1) {
         this.$store.dispatch('setToken', res.token)
-        this.userUrl = `${process.env.VUE_APP_IMAGE_PATH}/rousean.jpg`
         this.dialogVisible = false
         this.$message({
           type: 'success',

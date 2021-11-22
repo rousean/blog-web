@@ -4,7 +4,9 @@
     "module": "commonjs",
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
-    "paths": { "@/*": ["src/*"], "_c/*": ["src/components/*"] }
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "exclude": ["node_modules", "dist"]
 }

@@ -296,7 +296,21 @@ export default {
           type: 'success',
           showClose: true
         })
-        this.$router.push('/layout/learn')
+        this.$confirm('是否返回文章列表页？', '提示', {
+          confirmButtonText: '返回',
+          cancelButtonText: '当前页',
+          type: 'warning'
+        })
+          .then(() => {
+            this.$router.go(-1)
+          })
+          .catch(() => {
+            this.noteTitle = ''
+            this.noteTag = []
+            this.noteContent = ''
+            this.noteAbstract = ''
+            this.drawer = false
+          })
       }
     }
   }
@@ -332,6 +346,10 @@ export default {
     position: absolute;
     top: 62px;
     left: 40%;
+    ::v-deep .el-select {
+      width: 50%;
+      height: 80%;
+    }
   }
 }
 
@@ -346,7 +364,7 @@ export default {
   margin-left: 10px;
 }
 ::v-deep .el-select {
-  width: 80%;
+  width: 100%;
 }
 ::v-deep .markdown-body .highlight pre {
   padding: 0px;
