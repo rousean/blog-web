@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-animate-css="'fadeInDown'">
     <div class="learn-container"
          v-if="$route.path === '/layout/learn'">
       <div class="left-container">
@@ -13,50 +13,51 @@
       <div class="middle-container">
         <div class="note-container"
              v-if="noteData.length > 0">
-          <div class="note-content"
-               v-for="note in noteData"
-               :key="note._id">
-            <div class="content-header">
-              <div class="content-time">{{dayDif(new Date(), new Date(note.createdAt))}}天前</div>
-              <div class="content-container"
-                   v-if="tagOptions">
-                <!-- <div v-for="(tag, index) in note.noteTag"
-                     :key="tag"
-                     :class="[index === note.noteTag.length - 1 ? 'content-tag-last': 'content-tag']">{{tag}}</div> -->
-                <el-tag v-for="item in note.noteTag"
-                        :key="item"
-                        :type="tagOptions.find(v => v.label === item).type"
-                        effect="plain">{{ item }}</el-tag>
-              </div>
-              <div class="content-operate"
-                   v-if="$store.state.token">
-                <div @click="deleteNote(note._id)">
-                  <svg-icon iconClass="blog-delete"
-                            style="width: 16px; height: 16px; margin-right: 10px;"></svg-icon>
+          <kinesis-container v-for="note in noteData"
+                             :key="note._id">
+            <kinesis-element :strength="0.4"
+                             type="scale">
+              <div class="note-content">
+                <div class="content-header">
+                  <div class="content-time">{{dayDif(new Date(), new Date(note.createdAt))}}天前</div>
+                  <div class="content-container"
+                       v-if="tagOptions">
+                    <el-tag v-for="item in note.noteTag"
+                            :key="item"
+                            :type="tagOptions.find(v => v.label === item).type"
+                            effect="plain">{{ item }}</el-tag>
+                  </div>
+                  <div class="content-operate"
+                       v-if="$store.state.token">
+                    <div @click="deleteNote(note._id)">
+                      <svg-icon iconClass="blog-delete"
+                                style="width: 16px; height: 16px; margin-right: 10px;"></svg-icon>
+                    </div>
+                    <div @click="editNote(note._id)">
+                      <svg-icon iconClass="blog-edit"
+                                style="width: 16px; height: 16px"></svg-icon>
+                    </div>
+                  </div>
                 </div>
-                <div @click="editNote(note._id)">
-                  <svg-icon iconClass="blog-edit"
-                            style="width: 16px; height: 16px"></svg-icon>
+                <div @click="showNote(note._id)">
+                  <div class="content-title">{{note.noteTitle}}</div>
+                  <div class="content-brief">{{note.noteAbstract}}</div>
                 </div>
               </div>
-            </div>
-            <div @click="showNote(note._id)">
-              <div class="content-title">{{note.noteTitle}}</div>
-              <div class="content-brief">{{note.noteAbstract}}</div>
-            </div>
-          </div>
+            </kinesis-element>
+          </kinesis-container>
+          <el-pagination class="pagination"
+                         @current-change="handleCurChange"
+                         :current-page="pageNum"
+                         :page-size="pageSize"
+                         layout="total,prev, next"
+                         :total="pageTotal"
+                         prev-text="上一页"
+                         next-text="下一页"
+                         hide-on-single-page></el-pagination>
         </div>
         <el-empty v-else
                   :image-size="100"></el-empty>
-        <el-pagination style="text-align: center;"
-                       @current-change="handleCurChange"
-                       :current-page="pageNum"
-                       :page-size="pageSize"
-                       layout="prev, next"
-                       :total="pageTotal"
-                       prev-text="上一页"
-                       next-text="下一页"
-                       hide-on-single-page></el-pagination>
       </div>
       <div class="right-container">
         <div class="tag-group"
@@ -169,11 +170,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/style/global.scss';
 .learn-container {
   display: flex;
+  margin-top: 20px;
+  margin-bottom: 20px;
   .left-container {
     flex: 1;
-    margin-top: 20px;
     .left-content {
       width: 160px;
       height: 100px;
@@ -182,8 +185,8 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
-      cursor: pointer;
-      background-color: #fff;
+      cursor: url('../../assets/pointer.png'), auto;
+      background-color: transparent;
       .markdown-icon {
         width: 36px;
         height: 36px;
@@ -192,24 +195,22 @@ export default {
     }
   }
   .middle-container {
-    width: 850px;
-    min-height: 800px;
-    background-color: #fff;
-    padding: 10px 20px;
-    margin: 20px 0;
+    width: $width;
+    min-height: $min-height;
+    background-color: $background-color;
     border-radius: 5px;
     box-shadow: rgb(0 0 0 / 10%) 0px 2px 12px 0px;
-    box-sizing: border-box;
     .note-container {
-      min-height: 800px;
+      margin: 20px;
+      min-height: 760px;
+      position: relative;
       .note-content {
-        width: 100%;
         height: 140px;
         position: relative;
         padding: 15px 10px;
         box-sizing: border-box;
         border-bottom: 1px solid #e5e6eb;
-        cursor: pointer;
+        cursor: url('../../assets/pointer.png'), auto;
         .content-header {
           display: flex;
           align-items: center;
@@ -246,25 +247,6 @@ export default {
               padding: 0 5px;
               color: #86909c;
             }
-            .content-tag-last {
-              position: relative;
-              display: flex;
-              align-items: center;
-              flex-shrink: 0;
-              font-size: 13px;
-              padding: 0 5px;
-              color: #86909c;
-            }
-            .content-tag:after {
-              position: absolute;
-              right: -1px;
-              display: block;
-              content: ' ';
-              width: 2px;
-              height: 2px;
-              border-radius: 50%;
-              background: #4e5969;
-            }
           }
           .content-operate {
             display: flex;
@@ -295,25 +277,28 @@ export default {
           -webkit-box-orient: vertical;
         }
       }
-      .note-content:hover {
-        box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 12px 0px;
+      .pagination {
+        text-align: center;
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
       }
     }
   }
   .right-container {
     flex: 1;
-    margin-top: 20px;
     .tag-group {
       width: 260px;
       height: 300px;
-      background: #fff;
+      background: #ffffffbd;
       border-radius: 5px;
       box-shadow: rgb(0 0 0 / 10%) 0px 2px 12px 0px;
       margin-left: 20px;
       padding: 10px;
       box-sizing: border-box;
       .tag-item {
-        cursor: pointer;
+        cursor: url('../../assets/pointer.png'), auto;
         margin: 10px;
       }
       .tag-item:hover {
@@ -327,5 +312,14 @@ export default {
   padding: 0 5px;
   height: 25px;
   line-height: 25px;
+}
+::v-deep .btn-prev {
+  background: transparent;
+}
+::v-deep .btn-next {
+  background: transparent;
+}
+::v-deep .el-pagination button:disabled {
+  background: transparent;
 }
 </style>

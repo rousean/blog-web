@@ -1,5 +1,6 @@
-<template >
-  <div class="note-container">
+<template>
+  <div class="note-container"
+       v-animate-css="'fadeInLeft'">
     <div class="select-container">
       <div>代码主题：</div>
       <el-select v-model="codeStyle"

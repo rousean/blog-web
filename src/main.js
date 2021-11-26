@@ -24,6 +24,18 @@ import * as d3 from 'd3'
 Vue.prototype.$d3 = d3
 window.d3 = d3
 
+// 引入背景
+import Particles from 'particles.vue'
+Vue.use(Particles)
+
+import { KinesisContainer, KinesisElement } from 'vue-kinesis'
+
+Vue.component('kinesis-container', KinesisContainer)
+Vue.component('kinesis-element', KinesisElement)
+
+import VAnimateCss from 'v-animate-css'
+Vue.use(VAnimateCss)
+
 Vue.config.productionTip = false
 
 new Vue({

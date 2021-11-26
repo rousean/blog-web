@@ -226,7 +226,6 @@ export default {
   box-shadow: 6px 6px 6px #5c5c5c81;
   .audio-title-author {
     color: aliceblue;
-    font-family: Saint-Andrews;
     text-align: center;
     margin-top: 35px;
     .audio-title {
@@ -261,7 +260,6 @@ export default {
       display: flex;
       justify-content: center;
       color: #fff;
-      font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
       .timer-now {
         color: #20a0ff;
       }
@@ -325,7 +323,6 @@ export default {
       }
       .next-content-title {
         color: #fff;
-        font-family: Saint-Andrews;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;

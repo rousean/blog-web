@@ -1,13 +1,15 @@
 <template>
   <div ref="layoutContainer"
        class="layout-container">
-    <div :style="isShowAudio ? 'filter: blur(5px);' : 'filter: blur(0px);'"
+    <div :style="isShowAudio ? 'filter: blur(1px);' : 'filter: blur(0px);'"
          @click="falseShowAudio">
       <div class="header-container">
         <div class="header-wrapper">
           <div>
-            <svg-icon class="R"
-                      iconClass="blog-R"></svg-icon>
+            <span v-animate-css.hover="'rotateIn'">
+              <svg-icon class="R"
+                        iconClass="blog-R"></svg-icon>
+            </span>
             <span>路索生活</span>
           </div>
           <el-tabs :value="$route.matched[1].path"
@@ -20,8 +22,11 @@
               </el-tab-pane> -->
             <el-tab-pane name="/layout/learn">
               <span slot="label">
-                <svg-icon class="tab-icon"
-                          iconClass="blog-learn"></svg-icon>随笔
+                <div v-animate-css.click="'tada'">
+                  <svg-icon class="tab-icon"
+                            iconClass="blog-learn"></svg-icon>
+                  <span>随笔</span>
+                </div>
               </span>
             </el-tab-pane>
             <!-- <el-tab-pane name="/layout/material">
@@ -32,8 +37,11 @@
             </el-tab-pane> -->
             <el-tab-pane name="/layout/person">
               <span slot="label">
-                <svg-icon class="tab-icon"
-                          iconClass="blog-person"></svg-icon>关于
+                <div v-animate-css.click="'tada'">
+                  <svg-icon class="tab-icon"
+                            iconClass="blog-person"></svg-icon>
+                  <span>关于</span>
+                </div>
               </span>
             </el-tab-pane>
           </el-tabs>
@@ -60,7 +68,12 @@
           </div>
         </div>
       </div>
-      <router-view></router-view>
+      <div>
+        <router-view></router-view>
+      </div>
+      <div class="footer-container">
+        copyright by Rousean 备案号0000000000000000
+      </div>
     </div>
     <div class="github-svg">
       <div class="github-hover">
@@ -334,6 +347,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/style/global.scss';
 .layout-container {
   width: 100%;
   position: relative;
@@ -341,8 +355,8 @@ export default {
     width: 100%;
     height: 60px;
     line-height: 60px;
-    background-color: #fff;
-    border-bottom: 1px solid #eee;
+    background: #fff;
+    border-bottom: 1px solid #c0c0c0;
     position: sticky;
     top: 0;
     z-index: 100;
@@ -354,12 +368,19 @@ export default {
       display: flex;
       > div:nth-child(1) {
         margin-right: 40px;
-        .R {
+        > span:nth-child(1) {
+          display: inline-block;
           width: 34px;
           height: 34px;
-          vertical-align: middle;
+          cursor: url('../../assets/pointer.png'), auto;
+          .R {
+            width: 34px;
+            height: 34px;
+            vertical-align: middle;
+          }
         }
-        span {
+
+        > span:nth-child(2) {
           vertical-align: -webkit-baseline-middle;
           font-size: 12px;
           display: inline-block;
@@ -378,7 +399,7 @@ export default {
         display: flex;
         align-items: center;
         justify-content: flex-end;
-        cursor: pointer;
+        cursor: url('../../assets/pointer.png'), auto;
         .return {
           width: 24px;
           height: 24px;
@@ -404,8 +425,13 @@ export default {
         height: 22px;
         vertical-align: text-bottom;
         margin-right: 5px;
+        margin-left: 5px;
       }
     }
+  }
+  .footer-container {
+    width: 100%;
+    text-align: center;
   }
   .github-svg {
     position: fixed;
@@ -544,7 +570,7 @@ export default {
     position: fixed;
     top: 30%;
     left: 1880px;
-    cursor: pointer;
+    cursor: url('../../assets/pointer.png'), auto;
   }
   .audio-play-animation {
     animation: rotate 2s linear infinite;
@@ -587,6 +613,7 @@ export default {
 }
 ::v-deep .el-tabs__item {
   font-size: 16px;
+  cursor: url('../../assets/pointer.png'), auto;
 }
 ::v-deep .el-tabs__nav {
   height: 60px;
