@@ -1,7 +1,7 @@
 <template>
   <div ref="layoutContainer"
        class="layout-container">
-    <div :style="isShowAudio ? 'filter: blur(1px);' : 'filter: blur(0px);'"
+    <div :style="isShowAudio ? 'filter: blur(10px);' : 'filter: blur(0px);'"
          @click="falseShowAudio">
       <div class="header-container">
         <div class="header-wrapper">
@@ -47,11 +47,11 @@
           </el-tabs>
           <div>
             <div @click="handelBack">
-              <svg-icon class="return"
-                        :iconClass="$route.matched.length === 3 ? 'blog-return' : 'blog-re'"></svg-icon>
+              <svg-icon className="return"
+                        :iconClass="$route.name === 'Note' ? 'blog-return' : 'blog-re'"></svg-icon>
             </div>
             <div @click="changeFullScreen">
-              <svg-icon class="screen"
+              <svg-icon className="screen"
                         :iconClass="fullScreen ? 'blog-exitscreen' : 'blog-fullscreen'"></svg-icon>
             </div>
             <el-dropdown size="small"
@@ -69,10 +69,19 @@
         </div>
       </div>
       <div>
-        <router-view></router-view>
+        <vue-page-transition name="fade">
+          <keep-alive>
+            <router-view v-if="$route.meta.keepAlive">
+            </router-view>
+          </keep-alive>
+        </vue-page-transition>
+        <vue-page-transition name="fade">
+          <router-view v-if="!$route.meta.keepAlive">
+          </router-view>
+        </vue-page-transition>
       </div>
       <div class="footer-container">
-        copyright by Rousean 备案号0000000000000000
+        CopyRight by Rousean | 备案号 0000000000000000
       </div>
     </div>
     <div class="github-svg">
@@ -80,7 +89,7 @@
         <a href="https://github.com/rousean"
            target="_blank">
           <svg-icon iconClass="blog-github"
-                    style="width: 36px; height: 36px"></svg-icon>
+                    className="icon-github"></svg-icon>
         </a>
       </div>
     </div>
@@ -92,10 +101,12 @@
       <svg-icon iconClass="audio-mark"
                 style="width: 36px; height: 36px"></svg-icon>
     </div>
-    <div class="audio-player"
-         v-show="isShowAudio">
-      <AudioPlayer @listenChildValue="changeAudioPlay"></AudioPlayer>
-    </div>
+    <transition name="fade">
+      <div class="audio-player"
+           v-show="isShowAudio">
+        <AudioPlayer @listenChildValue="changeAudioPlay"></AudioPlayer>
+      </div>
+    </transition>
     <el-dialog :visible.sync="dialogVisible"
                width="20%">
       <span slot="title">
@@ -138,6 +149,7 @@
 <script>
 import AudioPlayer from '../../components/AudioPlayer/AudioPlayer.vue'
 import { reqLogin } from '@/api'
+
 export default {
   data() {
     return {
@@ -241,7 +253,7 @@ export default {
       this.isAudioPlay = value
     },
     handelBack() {
-      if (this.$route.matched.length === 3) {
+      if (this.$route.name === 'Note') {
         this.$router.go(-1)
       } else {
         this.$message({
@@ -350,88 +362,98 @@ export default {
 @import '@/assets/style/global.scss';
 .layout-container {
   width: 100%;
+  height: 100%;
   position: relative;
-  .header-container {
-    width: 100%;
-    height: 60px;
-    line-height: 60px;
-    background: #fff;
-    border-bottom: 1px solid #c0c0c0;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: rgb(0 0 0 / 10%) 0px 2px 12px 0px;
-    .header-wrapper {
-      width: 850px;
-      height: 100%;
-      margin: 0 auto;
-      display: flex;
-      > div:nth-child(1) {
-        margin-right: 40px;
-        > span:nth-child(1) {
-          display: inline-block;
-          width: 34px;
-          height: 34px;
-          cursor: url('../../assets/pointer.png'), auto;
-          .R {
+  > div:nth-child(1) {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    .header-container {
+      width: 100%;
+      height: 60px;
+      line-height: 60px;
+      background: #fff;
+      border-bottom: 1px solid #c0c0c0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: rgb(0 0 0 / 10%) 0px 2px 12px 0px;
+      .header-wrapper {
+        width: 850px;
+        height: 100%;
+        margin: 0 auto;
+        display: flex;
+        > div:nth-child(1) {
+          margin-right: 40px;
+          > span:nth-child(1) {
+            display: inline-block;
             width: 34px;
             height: 34px;
-            vertical-align: middle;
+            cursor: url('../../assets/pointer.png'), auto;
+            .R {
+              width: 34px;
+              height: 34px;
+              vertical-align: middle;
+            }
           }
-        }
 
-        > span:nth-child(2) {
-          vertical-align: -webkit-baseline-middle;
-          font-size: 12px;
-          display: inline-block;
-          font-family: cursive;
-          color: #8c8c8c;
-          font-weight: 700;
-          padding-top: 12px;
-          box-sizing: border-box;
-        }
-      }
-      > div:nth-child(2) {
-        flex: 2;
-      }
-      > div:nth-child(3) {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        cursor: url('../../assets/pointer.png'), auto;
-        .return {
-          width: 24px;
-          height: 24px;
-          margin-right: 20px;
-          vertical-align: middle;
+          > span:nth-child(2) {
+            vertical-align: -webkit-baseline-middle;
+            font-size: 12px;
+            display: inline-block;
+            font-family: cursive;
+            color: #8c8c8c;
+            font-weight: 700;
+            padding-top: 12px;
+            box-sizing: border-box;
+          }
         }
         > div:nth-child(2) {
-          .screen {
-            width: 26px;
-            height: 26px;
-            margin-right: 20px;
-            vertical-align: middle;
-          }
+          flex: 2;
         }
-        .el-dropdown-link {
+        > div:nth-child(3) {
+          flex: 1;
           display: flex;
           align-items: center;
-          margin-top: 3px;
+          justify-content: flex-end;
+          cursor: url('../../assets/pointer.png'), auto;
+          .return {
+            width: 24px;
+            height: 24px;
+            margin: 0 10px;
+            vertical-align: middle;
+          }
+          > div:nth-child(2) {
+            .screen {
+              width: 26px;
+              height: 26px;
+              margin: 0 20px 0 10px;
+              vertical-align: middle;
+            }
+          }
+          .el-dropdown-link {
+            display: flex;
+            align-items: center;
+            margin-top: 3px;
+          }
+        }
+        .tab-icon {
+          width: 22px;
+          height: 22px;
+          vertical-align: text-bottom;
+          margin-right: 5px;
+          margin-left: 5px;
         }
       }
-      .tab-icon {
-        width: 22px;
-        height: 22px;
-        vertical-align: text-bottom;
-        margin-right: 5px;
-        margin-left: 5px;
-      }
     }
-  }
-  .footer-container {
-    width: 100%;
-    text-align: center;
+    .footer-container {
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      color: #8c8c8c;
+      font-size: 12px;
+    }
   }
   .github-svg {
     position: fixed;
@@ -439,6 +461,7 @@ export default {
     left: 2px;
     width: 36px;
     height: 36px;
+    cursor: url('../../assets/pointer.png'), auto;
     -webkit-animation: heartbeat 1.5s ease-in-out infinite both;
     animation: heartbeat 1.5s ease-in-out infinite both;
     @-webkit-keyframes heartbeat {
@@ -514,6 +537,12 @@ export default {
       height: 36px;
       position: relative;
       border-color: #f7f5f1;
+      cursor: url('../../assets/pointer.png'), auto;
+      .icon-github {
+        width: 36px;
+        height: 36px;
+        cursor: url('../../assets/pointer.png'), auto;
+      }
     }
     .github-hover:hover {
       color: #0085a1;
@@ -618,6 +647,9 @@ export default {
 ::v-deep .el-tabs__nav {
   height: 60px;
 }
+::v-deep .el-dropdown-menu__item {
+  cursor: url('../../assets/pointer.png'), auto;
+}
 ::v-deep .el-tabs__active-bar {
   background-color: transparent;
 }
@@ -630,5 +662,8 @@ export default {
 }
 ::v-deep .el-dialog__body {
   padding: 20px 20px 5px 20px;
+}
+::v-deep .el-button {
+  cursor: url('../../assets/pointer.png'), auto;
 }
 </style>

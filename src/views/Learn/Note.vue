@@ -1,17 +1,5 @@
 <template>
-  <div class="note-container"
-       v-animate-css="'fadeInLeft'">
-    <div class="select-container">
-      <div>代码主题：</div>
-      <el-select v-model="codeStyle"
-                 placeholder="请选择">
-        <el-option v-for="item in options"
-                   :key="item"
-                   :label="item"
-                   :value="item">
-        </el-option>
-      </el-select>
-    </div>
+  <div class="note-container">
     <div class="editor-container">
       <div class="note-title">{{noteTitle}}</div>
       <mavon-editor ref="md"
@@ -21,13 +9,10 @@
                     :toolbarsFlag="false"
                     defaultOpen="preview"
                     :subfield="false"
-                    :navigation="true"
+                    :navigation="false"
                     :ishljs="true"
-                    :externalLink="externalLink"
-                    :codeStyle="codeStyle"
-                    previewBackground="#fff"
+                    previewBackground="#ffffffbd"
                     boxShadowStyle="0px 10px 12px 0px rgba(0, 0, 0, 0.1)"></mavon-editor>
-
     </div>
   </div>
 </template>
@@ -40,21 +25,6 @@ export default {
     return {
       noteContent: '',
       noteTitle: '',
-      codeStyle: 'xcode',
-      externalLink: {
-        markdown_css: () =>
-          `${process.env.VUE_APP_MARKDOWN_PATH}/markdown/github-markdown.min.css`,
-        hljs_js: () =>
-          `${process.env.VUE_APP_MARKDOWN_PATH}/highlightjs/highlight.min.js`,
-        hljs_css: (css) =>
-          `${process.env.VUE_APP_MARKDOWN_PATH}/highlightjs/styles/${css}.min.css`,
-        hljs_lang: (lang) =>
-          `${process.env.VUE_APP_MARKDOWN_PATH}/highlightjs/languages/${lang}.min.js`,
-        katex_css: () =>
-          `${process.env.VUE_APP_MARKDOWN_PATH}/katex/katex.min.css`,
-        katex_js: () =>
-          `${process.env.VUE_APP_MARKDOWN_PATH}/katex/katex.min.js`
-      },
       options: [
         'agate',
         'androidstudio',
@@ -140,15 +110,16 @@ export default {
   },
   async mounted() {
     const id = this.$route.query.id
-    const result = await reqGetNoteById({ id: id })
-    if (result.code === 1) {
-      this.noteContent = result.data.noteContent
-      this.noteTitle = result.data.noteTitle
+    const res = await reqGetNoteById({ id: id })
+    if (res.code === 1) {
+      this.noteContent = res.data.noteContent
+      this.noteTitle = res.data.noteTitle
     }
   }
 }
 </script>
 <style lang="scss" scoped>
+@import '@/assets/style/global.scss';
 .note-container {
   padding: 20px;
   position: relative;
@@ -174,7 +145,7 @@ export default {
       font-size: 20px;
       text-align: center;
       color: #1d2129;
-      background: #fff;
+      background-color: $background-color;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -185,8 +156,9 @@ export default {
     .mavon-editor {
       z-index: 1;
       min-height: 770px;
-      padding-top: 30px;
+      padding-top: 20px;
       border-radius: 0 0 5px 5px;
+      background-color: $background-color;
     }
   }
 }

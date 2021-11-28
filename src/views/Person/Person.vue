@@ -1,24 +1,11 @@
 <template>
-  <div class="person-container"
-       v-animate-css="'fadeInDown'">
-    <!-- <el-avatar :size="100"
+  <div class="person-container">
+    <el-avatar :size="100"
                :src="url"></el-avatar>
     <div style="margin-top:10px">
       <span>张海东</span>
       <span style="margin-left:10px;font-size:12px;color:#8c8c8c;vertical-align: bottom;">Rousean</span>
-    </div> -->
-    <kinesis-container>
-      <kinesis-element :strength="10">
-        <el-avatar :size="100"
-                   :src="url"></el-avatar>
-      </kinesis-element>
-      <kinesis-element :strength="20">
-        <div style="margin-top:10px">
-          <span>张海东</span>
-          <span style="margin-left:10px;font-size:12px;color:#8c8c8c;vertical-align: bottom;">Rousean</span>
-        </div>
-      </kinesis-element>
-    </kinesis-container>
+    </div>
   </div>
 </template>
 

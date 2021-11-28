@@ -2,7 +2,7 @@
   <div id="app">
     <Particles id="tsparticles"
                :options="options"></Particles>
-    <router-view></router-view>
+    <router-view v-animate-css="'fadeIn'"></router-view>
   </div>
 </template>
 <script>

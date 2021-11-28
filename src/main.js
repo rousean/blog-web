@@ -36,6 +36,11 @@ Vue.component('kinesis-element', KinesisElement)
 import VAnimateCss from 'v-animate-css'
 Vue.use(VAnimateCss)
 
+require('vue2-animate/dist/vue2-animate.min.css')
+
+import VuePageTransition from 'vue-page-transition'
+Vue.use(VuePageTransition)
+
 Vue.config.productionTip = false
 
 new Vue({
