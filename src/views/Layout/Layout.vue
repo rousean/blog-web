@@ -12,7 +12,7 @@
             </span>
             <span>路索生活</span>
           </div>
-          <el-tabs :value="$route.matched[1].path"
+          <el-tabs :value="$route.matched[1].path === '/layout/note' ? '/layout/learn' : $route.matched[1].path"
                    @tab-click="handleClick"
                    tab-position="top">
             <!-- <el-tab-pane name="/layout/home">
@@ -29,12 +29,15 @@
                 </div>
               </span>
             </el-tab-pane>
-            <!-- <el-tab-pane name="/layout/material">
+            <el-tab-pane name="/layout/material">
               <span slot="label">
-                <svg-icon class="tab-icon"
-                          iconClass="blog-material"></svg-icon>项目
+                <div v-animate-css.click="'tada'">
+                  <svg-icon class="tab-icon"
+                            iconClass="blog-material"></svg-icon>
+                  <span>素材</span>
+                </div>
               </span>
-            </el-tab-pane> -->
+            </el-tab-pane>
             <el-tab-pane name="/layout/person">
               <span slot="label">
                 <div v-animate-css.click="'tada'">
@@ -156,7 +159,7 @@ export default {
       isShowAudio: false, // 是否显示音乐播放器页面
       isAudioPlay: false, // 音乐是否在播放,以此来判断是否开启播放动画
       fullScreen: false, // 全屏状态
-      dialogVisible: false,
+      dialogVisible: false, // 登录窗口是否显示
       inputType: 'password',
       username: '',
       password: ''

@@ -145,7 +145,7 @@ body::-webkit-scrollbar {
 }
 html,
 body {
-  cursor: url('./assets/指针.png'), auto;
+  cursor: url('./assets/hand.png'), auto;
 }
 #app {
   width: 100%;
