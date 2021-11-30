@@ -28,6 +28,10 @@ window.d3 = d3
 import Particles from 'particles.vue'
 Vue.use(Particles)
 
+// 引入路由组件动画
+import VuePageTransition from 'vue-page-transition'
+Vue.use(VuePageTransition)
+
 // 引入动画组件
 import { KinesisContainer, KinesisElement } from 'vue-kinesis'
 Vue.component('kinesis-container', KinesisContainer)
@@ -39,10 +43,6 @@ Vue.use(VAnimateCss)
 
 // 引入动画组件
 require('vue2-animate/dist/vue2-animate.min.css')
-
-// 引入路由组件动画
-import VuePageTransition from 'vue-page-transition'
-Vue.use(VuePageTransition)
 
 Vue.config.productionTip = false
 
