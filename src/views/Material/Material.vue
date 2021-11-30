@@ -27,95 +27,18 @@
 </template>
 
 <script>
+import { reqGetMaterial } from '@/api'
 export default {
   name: 'Material',
   data() {
     return {
-      lists: [
-        {
-          titleIcon: 'code',
-          titleName: '代码基础',
-          items: [
-            {
-              itemIcon: 'JavaScript',
-              itemTitle: 'JavaScript基础',
-              itemUrl: 'https://wangdoc.com/javascript/',
-              itemContent:
-                '全面介绍 JavaScript 核心语法，覆盖了 ES5 和 DOM 规范的所有内容'
-            },
-            {
-              itemIcon: 'JavaScript',
-              itemTitle: 'JavaScript讲解',
-              itemUrl: 'https://zh.javascript.info/',
-              itemContent:
-                '以最新的 JavaScript 标准为基准。通过简单但足够详细的内容，为你讲解从基础到高阶的 JavaScript 相关知识。'
-            },
-            {
-              itemIcon: 'TypeScript',
-              itemTitle: 'TypeScript 入门教程',
-              itemUrl:
-                'https://github.com/xcatliu/typescript-tutorial#typescript-%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B',
-              itemContent:
-                '从 JavaScript 程序员的角度总结思考，循序渐进的理解 TypeScript。'
-            },
-            {
-              itemIcon: 'Node',
-              itemTitle: 'Node.js学习指南',
-              itemUrl: 'https://blog.poetries.top/node-learning-notes/',
-              itemContent: 'Node.js笔记系统整理'
-            },
-            {
-              itemIcon: 'Vue',
-              itemTitle: 'Vue3学习资料',
-              itemUrl: 'https://vue3js.cn/',
-              itemContent: 'vue3相关资料整理'
-            },
-            {
-              itemIcon: 'es6',
-              itemTitle: 'ES6 入门教程',
-              itemUrl: 'https://es6.ruanyifeng.com/',
-              itemContent:
-                '《ECMAScript 6 入门教程》是一本开源的 JavaScript 语言教程，全面介绍 ECMAScript 6 新引入的语法特性。'
-            }
-          ]
-        },
-        {
-          titleIcon: 'tools',
-          titleName: '在线工具',
-          items: [
-            {
-              itemIcon: 'HTML',
-              itemTitle: 'HTML在线美化压缩',
-              itemUrl: 'https://tool.lu/html/',
-              itemContent: 'HTML在线美化压缩'
-            },
-            {
-              itemIcon: 'svg',
-              itemTitle: '阿里巴巴矢量图标库',
-              itemUrl: 'https://www.iconfont.cn/',
-              itemContent: '开源海量矢量图标库'
-            }
-          ]
-        },
-        {
-          titleIcon: 'community',
-          titleName: '技术社区',
-          items: [
-            {
-              itemIcon: 'juejin',
-              itemTitle: '掘金论坛',
-              itemUrl: 'https://juejin.cn/',
-              itemContent: '优秀前端学习文章分享论坛'
-            },
-            {
-              itemIcon: 'segmentfault',
-              itemTitle: '思否',
-              itemUrl: 'https://segmentfault.com/',
-              itemContent: '开放的前端社区'
-            }
-          ]
-        }
-      ]
+      lists: ''
+    }
+  },
+  async mounted() {
+    const res = await reqGetMaterial({})
+    if (res.code === 1) {
+      this.lists = res.data
     }
   },
   methods: {
@@ -169,7 +92,7 @@ export default {
         > div:nth-child(1) {
           display: flex;
           margin-bottom: 10px;
-          font-size: 14px;
+          font-size: 12px;
           align-items: center;
           .item-icon {
             width: 26px;

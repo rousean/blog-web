@@ -36,3 +36,11 @@ export const reqLogin = (params) => http('/user/login', params, 'POST')
 // 项目模块上传图片
 export const reqUploadFile = (formData) =>
   http('/material/uploadSingle', formData, 'POST')
+
+// 获取素材列表
+export const reqGetMaterial = (params) =>
+  http('/material/getMaterial', params, 'POST')
+
+// 获取项目列表
+export const reqGetProject = (params) =>
+  http('/material/getProject', params, 'POST')

@@ -84,7 +84,14 @@
         </vue-page-transition>
       </div>
       <div class="footer-container">
-        CopyRight by Rousean | 备案号 0000000000000000
+        <div>CopyRight by Rousean</div>
+        <div>
+          <img :src="url">
+          <a href="http://www.beian.gov.cn/portal/recordQuery"
+             target="_blank"><span>浙公安网000000000</span></a>
+          <a href="https://beian.miit.gov.cn/#/Integrated/recordQuery"
+             target="_blank"><span>浙ICP备2021036763号</span></a>
+        </div>
       </div>
     </div>
     <div class="github-svg">
@@ -162,7 +169,8 @@ export default {
       dialogVisible: false, // 登录窗口是否显示
       inputType: 'password',
       username: '',
-      password: ''
+      password: '',
+      url: `${process.env.VUE_APP_IMAGE_PATH}/police.png`
     }
   },
   components: {
@@ -452,10 +460,52 @@ export default {
     .footer-container {
       flex: 1;
       display: flex;
-      align-items: flex-end;
+      align-items: center;
+      flex-direction: column;
       justify-content: center;
+      flex-direction: column;
       color: #8c8c8c;
       font-size: 12px;
+      img {
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+      }
+      > div:nth-child(1) {
+        margin-bottom: 10px;
+      }
+      > div:nth-child(2) {
+        display: flex;
+        align-items: center;
+        /*包含以下四种的链接*/
+        a {
+          text-decoration: none;
+          color: #8c8c8c;
+        }
+        /*正常的未被访问过的链接*/
+        a:link {
+          text-decoration: none;
+        }
+        /*已经访问过的链接*/
+        a:visited {
+          text-decoration: none;
+        }
+        /*鼠标划过(停留)的链接*/
+        a:hover {
+          text-decoration: none;
+        }
+        /* 正在点击的链接*/
+        a:active {
+          text-decoration: none;
+        }
+        span {
+          margin-right: 10px;
+          cursor: url('../../assets/pointer.png'), auto;
+        }
+        span:hover {
+          color: #409eff;
+        }
+      }
     }
   }
   .github-svg {

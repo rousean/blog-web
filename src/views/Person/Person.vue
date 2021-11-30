@@ -44,8 +44,12 @@
              :key="stack.title"
              v-animate-css.hover="'pulse'"
              @click="jump(stack.url)">
-          <div class="project-title">
-            <div>{{stack.title}}</div>
+          <div class="project-content">
+            <div>
+              <svg-icon :iconClass="stack.tag === '前端' ? 'blog-web' : 'blog-server'"
+                        className="icon-coding"></svg-icon>
+              <span>{{stack.title}}</span>
+            </div>
             <div>{{stack.introduction}}</div>
           </div>
           <div class="book-mark">
@@ -63,51 +67,19 @@
 </template>
 
 <script>
+import { reqGetProject } from '@/api'
 export default {
   name: 'Person',
   data() {
     return {
       url: `${process.env.VUE_APP_IMAGE_PATH}/rousean.jpg`,
-      projects: [
-        {
-          title: '后台管理页面模板',
-          stacks: [
-            {
-              title: 'vue-system',
-              tag: '前端',
-              url: 'https://github.com/rousean/vue-system',
-              introduction:
-                '项目Web端, 技术选用Vue2框架, 结合ElementUI组件完成开发'
-            },
-            {
-              title: 'vue-node',
-              tag: '后端',
-              url: 'https://github.com/rousean/vue-node',
-              introduction:
-                '项目Web端, 技术选用Vue2框架, 结合ElementUI组件完成开发'
-            }
-          ]
-        },
-        {
-          title: '个人博客',
-          stacks: [
-            {
-              title: 'blog-web',
-              tag: '前端',
-              url: 'https://github.com/rousean/blog-web',
-              introduction:
-                '项目Web端, 技术选用Vue2框架, 结合ElementUI组件完成开发'
-            },
-            {
-              title: 'blog-server',
-              tag: '后端',
-              url: 'https://github.com/rousean/vue-node',
-              introduction:
-                '项目Web端, 技术选用Vue2框架, 结合ElementUI组件完成开发'
-            }
-          ]
-        }
-      ]
+      projects: ''
+    }
+  },
+  async mounted() {
+    const res = await reqGetProject({})
+    if (res.code === 1) {
+      this.projects = res.data
     }
   },
   methods: {
@@ -117,7 +89,7 @@ export default {
       } else {
         navigator.clipboard.writeText(url).then(() => {
           this.$message({
-            message: '复制成功',
+            message: '复制成功！',
             type: 'success'
           })
         })
@@ -137,7 +109,7 @@ export default {
   margin: 20px auto;
   display: flex;
   .person-info {
-    width: 300px;
+    width: 260px;
     background-color: $background-color;
     box-sizing: border-box;
     padding: 10px;
@@ -163,7 +135,7 @@ export default {
   .contact-wrapper {
     margin-top: 20px;
     > div {
-      width: 300px;
+      width: 260px;
       height: 40px;
       display: flex;
       align-items: center;
@@ -190,9 +162,10 @@ export default {
     flex: 1;
     background-color: $background-color;
     margin-left: 20px;
-    min-height: 810px;
+    min-height: $min-height;
     border-radius: 5px;
     padding: 20px;
+    box-sizing: border-box;
     box-shadow: $box-shadow;
     > div:nth-child(1) {
       text-align: center;
@@ -220,9 +193,17 @@ export default {
       margin-top: 15px;
       border-radius: 5px;
       cursor: url('../../assets/pointer.png'), auto;
-      .project-title {
+      .project-content {
         > div:nth-child(1) {
           margin-bottom: 10px;
+          font-size: 12px;
+          display: flex;
+          align-items: center;
+          .icon-coding {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+          }
         }
         > div:nth-child(2) {
           color: #8c8c8c;

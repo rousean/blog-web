@@ -281,6 +281,7 @@ export default {
       justify-content: center;
       align-content: center;
       z-index: 999;
+      cursor: url('../../assets/pointer.png'), auto;
       .audio-back {
         width: 20px;
         height: 20px;
