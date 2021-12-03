@@ -129,6 +129,8 @@ export default {
         this.pageSize = res.data.pageSize
         this.pageNum = res.data.pageNum
         this.pageTotal = res.data.pageTotal
+      } else {
+        this.fullscreenLoading = false
       }
     },
     dayDif(startTime, endTime) {
@@ -299,6 +301,24 @@ export default {
           overflow: hidden;
           -webkit-box-orient: vertical;
         }
+      }
+      .note-content::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -1px;
+        width: 100%;
+        transform: scaleX(0);
+        height: 2px;
+        background: deeppink;
+        z-index: -1;
+        transition: transform 1s;
+        transform-origin: 100% 0;
+      }
+
+      .note-content:hover::before {
+        transform: scaleX(1);
+        transform-origin: 0 0;
       }
       .pagination {
         text-align: center;
