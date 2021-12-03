@@ -68,7 +68,6 @@ import {
   reqUpdateNote,
   reqTagOptions
 } from '@/api'
-import './xcode.min.css'
 export default {
   name: 'Markdown',
   data() {
