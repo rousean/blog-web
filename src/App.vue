@@ -139,16 +139,17 @@ body {
   width: 100%;
   height: 100%;
 }
-/* 隐藏滚动条 */
+// /* 隐藏滚动条 */
 body::-webkit-scrollbar {
   width: 0px;
 }
 html,
 body {
   cursor: url('./assets/hand.png'), auto;
+  margin: 0;
 }
 #app {
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
 }
 </style>

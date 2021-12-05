@@ -41,6 +41,7 @@
       <mavon-editor ref="md"
                     class="mavon-editor"
                     v-model="noteContent"
+                    @save="save"
                     fontSize="16px"
                     :toolbars="toolbars"
                     :ishljs="true"
@@ -192,18 +193,25 @@ export default {
         'zenburn'
       ],
       externalLink: {
-        markdown_css: () =>
-          `${process.env.VUE_APP_MARKDOWN_PATH}/markdown/github-markdown.min.css`,
-        hljs_js: () =>
-          `${process.env.VUE_APP_MARKDOWN_PATH}/highlightjs/highlight.min.js`,
-        hljs_css: (css) =>
-          `${process.env.VUE_APP_MARKDOWN_PATH}/highlightjs/styles/${css}.min.css`,
-        hljs_lang: (lang) =>
-          `${process.env.VUE_APP_MARKDOWN_PATH}/highlightjs/languages/${lang}.min.js`,
-        katex_css: () =>
-          `${process.env.VUE_APP_MARKDOWN_PATH}/katex/katex.min.css`,
-        katex_js: () =>
-          `${process.env.VUE_APP_MARKDOWN_PATH}/katex/katex.min.js`
+        markdown_css: function () {
+          return `${process.env.VUE_APP_MARKDOWN_PATH}/markdown/github-markdown.min.css`
+        },
+
+        hljs_js: function () {
+          return `${process.env.VUE_APP_MARKDOWN_PATH}/highlightjs/highlight.min.js`
+        },
+        hljs_css: function (css) {
+          return `${process.env.VUE_APP_MARKDOWN_PATH}/highlightjs/styles/${css}.min.css`
+        },
+        hljs_lang: function (lang) {
+          return `${process.env.VUE_APP_MARKDOWN_PATH}/highlightjs/languages/${lang}.min.js`
+        },
+        katex_css: function () {
+          return `${process.env.VUE_APP_MARKDOWN_PATH}/katex/katex.min.css`
+        },
+        katex_js: function () {
+          return `${process.env.VUE_APP_MARKDOWN_PATH}/katex/katex.min.js`
+        }
       }
     }
   },
@@ -243,6 +251,10 @@ export default {
       this.drawer = !this.drawer
     },
     // 点击保存
+    save(value, render) {
+      console.log(value)
+      console.log(render)
+    },
     async saveNote() {
       if (this.noteTitle === '') {
         this.$message({
@@ -317,6 +329,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/mavoneditor/github-markdown.min.css';
 .markdown-container {
   position: relative;
   height: 100%;

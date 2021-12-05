@@ -12,7 +12,7 @@
             </span>
             <span>路索生活</span>
           </div>
-          <el-tabs :value="$route.matched[1].path === '/layout/note' ? '/layout/learn' : $route.matched[1].path"
+          <el-tabs :value="$route.matched[1].path === '/r/note' ? '/r/learn' : $route.matched[1].path"
                    @tab-click="handleClick"
                    tab-position="top">
             <!-- <el-tab-pane name="/layout/home">
@@ -20,7 +20,7 @@
                 <svg-icon class="tab-icon" iconClass="blog-home"></svg-icon>首页
               </span>
               </el-tab-pane> -->
-            <el-tab-pane name="/layout/learn">
+            <el-tab-pane name="/r/learn">
               <span slot="label">
                 <div v-animate-css.click="'tada'">
                   <svg-icon class="tab-icon"
@@ -29,7 +29,7 @@
                 </div>
               </span>
             </el-tab-pane>
-            <el-tab-pane name="/layout/material">
+            <el-tab-pane name="/r/material">
               <span slot="label">
                 <div v-animate-css.click="'tada'">
                   <svg-icon class="tab-icon"
@@ -38,7 +38,7 @@
                 </div>
               </span>
             </el-tab-pane>
-            <el-tab-pane name="/layout/person">
+            <el-tab-pane name="/r/person">
               <span slot="label">
                 <div v-animate-css.click="'tada'">
                   <svg-icon class="tab-icon"
@@ -88,7 +88,7 @@
         <div>
           <img :src="url">
           <a href="http://www.beian.gov.cn/portal/recordQuery"
-             target="_blank"><span>浙公安网000000000</span></a>
+             target="_blank"><span>浙公安网审核中...</span></a>
           <a href="https://beian.miit.gov.cn/#/Integrated/recordQuery"
              target="_blank"><span>浙ICP备2021036763号</span></a>
         </div>
@@ -111,12 +111,12 @@
       <svg-icon iconClass="audio-mark"
                 style="width: 36px; height: 36px"></svg-icon>
     </div>
-    <transition name="fade">
+    <vue-page-transition name="fade">
       <div class="audio-player"
            v-show="isShowAudio">
         <AudioPlayer @listenChildValue="changeAudioPlay"></AudioPlayer>
       </div>
-    </transition>
+    </vue-page-transition>
     <el-dialog :visible.sync="dialogVisible"
                width="20%">
       <span slot="title">
@@ -157,7 +157,7 @@
 </template>
 
 <script>
-import AudioPlayer from '../../components/AudioPlayer/AudioPlayer.vue'
+import AudioPlayer from '@/components/AudioPlayer'
 import { reqLogin } from '@/api'
 
 export default {
@@ -694,7 +694,8 @@ export default {
   background-color: transparent;
 }
 ::v-deep .el-tabs__item {
-  font-size: 16px;
+  font-family: cursive;
+  font-size: 14px;
   cursor: url('../../assets/pointer.png'), auto;
 }
 ::v-deep .el-tabs__nav {

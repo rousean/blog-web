@@ -33,16 +33,8 @@ import VuePageTransition from 'vue-page-transition'
 Vue.use(VuePageTransition)
 
 // 引入动画组件
-import { KinesisContainer, KinesisElement } from 'vue-kinesis'
-Vue.component('kinesis-container', KinesisContainer)
-Vue.component('kinesis-element', KinesisElement)
-
-// 引入动画组件
 import VAnimateCss from 'v-animate-css'
 Vue.use(VAnimateCss)
-
-// 引入动画组件
-require('vue2-animate/dist/vue2-animate.min.css')
 
 Vue.config.productionTip = false
 

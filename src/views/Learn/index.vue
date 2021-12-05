@@ -1,6 +1,6 @@
 <template>
   <div class="learn-container"
-       v-if="$route.path === '/layout/learn'"
+       v-if="$route.path === '/r/learn'"
        v-loading.fullscreen.lock="fullscreenLoading">
     <div class="left-container">
       <div class="left-content"
@@ -15,45 +15,42 @@
     <div class="middle-container">
       <div class="note-container"
            v-if="noteData.length > 0">
-        <kinesis-container v-for="note in noteData"
-                           :key="note._id">
-          <kinesis-element :strength="0.4"
-                           type="scale">
-            <div class="note-content"
-                 v-animate-css="'fadeIn'">
-              <div class="content-header">
-                <div class="content-time">{{dayDif(new Date(), new Date(note.createdAt))}}天前</div>
-                <div class="content-container"
-                     v-if="tagOptions">
-                  <el-tag v-for="item in note.noteTag"
-                          :key="item"
-                          :type="tagOptions.find(v => v.label === item).type"
-                          effect="plain">{{ item }}</el-tag>
-                </div>
-                <div class="content-operate"
-                     v-if="$store.state.token">
-                  <div @click="editNote(note._id)">
-                    <svg-icon iconClass="blog-edit"
-                              style="width: 16px; height: 16px; margin-right: 10px;"></svg-icon>
-                  </div>
-                  <div @click="deleteNote(note._id)">
-                    <svg-icon iconClass="blog-delete"
-                              style="width: 16px; height: 16px;"></svg-icon>
-                  </div>
-                </div>
+        <div class="note-content"
+             v-animate-css="'fadeIn'"
+             v-for="note in noteData"
+             :key="note._id">
+          <div class="content-header">
+            <div class="content-time">{{dayDif(new Date(), new Date(note.createdAt))}}天前</div>
+            <div class="content-container"
+                 v-if="tagOptions">
+              <el-tag v-for="item in note.noteTag"
+                      :key="item"
+                      :type="tagOptions.find(v => v.label === item).type"
+                      effect="plain">{{ item }}</el-tag>
+            </div>
+            <div class="content-operate"
+                 v-if="$store.state.token">
+              <div @click="editNote(note._id)">
+                <svg-icon iconClass="blog-edit"
+                          style="width: 16px; height: 16px; margin-right: 10px;"></svg-icon>
               </div>
-              <div @click="showNote(note._id)">
-                <div class="content-title">{{note.noteTitle}}</div>
-                <div class="content-brief">{{note.noteAbstract}}</div>
+              <div @click="deleteNote(note._id)">
+                <svg-icon iconClass="blog-delete"
+                          style="width: 16px; height: 16px;"></svg-icon>
               </div>
             </div>
-          </kinesis-element>
-        </kinesis-container>
+          </div>
+          <div @click="showNote(note._id)">
+            <div class="content-title">{{note.noteTitle}}</div>
+            <div class="content-brief">{{note.noteAbstract}}</div>
+          </div>
+        </div>
+
         <el-pagination class="pagination"
                        @current-change="handleCurChange"
                        :current-page="pageNum"
                        :page-size="pageSize"
-                       layout="total,prev, next"
+                       layout="total, prev, next"
                        :total="pageTotal"
                        prev-text="上一页"
                        next-text="下一页"
@@ -144,7 +141,7 @@ export default {
     },
     // 查看文章内容
     showNote(id) {
-      this.$router.push({ path: '/layout/note', query: { id: id } })
+      this.$router.push({ path: '/r/note', query: { id: id } })
     },
     // 新增文章
     enterMarkdown() {
@@ -227,7 +224,7 @@ export default {
     box-shadow: $box-shadow;
     .note-container {
       margin: 20px;
-      min-height: 760px;
+      min-height: 780px;
       position: relative;
       .note-content {
         height: 140px;
@@ -310,12 +307,11 @@ export default {
         width: 100%;
         transform: scaleX(0);
         height: 2px;
-        background: deeppink;
-        z-index: -1;
+        background: rgb(255, 190, 10);
+        z-index: 2;
         transition: transform 1s;
         transform-origin: 100% 0;
       }
-
       .note-content:hover::before {
         transform: scaleX(1);
         transform-origin: 0 0;
@@ -326,6 +322,7 @@ export default {
         bottom: 0;
         left: 50%;
         transform: translateX(-50%);
+        font-size: 12px;
       }
     }
   }
@@ -371,13 +368,19 @@ export default {
 ::v-deep .btn-prev {
   background: transparent;
   cursor: url('../../assets/pointer.png'), auto;
+  font-size: 12px;
 }
 ::v-deep .btn-next {
   background: transparent;
   cursor: url('../../assets/pointer.png'), auto;
+  font-size: 12px;
 }
 ::v-deep .el-pagination button:disabled {
   background: transparent;
+}
+::v-deep .el-pagination button,
+.el-pagination span:not([class*='suffix']) {
+  font-size: 12px;
 }
 ::v-deep .el-button {
   cursor: url('../../assets/pointer.png'), auto;

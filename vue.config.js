@@ -3,13 +3,49 @@ const path = require('path')
 const HotHashWebpackPlugin = require('hot-hash-webpack-plugin')
 const WebpackBar = require('webpackbar')
 
-const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV)
+const CompressionPlugin = require('compression-webpack-plugin')
+const productionGzipExtensions = /\.(js|css|json|ico|svg)(\?.*)?$/i
 
-const BundleAnalyzerPlugin =
-  require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV)
 
 function resolve(dir) {
   return path.join(__dirname, dir)
+}
+
+let cdn = { externals: {}, js: [], css: [] }
+
+// 生产环境配置
+if (IS_PROD) {
+  cdn = {
+    externals: {
+      // externals对象属性解析:'包名':'在项目中引入的名字'
+      vue: 'Vue',
+      vuex: 'Vuex',
+      'vue-router': 'VueRouter',
+      axios: 'axios',
+      'element-ui': 'ELEMENT',
+      d3: 'd3',
+      'mavon-editor': 'MavonEditor'
+      // tsparticles: 'tsParticles'
+    },
+    js: [
+      // vue must at first!
+      `${process.env.VUE_APP_CDN_PATH}/vue/vue.min.js`,
+      `${process.env.VUE_APP_CDN_PATH}/vue/vue-router.min.js`,
+      `${process.env.VUE_APP_CDN_PATH}/vue/vuex.min.js`,
+      `${process.env.VUE_APP_CDN_PATH}/axios/axios.min.js`,
+      `${process.env.VUE_APP_CDN_PATH}/element-ui/element-ui.js`,
+      `${process.env.VUE_APP_CDN_PATH}/d3/d3.min.js`,
+      `${process.env.VUE_APP_CDN_PATH}/mavon-editor/mavon-editor.js`
+      // `${process.env.VUE_APP_CDN_PATH}/tsparticles/tsparticles.min.js`,
+      // `${process.env.VUE_APP_CDN_PATH}/tsparticles/tsparticles.pathseg.js`,
+      // `${process.env.VUE_APP_CDN_PATH}/tsparticles/tsparticles.slim.min.js`
+    ],
+    css: [
+      `${process.env.VUE_APP_CDN_PATH}/element-ui/css/index.css`,
+      `${process.env.VUE_APP_CDN_PATH}/mavon-editor/css/index.css`
+    ]
+  }
 }
 
 module.exports = {
@@ -18,7 +54,6 @@ module.exports = {
   outputDir: 'web',
   assetsDir: 'static',
   parallel: require('os').cpus().length > 1,
-
   devServer: {
     open: true,
     overlay: {
@@ -39,26 +74,24 @@ module.exports = {
       msTileImage: 'favicon.ico'
     }
   },
-  configureWebpack: {},
+  configureWebpack: (config) => {
+    // 忽略打包配置
+    config.externals = cdn.externals
+  },
   chainWebpack: (config) => {
     // 修复热更新
     config.resolve.symlinks(true)
+
     // 修复 Lazy loading routes Error
     config.plugin('html').tap((args) => {
       args[0].chunksSortMode = 'none'
       args[0].title = 'Rousean'
+      args[0].cdn = cdn // 配置cdn给插件
       return args
     })
     // 添加别名 alias
     config.resolve.alias.set('@', resolve('src'))
-    // 打包分析
-    if (process.env.IS_ANALY) {
-      config.plugin('webpack-report').use(BundleAnalyzerPlugin, [
-        {
-          analyzerMode: 'static'
-        }
-      ])
-    }
+
     const svgRule = config.module.rule('svg')
     svgRule.uses.clear()
     svgRule.exclude.add(/node_modules/)
@@ -74,9 +107,13 @@ module.exports = {
     config.module.rule('images').test(/\.(png|jpe?g|gif|svg)(\?.*)?$/)
 
     // 生产环境配置
-    if (process.env.NODE_ENV === 'production') {
-      config.output.filename('./js/[name].[chunkhash:8].js')
-      config.output.chunkFilename('./js/[name].[chunkhash:8].js')
+    if (IS_PROD) {
+      // 移除prefetch插件
+      config.plugins.delete('prefetch-index')
+      config.plugins.delete('preload-index')
+
+      config.output.filename('js/[name].[chunkhash:8].js')
+      config.output.chunkFilename('js/[name].[chunkhash:8].js')
       config.plugin('extract-css').tap((args) => [
         {
           filename: 'css/[name].[contenthash:8].css',
@@ -91,20 +128,30 @@ module.exports = {
         .tap((args) => {
           let { terserOptions } = args[0]
           terserOptions.compress.drop_console = true
-          terserOptions.compress.drop_debugger = true
           return args
         })
+      // 提供带 Content-Encoding 编码的压缩版的资源
+      config.plugin('compressionPlugin').use(
+        new CompressionPlugin({
+          filename: '[path].gz[query]', // 目标文件名
+          algorithm: 'gzip', // 压缩算法
+          test: productionGzipExtensions, // 满足正则表达式的文件会被压缩
+          threshold: 10240, // 只处理比这个值大的资源。按字节计算 10240=10KB
+          minRatio: 0.8, // 只有压缩率比这个值小的资源才会被处理
+          deleteOriginalAssets: false // 是否删除原资源
+        })
+      )
       config.optimization.splitChunks({
         cacheGroups: {
           common: {
-            name: 'common',
+            name: 'chunk-common',
             chunks: 'all',
             minSize: 1,
             minChunks: 2,
             priority: 1
           },
           vendor: {
-            name: 'chunk-libs',
+            name: 'chunk-vendors',
             chunks: 'all',
             test: /[\\/]node_modules[\\/]/,
             priority: 10
