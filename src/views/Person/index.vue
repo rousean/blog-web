@@ -11,22 +11,25 @@
         <div>路漫漫其修远兮，吾将上下而求索！</div>
       </div>
       <div class="contact-wrapper">
-        <div v-animate-css.hover="'pulse'">
+        <div v-animate-css.hover="'pulse'"
+             @click="open('https://github.com/rousean')">
           <svg-icon iconClass="blog-github"
                     className="icon-contact"></svg-icon>
-          <span @click="open('https://github.com/rousean')">
+          <span>
             GitHub
           </span>
         </div>
-        <div v-animate-css.hover="'pulse'">
+        <div v-animate-css.hover="'pulse'"
+             @click="open('rousean@163.com')">
           <svg-icon iconClass="blog-email"
                     className="icon-contact"></svg-icon>
-          <span @click="open('rousean@163.com')">邮箱</span>
+          <span>邮箱</span>
         </div>
-        <div v-animate-css.hover="'pulse'">
+        <div v-animate-css.hover="'pulse'"
+             @click="open('www.rousean.cn')">
           <svg-icon iconClass="blog-blog"
                     className="icon-contact"></svg-icon>
-          <span @click="open('www.rousean.cn')">博客</span>
+          <span>博客</span>
         </div>
       </div>
     </div>
@@ -87,12 +90,35 @@ export default {
       if (url === 'https://github.com/rousean') {
         window.open(url)
       } else {
-        navigator.clipboard.writeText(url).then(() => {
+        // navigator clipboard 需要https等安全上下文
+        if (navigator.clipboard && window.isSecureContext) {
+          // navigator clipboard 向剪贴板写文本
+          navigator.clipboard.writeText(url).then(function () {
+            this.$message({
+              message: '复制成功！',
+              type: 'success'
+            })
+          })
+        } else {
+          // 创建text area
+          let textArea = document.createElement('textarea')
+          textArea.value = url
+          // 使text area不在viewport，同时设置不可见
+          textArea.style.position = 'absolute'
+          textArea.style.opacity = 0
+          textArea.style.left = '-999999px'
+          textArea.style.top = '-999999px'
+          document.body.appendChild(textArea)
+          textArea.focus()
+          textArea.select()
+          // 执行复制命令并移除文本框
+          document.execCommand('copy')
           this.$message({
             message: '复制成功！',
             type: 'success'
           })
-        })
+          textArea.remove()
+        }
       }
     },
     jump(url) {

@@ -12,7 +12,8 @@
                     :navigation="false"
                     :ishljs="true"
                     previewBackground="#ffffffbd"
-                    boxShadowStyle="0px 10px 12px 0px rgba(0, 0, 0, 0.1)"></mavon-editor>
+                    boxShadowStyle="0px 10px 12px 0px rgba(0, 0, 0, 0.1)"
+                    :externalLink="externalLink"></mavon-editor>
     </div>
   </div>
 </template>
@@ -23,7 +24,28 @@ export default {
   data() {
     return {
       noteContent: '',
-      noteTitle: ''
+      noteTitle: '',
+      externalLink: {
+        markdown_css: function () {
+          return `${process.env.VUE_APP_MARKDOWN_PATH}/markdown/github-markdown.min.css`
+        },
+
+        hljs_js: function () {
+          return `${process.env.VUE_APP_MARKDOWN_PATH}/highlightjs/highlight.min.js`
+        },
+        hljs_css: function (css) {
+          return `${process.env.VUE_APP_MARKDOWN_PATH}/highlightjs/styles/${css}.min.css`
+        },
+        hljs_lang: function (lang) {
+          return `${process.env.VUE_APP_MARKDOWN_PATH}/highlightjs/languages/${lang}.min.js`
+        },
+        katex_css: function () {
+          return `${process.env.VUE_APP_MARKDOWN_PATH}/katex/katex.min.css`
+        },
+        katex_js: function () {
+          return `${process.env.VUE_APP_MARKDOWN_PATH}/katex/katex.min.js`
+        }
+      }
     }
   },
   async mounted() {
