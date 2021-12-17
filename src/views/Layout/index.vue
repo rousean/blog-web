@@ -374,11 +374,7 @@ export default {
 .layout-container {
   width: 100%;
   height: 100%;
-  position: relative;
   > div:nth-child(1) {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
     .header-container {
       width: 100%;
       height: 60px;
@@ -407,7 +403,6 @@ export default {
               vertical-align: middle;
             }
           }
-
           > span:nth-child(2) {
             vertical-align: -webkit-baseline-middle;
             font-size: 12px;

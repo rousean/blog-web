@@ -1,59 +1,90 @@
 <template>
   <div class="note-container">
-    <div class="editor-container">
+    <div class="note-content">
       <div class="note-title">{{noteTitle}}</div>
-      <mavon-editor ref="md"
-                    class="mavon-editor"
-                    v-model="noteContent"
-                    fontSize="16px"
-                    :toolbarsFlag="false"
-                    defaultOpen="preview"
-                    :subfield="false"
-                    :navigation="false"
-                    :ishljs="true"
-                    previewBackground="#ffffffbd"
-                    boxShadowStyle="0px 10px 12px 0px rgba(0, 0, 0, 0.1)"
-                    :externalLink="externalLink"></mavon-editor>
+      <div id="preview"></div>
+    </div>
+    <div class="outline-container">
+      <div>目录</div>
+      <div id="outline"></div>
     </div>
   </div>
 </template>
 <script>
 import { reqGetNoteById } from '@/api'
+import Vditor from 'vditor'
+import 'vditor/dist/index.css'
 export default {
   name: 'Note',
   data() {
     return {
       noteContent: '',
-      noteTitle: '',
-      externalLink: {
-        markdown_css: function () {
-          return `${process.env.VUE_APP_MARKDOWN_PATH}/markdown/github-markdown.min.css`
-        },
-
-        hljs_js: function () {
-          return `${process.env.VUE_APP_MARKDOWN_PATH}/highlightjs/highlight.min.js`
-        },
-        hljs_css: function (css) {
-          return `${process.env.VUE_APP_MARKDOWN_PATH}/highlightjs/styles/${css}.min.css`
-        },
-        hljs_lang: function (lang) {
-          return `${process.env.VUE_APP_MARKDOWN_PATH}/highlightjs/languages/${lang}.min.js`
-        },
-        katex_css: function () {
-          return `${process.env.VUE_APP_MARKDOWN_PATH}/katex/katex.min.css`
-        },
-        katex_js: function () {
-          return `${process.env.VUE_APP_MARKDOWN_PATH}/katex/katex.min.js`
-        }
-      }
+      noteTitle: ''
     }
   },
   async mounted() {
+    const _this = this
     const id = this.$route.query.id
     const res = await reqGetNoteById({ id: id })
     if (res.code === 1) {
       this.noteContent = res.data.noteContent
       this.noteTitle = res.data.noteTitle
+    }
+    Vditor.preview(document.getElementById('preview'), this.noteContent, {
+      anchor: 1,
+      after() {
+        const outline = document.getElementById('outline')
+        Vditor.outlineRender(document.getElementById('preview'), outline)
+        if (outline.innerText.trim() !== '') {
+          outline.style.display = 'block'
+        }
+        _this.initOutline()
+      }
+    })
+  },
+  methods: {
+    initOutline() {
+      const headingElements = []
+      Array.from(document.getElementById('preview').children).forEach(
+        (item) => {
+          if (
+            item.tagName.length === 2 &&
+            item.tagName !== 'HR' &&
+            item.tagName.indexOf('H') === 0
+          ) {
+            headingElements.push(item)
+          }
+        }
+      )
+      console.log(headingElements)
+
+      let toc = []
+      window.addEventListener('scroll', () => {
+        const scrollTop = window.scrollY
+        toc = []
+        headingElements.forEach((item) => {
+          toc.push({
+            id: item.id,
+            offsetTop: item.offsetTop
+          })
+        })
+        console.log(toc)
+        const currentElement = document.querySelector(
+          '.vditor-outline__item--current'
+        )
+        for (let i = 0, iMax = toc.length; i < iMax; i++) {
+          if (scrollTop < toc[i].offsetTop - 30) {
+            if (currentElement) {
+              currentElement.classList.remove('vditor-outline__item--current')
+            }
+            let index = i > 0 ? i - 1 : 0
+            document
+              .querySelector('span[data-target-id="' + toc[index].id + '"]')
+              .classList.add('vditor-outline__item--current')
+            break
+          }
+        }
+      })
     }
   }
 }
@@ -61,69 +92,39 @@ export default {
 <style lang="scss" scoped>
 @import '@/assets/style/global.scss';
 .note-container {
-  padding: 20px;
-  position: relative;
+  width: 1150px;
+  margin-left: 535px;
+  margin-top: 20px;
+  margin-bottom: 20px;
   display: flex;
-  justify-content: center;
-  .select-container {
-    display: flex;
-    align-items: center;
-    position: absolute;
-    top: 20px;
-    left: 200px;
-    > div:nth-child(1) {
-      font-size: 14px;
-      color: #5e5e5e;
-    }
-  }
-  .editor-container {
-    width: 850px;
+  box-sizing: border-box;
+  .note-content {
+    width: $width;
+    min-height: $min-height;
+    background-color: $background-color;
+    border-radius: 5px;
+    padding: 20px;
+    box-sizing: border-box;
+    box-shadow: $box-shadow;
     .note-title {
       height: 50px;
       line-height: 50px;
       font-weight: 700;
       font-size: 20px;
-      text-align: center;
-      color: #1d2129;
-      background-color: $background-color;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      border-radius: 5px 5px 0 0;
-      box-shadow: rgb(0 0 0 / 10%) 0px 2px 12px 0px;
-      border-bottom: 1px solid #e5e5e5;
-    }
-    .mavon-editor {
-      z-index: 1;
-      min-height: 770px;
-      padding-top: 20px;
-      border-radius: 0 0 5px 5px;
-      background-color: $background-color;
     }
   }
-}
-::v-deep .markdown-body img {
-  max-width: 600px;
-  max-height: 100px;
-}
-::v-deep .v-note-panel {
-  border-radius: 5px;
-}
-::v-deep .v-note-wrapper {
-  border-radius: 0;
-}
-::v-deep .v-note-wrapper .v-note-panel .v-note-navigation-wrapper {
-  max-height: 850px;
-  position: fixed;
-  top: 80px;
-  right: 185px;
-  border-radius: 5px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 12px 0px;
-}
-::v-deep .markdown-body .highlight pre {
-  padding: 0px;
-}
-::v-deep .markdown-body pre {
-  padding: 0px;
+  .outline-container {
+    flex: 1;
+    margin-left: 20px;
+    height: 500px;
+    background-color: $background-color;
+    border-radius: 5px;
+    box-shadow: $box-shadow;
+    position: sticky;
+    top: 80px;
+  }
+  ::v-deep .vditor-outline__item--current {
+    color: aqua;
+  }
 }
 </style>

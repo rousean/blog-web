@@ -307,7 +307,7 @@ export default {
         width: 100%;
         transform: scaleX(0);
         height: 2px;
-        background: rgb(255, 190, 10);
+        background: rgb(0, 180, 235);
         z-index: 2;
         transition: transform 1s;
         transform-origin: 100% 0;

@@ -130,26 +130,22 @@ export default {
 </script>
 <style lang="scss">
 html {
-  width: 100%;
-  height: 100%;
   letter-spacing: 1px;
   font-family: 'Microsoft YaHei';
 }
-body {
-  width: 100%;
-  height: 100%;
-}
-// /* 隐藏滚动条 */
 body::-webkit-scrollbar {
   width: 0px;
 }
 html,
 body {
+  width: 100%;
+  height: 100%;
   cursor: url('./assets/hand.png'), auto;
   margin: 0;
 }
 #app {
   width: 100vw;
   height: 100vh;
+  position: relative;
 }
 </style>
