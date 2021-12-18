@@ -88,25 +88,30 @@ export default {
       placeholder: '请输入...',
       theme: 'classic',
       typewriterMode: true,
+      cdn: `${process.env.VUE_APP_BASE_URL}`,
       outline: {
         enable: true
       },
       preview: {
+        theme: {
+          path: `${process.env.VUE_APP_BASE_URL}/dist/css/content-theme`
+        },
         hljs: {
           lineNumber: true
         },
         markdown: {
           toc: true
         }
+      },
+      hint: {
+        emojiPath: `${process.env.VUE_APP_BASE_URL}/dist/images/emoji`
+      },
+      cache: {
+        enable: false
+      },
+      after: () => {
+        this.noteContent && this.vditor.setValue(this.noteContent)
       }
-
-      // cache: {
-      //   enable: false
-      // },
-
-      // after: () => {
-      //   this.vditor.setValue('hello, Vditor + Vue!')
-      // }
     })
   },
   methods: {

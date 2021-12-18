@@ -36,7 +36,7 @@ export default {
               nb_sides: 5
             },
             image: {
-              src: 'https://cdn.freebiesupply.com/logos/large/2x/slack-logo-icon.png',
+              src: `${process.env.VUE_APP_IMAGE_PATH}/slack-logo-icon.png`,
               width: 100,
               height: 100
             }

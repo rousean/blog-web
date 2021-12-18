@@ -93,7 +93,7 @@ export default {
         // navigator clipboard 需要https等安全上下文
         if (navigator.clipboard && window.isSecureContext) {
           // navigator clipboard 向剪贴板写文本
-          navigator.clipboard.writeText(url).then(function () {
+          navigator.clipboard.writeText(url).then(() => {
             this.$message({
               message: '复制成功！',
               type: 'success'

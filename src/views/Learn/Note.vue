@@ -1,7 +1,11 @@
 <template>
   <div class="note-container">
     <div class="note-content">
-      <div class="note-title">{{noteTitle}}</div>
+      <div class="note-title-wrapper">
+        <svg-icon className="blog-title"
+                  iconClass="blog-title"></svg-icon>
+        <span class="note-title">{{noteTitle}}</span>
+      </div>
       <div id="preview"></div>
     </div>
     <div class="outline-container">
@@ -23,6 +27,7 @@ export default {
     }
   },
   async mounted() {
+    window.scrollTo(0, 0)
     const _this = this
     const id = this.$route.query.id
     const res = await reqGetNoteById({ id: id })
@@ -30,61 +35,65 @@ export default {
       this.noteContent = res.data.noteContent
       this.noteTitle = res.data.noteTitle
     }
-    Vditor.preview(document.getElementById('preview'), this.noteContent, {
+    const preview = document.getElementById('preview')
+    Vditor.preview(preview, this.noteContent, {
       anchor: 1,
+      cdn: `${process.env.VUE_APP_BASE_URL}`,
       after() {
         const outline = document.getElementById('outline')
-        Vditor.outlineRender(document.getElementById('preview'), outline)
+        Vditor.outlineRender(preview, outline)
         if (outline.innerText.trim() !== '') {
           outline.style.display = 'block'
         }
-        _this.initOutline()
+        _this.initOutline(preview)
       }
     })
   },
   methods: {
-    initOutline() {
-      const headingElements = []
-      Array.from(document.getElementById('preview').children).forEach(
-        (item) => {
-          if (
-            item.tagName.length === 2 &&
-            item.tagName !== 'HR' &&
-            item.tagName.indexOf('H') === 0
-          ) {
-            headingElements.push(item)
-          }
-        }
-      )
-      console.log(headingElements)
-
-      let toc = []
-      window.addEventListener('scroll', () => {
-        const scrollTop = window.scrollY
-        toc = []
-        headingElements.forEach((item) => {
-          toc.push({
-            id: item.id,
-            offsetTop: item.offsetTop
-          })
-        })
-        console.log(toc)
-        const currentElement = document.querySelector(
-          '.vditor-outline__item--current'
-        )
-        for (let i = 0, iMax = toc.length; i < iMax; i++) {
-          if (scrollTop < toc[i].offsetTop - 30) {
-            if (currentElement) {
-              currentElement.classList.remove('vditor-outline__item--current')
-            }
-            let index = i > 0 ? i - 1 : 0
-            document
-              .querySelector('span[data-target-id="' + toc[index].id + '"]')
-              .classList.add('vditor-outline__item--current')
-            break
-          }
+    initOutline(preview) {
+      const headerElements = []
+      const tocs = []
+      Array.from(preview.children).forEach((item) => {
+        if (
+          item.tagName.length === 2 &&
+          item.tagName !== 'HR' &&
+          item.tagName.indexOf('H') === 0
+        ) {
+          headerElements.push(item)
         }
       })
+      headerElements.forEach((item) => {
+        tocs.push({
+          id: item.id,
+          offsetTop: item.offsetTop
+        })
+      })
+      this.Vscoll(tocs)
+      window.addEventListener('scroll', () => this.Vscoll(tocs))
+      this.$once('hook:beforeDestroy', () => {
+        window.removeEventListener('scroll', () => this.Vscoll(tocs))
+      })
+    },
+    Vscoll(tocs) {
+      const scrollTop = window.scrollY + 60
+      const currentElement = document.querySelector(
+        '.vditor-outline__item--current'
+      )
+      for (let i = 0, iMax = tocs.length; i < iMax; i++) {
+        if (scrollTop < tocs[i].offsetTop - 30) {
+          if (currentElement) {
+            currentElement.classList.remove('vditor-outline__item--current')
+          }
+          let index = i > 0 ? i - 1 : 0
+          document.querySelector(
+            'span[data-target-id="' + tocs[index].id + '"]'
+          ) &&
+            document
+              .querySelector('span[data-target-id="' + tocs[index].id + '"]')
+              .classList.add('vditor-outline__item--current')
+          break
+        }
+      }
     }
   }
 }
@@ -106,11 +115,23 @@ export default {
     padding: 20px;
     box-sizing: border-box;
     box-shadow: $box-shadow;
-    .note-title {
+    .note-title-wrapper {
+      margin-bottom: 30px;
+      border-bottom: 1px solid rgb(3, 179, 223);
+      display: inline-flex;
+      align-items: center;
+      width: 100%;
       height: 50px;
-      line-height: 50px;
-      font-weight: 700;
-      font-size: 20px;
+      .blog-title {
+        width: 26px;
+        height: 26px;
+        margin-right: 30px;
+        vertical-align: middle;
+      }
+      .note-title {
+        font-size: 20px;
+        font-weight: 600;
+      }
     }
   }
   .outline-container {
@@ -122,9 +143,32 @@ export default {
     box-shadow: $box-shadow;
     position: sticky;
     top: 80px;
-  }
-  ::v-deep .vditor-outline__item--current {
-    color: aqua;
+    padding: 10px;
+
+    > :nth-child(1) {
+      font-size: 16px;
+      height: 40px;
+      line-height: 40px;
+      border-bottom: 1px solid #e4e6eb;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    ::v-deep .vditor-outline {
+      font-size: 14px;
+      > ul:nth-child(1) {
+        padding: 0;
+      }
+      > li {
+        margin-bottom: 10px;
+      }
+    }
+    ::v-deep .vditor-outline__item--current {
+      color: #007fff;
+      height: 30px;
+      padding-left: 10px;
+      border-left: 1px solid #007fff;
+      background: #649bd330;
+    }
   }
 }
 </style>
