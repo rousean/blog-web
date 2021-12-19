@@ -48,7 +48,6 @@ import Vditor from 'vditor'
 import 'vditor/dist/index.css'
 import {
   reqGetNoteById,
-  reqUploadImage,
   reqSaveNote,
   reqUpdateNote,
   reqTagOptions
@@ -108,6 +107,24 @@ export default {
       },
       cache: {
         enable: false
+      },
+      upload: {
+        url: `${process.env.VUE_APP_BASE_URL}/material/uploadSingle`,
+        fieldName: 'file',
+        multiple: false,
+        format: (files, res) => {
+          const fileName = files[0].name
+          return JSON.stringify({
+            msg: '',
+            code: 0,
+            data: {
+              errfile: [],
+              succMap: {
+                [`${fileName}`]: `${process.env.VUE_APP_BASE_URL}/opus/${fileName}`
+              }
+            }
+          })
+        }
       },
       after: () => {
         this.noteContent && this.vditor.setValue(this.noteContent)
@@ -204,11 +221,5 @@ export default {
 }
 ::v-deep .el-select {
   width: 100%;
-}
-::v-deep .markdown-body .highlight pre {
-  padding: 0px;
-}
-::v-deep .markdown-body pre {
-  padding: 0px;
 }
 </style>

@@ -20,7 +20,7 @@
              v-for="note in noteData"
              :key="note._id">
           <div class="content-header">
-            <div class="content-time">{{dayDif(new Date(), new Date(note.createdAt))}}天前</div>
+            <div class="content-time">{{note.createdAt.slice(0, 10)}}</div>
             <div class="content-container"
                  v-if="tagOptions">
               <el-tag v-for="item in note.noteTag"
@@ -45,7 +45,6 @@
             <div class="content-brief">{{note.noteAbstract}}</div>
           </div>
         </div>
-
         <el-pagination class="pagination"
                        @current-change="handleCurChange"
                        :current-page="pageNum"
@@ -130,11 +129,6 @@ export default {
         this.fullscreenLoading = false
       }
     },
-    dayDif(startTime, endTime) {
-      return Math.ceil(
-        Math.abs(startTime.getTime() - endTime.getTime()) / 86400000
-      )
-    },
     // 编辑文章
     editNote(id) {
       this.$router.push({ path: '/markdown', query: { id: id } })
@@ -167,7 +161,7 @@ export default {
         .catch(() => {
           this.$message({
             type: 'info',
-            message: '已取消删除'
+            message: '已取消删除！'
           })
         })
     },

@@ -25,25 +25,21 @@ if (IS_PROD) {
       axios: 'axios',
       'element-ui': 'ELEMENT',
       d3: 'd3',
-      'mavon-editor': 'MavonEditor'
-      // tsparticles: 'tsParticles'
+      vditor: 'Vditor'
     },
     js: [
       // vue must at first!
-      `${process.env.VUE_APP_CDN_PATH}/vue/vue.min.js`,
-      `${process.env.VUE_APP_CDN_PATH}/vue/vue-router.min.js`,
-      `${process.env.VUE_APP_CDN_PATH}/vue/vuex.min.js`,
-      `${process.env.VUE_APP_CDN_PATH}/axios/axios.min.js`,
-      `${process.env.VUE_APP_CDN_PATH}/element-ui/element-ui.js`,
-      `${process.env.VUE_APP_CDN_PATH}/d3/d3.min.js`,
-      `${process.env.VUE_APP_CDN_PATH}/mavon-editor/mavon-editor.js`
-      // `${process.env.VUE_APP_CDN_PATH}/tsparticles/tsparticles.min.js`,
-      // `${process.env.VUE_APP_CDN_PATH}/tsparticles/tsparticles.pathseg.js`,
-      // `${process.env.VUE_APP_CDN_PATH}/tsparticles/tsparticles.slim.min.js`
+      `${process.env.VUE_APP_BASE_URL}/vue/vue.min.js`,
+      `${process.env.VUE_APP_BASE_URL}/vue/vue-router.min.js`,
+      `${process.env.VUE_APP_BASE_URL}/vue/vuex.min.js`,
+      `${process.env.VUE_APP_BASE_URL}/axios/axios.min.js`,
+      `${process.env.VUE_APP_BASE_URL}/element-ui/element-ui.js`,
+      `${process.env.VUE_APP_BASE_URL}/d3/d3.min.js`,
+      `${process.env.VUE_APP_BASE_URL}/dist/index.min.js`
     ],
     css: [
-      `${process.env.VUE_APP_CDN_PATH}/element-ui/css/index.css`,
-      `${process.env.VUE_APP_CDN_PATH}/mavon-editor/css/index.css`
+      `${process.env.VUE_APP_BASE_URL}/element-ui/css/index.css`,
+      `${process.env.VUE_APP_BASE_URL}/dist/index.css`
     ]
   }
 }

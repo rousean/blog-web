@@ -1,7 +1,8 @@
 <!-- 引用掘金论坛分享方法 -->
 <!-- https://juejin.cn/post/6844903697999200263 -->
 <template>
-  <svg :class="svgClass" aria-hidden="true">
+  <svg :class="svgClass"
+       aria-hidden="true">
     <use :xlink:href="iconName" />
   </svg>
 </template>

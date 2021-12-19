@@ -5,14 +5,14 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --report",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "scp": "scp -r ./web root@112.124.35.46:/opt/blog/"
   },
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "d3": "^7.0.1",
     "element-ui": "^2.15.5",
-    "mavon-editor": "^2.10.0",
     "normalize.css": "^8.0.1",
     "particles.vue": "^2.20.3",
     "v-animate-css": "0.0.5",

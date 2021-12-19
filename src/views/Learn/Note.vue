@@ -15,9 +15,9 @@
   </div>
 </template>
 <script>
-import { reqGetNoteById } from '@/api'
 import Vditor from 'vditor'
 import 'vditor/dist/index.css'
+import { reqGetNoteById } from '@/api'
 export default {
   name: 'Note',
   data() {

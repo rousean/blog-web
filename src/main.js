@@ -14,11 +14,6 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(ElementUI)
 
-// 引入markdown组件
-import mavonEditor from 'mavon-editor'
-import 'mavon-editor/dist/css/index.css'
-Vue.use(mavonEditor)
-
 // 引入d3
 import * as d3 from 'd3'
 Vue.prototype.$d3 = d3
