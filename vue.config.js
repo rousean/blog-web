@@ -26,7 +26,7 @@ if (IS_PROD) {
       'element-ui': 'ELEMENT',
       d3: 'd3',
       vditor: 'Vditor',
-      'particles.js': 'particlesJS'
+      tsparticles: '{tsParticles}'
     },
     js: [
       // vue must at first!
@@ -37,8 +37,8 @@ if (IS_PROD) {
       'https://cdn.jsdelivr.net/npm/d3@7.2.1/dist/d3.min.js',
       'https://cdn.jsdelivr.net/npm/vditor@3.8.8/dist/index.min.js',
       'https://cdn.jsdelivr.net/npm/vditor@3.8.8/dist/js/i18n/zh_CN.js',
-      'https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js',
-      'https://unpkg.com/element-ui/lib/index.js'
+      'https://unpkg.com/element-ui/lib/index.js',
+      'https://cdn.jsdelivr.net/npm/tsparticles@1.37.5/tsparticles.min.js'
     ],
     css: [
       'https://unpkg.com/element-ui/lib/theme-chalk/index.css',

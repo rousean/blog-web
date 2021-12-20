@@ -27,6 +27,9 @@ Vue.use(VuePageTransition)
 import VAnimateCss from 'v-animate-css'
 Vue.use(VAnimateCss)
 
+import Particles from 'particles.vue'
+Vue.use(Particles)
+
 Vue.config.productionTip = false
 
 new Vue({
