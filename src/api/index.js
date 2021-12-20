@@ -15,10 +15,11 @@ export const reqGetNote = (params) => http('/learn/getNote', params, 'POST')
 export const reqGetNoteById = (params) =>
   http('/learn/getNoteById', params, 'POST')
 
-// 根据文章id获取文章内容
+// 删除文章
 export const reqDeleteNote = (params) =>
   http('/learn/deleteNote', params, 'POST')
 
+// 更新文章
 export const reqUpdateNote = (params) =>
   http('/learn/updateNote', params, 'POST')
 
@@ -34,8 +35,8 @@ export const reqLogin = (params) => http('/user/login', params, 'POST')
 
 // 项目模块
 // 项目模块上传图片
-export const reqUploadFile = (formData) =>
-  http('/material/uploadSingle', formData, 'POST')
+export const reqUploadFile = (params) =>
+  http('/material/uploadSingle', params, 'POST')
 
 // 获取素材列表
 export const reqGetMaterial = (params) =>

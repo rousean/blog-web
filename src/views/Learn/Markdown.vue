@@ -87,14 +87,14 @@ export default {
       placeholder: '请输入...',
       theme: 'classic',
       typewriterMode: true,
-      cdn: `${process.env.VUE_APP_BASE_URL}`,
+      // cdn: `${process.env.VUE_APP_BASE_URL}`,
       outline: {
         enable: true
       },
       preview: {
-        theme: {
-          path: `${process.env.VUE_APP_BASE_URL}/dist/css/content-theme`
-        },
+        // theme: {
+        //   path: `${process.env.VUE_APP_BASE_URL}/dist/css/content-theme`
+        // },
         hljs: {
           lineNumber: true
         },
@@ -102,9 +102,9 @@ export default {
           toc: true
         }
       },
-      hint: {
-        emojiPath: `${process.env.VUE_APP_BASE_URL}/dist/images/emoji`
-      },
+      // hint: {
+      //   emojiPath: `${process.env.VUE_APP_BASE_URL}/dist/images/emoji`
+      // },
       cache: {
         enable: false
       },

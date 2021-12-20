@@ -25,21 +25,24 @@ if (IS_PROD) {
       axios: 'axios',
       'element-ui': 'ELEMENT',
       d3: 'd3',
-      vditor: 'Vditor'
+      vditor: 'Vditor',
+      'particles.js': 'particlesJS'
     },
     js: [
       // vue must at first!
-      `${process.env.VUE_APP_BASE_URL}/vue/vue.min.js`,
-      `${process.env.VUE_APP_BASE_URL}/vue/vue-router.min.js`,
-      `${process.env.VUE_APP_BASE_URL}/vue/vuex.min.js`,
-      `${process.env.VUE_APP_BASE_URL}/axios/axios.min.js`,
-      `${process.env.VUE_APP_BASE_URL}/element-ui/element-ui.js`,
-      `${process.env.VUE_APP_BASE_URL}/d3/d3.min.js`,
-      `${process.env.VUE_APP_BASE_URL}/dist/index.min.js`
+      'https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js',
+      'https://cdn.jsdelivr.net/npm/vue-router@3.5.3/dist/vue-router.min.js',
+      'https://cdn.jsdelivr.net/npm/vuex@3.6.2/dist/vuex.min.js',
+      'https://cdn.jsdelivr.net/npm/axios@0.24.0/dist/axios.min.js',
+      'https://cdn.jsdelivr.net/npm/d3@7.2.1/dist/d3.min.js',
+      'https://cdn.jsdelivr.net/npm/vditor@3.8.8/dist/index.min.js',
+      'https://cdn.jsdelivr.net/npm/vditor@3.8.8/dist/js/i18n/zh_CN.js',
+      'https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js',
+      'https://unpkg.com/element-ui/lib/index.js'
     ],
     css: [
-      `${process.env.VUE_APP_BASE_URL}/element-ui/css/index.css`,
-      `${process.env.VUE_APP_BASE_URL}/dist/index.css`
+      'https://unpkg.com/element-ui/lib/theme-chalk/index.css',
+      'https://cdn.jsdelivr.net/npm/vditor@3.8.8/dist/index.css'
     ]
   }
 }

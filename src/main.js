@@ -3,11 +3,11 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
-// 重置样式
-import 'normalize.css/normalize.css'
-
 // 引入svg
 import './icons'
+
+// 重置样式
+import 'normalize.css/normalize.css'
 
 // 引入element-ui
 import ElementUI from 'element-ui'
@@ -18,10 +18,6 @@ Vue.use(ElementUI)
 import * as d3 from 'd3'
 Vue.prototype.$d3 = d3
 window.d3 = d3
-
-// 引入背景
-import Particles from 'particles.vue'
-Vue.use(Particles)
 
 // 引入路由组件动画
 import VuePageTransition from 'vue-page-transition'

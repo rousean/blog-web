@@ -222,7 +222,7 @@ export default {
     },
     // 音乐播放按钮拖拽事件的回调函数
     dragentEvent(e) {
-      e.preventDefault() //阻止默认时间，以免造成可能的奇怪结果
+      e.preventDefault() //阻止默认时间,以免造成可能的奇怪结果
       //X方向上的处理
       if (e.clientX < this.$refs.layoutContainer.clientWidth / 2) {
         this.$refs.audioMark.style.left = 0

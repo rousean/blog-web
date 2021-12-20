@@ -38,7 +38,10 @@ export default {
     const preview = document.getElementById('preview')
     Vditor.preview(preview, this.noteContent, {
       anchor: 1,
-      cdn: `${process.env.VUE_APP_BASE_URL}`,
+      hljs: {
+        lineNumber: true
+      },
+      // cdn: `${process.env.VUE_APP_BASE_URL}`,
       after() {
         const outline = document.getElementById('outline')
         Vditor.outlineRender(preview, outline)

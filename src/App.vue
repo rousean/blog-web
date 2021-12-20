@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <Particles id="tsparticles"
-               :options="options"></Particles>
+    <div id="tsparticles"></div>
     <router-view v-animate-css="'fadeIn'"></router-view>
   </div>
 </template>
 <script>
+import particles from 'particles.js'
 export default {
   name: 'App',
   data() {
@@ -125,6 +125,9 @@ export default {
         retina_detect: true
       }
     }
+  },
+  mounted() {
+    particlesJS('tsparticles', this.options)
   }
 }
 </script>
@@ -147,5 +150,10 @@ body {
   width: 100vw;
   height: 100vh;
   position: relative;
+}
+#tsparticles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
 </style>
