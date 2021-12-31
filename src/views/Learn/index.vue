@@ -75,7 +75,7 @@
              class="tag-item"
              v-animate-css.hover="'pulse'"
              @click="handleNoteTag(item.label)">
-          <svg-icon :iconClass="`blog-${item.label}`"
+          <svg-icon :iconClass="item.label === '其他' ? 'blog-other': `blog-${item.label}`"
                     className="tag-icon"></svg-icon>
           <span :style="{color: (selectTag === item.label ? '#409EFF' : '')}">{{item.label}}</span>
           <svg-icon iconClass="blog-ding"

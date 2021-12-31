@@ -88,9 +88,9 @@
         <div>
           <img :src="url">
           <a href="http://www.beian.gov.cn/portal/recordQuery"
-             target="_blank"><span>浙公安网审核中...</span></a>
+             target="_blank"><span>浙公网安备 33010802012147号</span></a>
           <a href="https://beian.miit.gov.cn/#/Integrated/recordQuery"
-             target="_blank"><span>浙ICP备2021036763号</span></a>
+             target="_blank"><span>浙ICP备 2021036763号</span></a>
         </div>
       </div>
     </div>
