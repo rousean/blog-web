@@ -6,10 +6,9 @@ export function throttle(fn, delay) {
   var previous = 0
   return function () {
     var _this = this
-    var args = arguments
     var now = new Date()
     if (now - previous > delay) {
-      fn.apply(_this, args)
+      fn.apply(_this, arguments)
       previous = now
     }
   }

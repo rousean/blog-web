@@ -8,7 +8,8 @@
       </div>
       <div id="preview"></div>
     </div>
-    <div class="outline-container">
+    <div class="outline-container"
+         v-show="hasOutline">
       <div>目录</div>
       <div id="outline"></div>
     </div>
@@ -18,12 +19,15 @@
 import Vditor from 'vditor'
 import 'vditor/dist/index.css'
 import { reqGetNoteById } from '@/api'
+import { throttle } from '@/utils'
 export default {
   name: 'Note',
   data() {
     return {
       noteContent: '',
-      noteTitle: ''
+      noteTitle: '',
+      hasOutline: true,
+      tocs: ''
     }
   },
   async mounted() {
@@ -41,63 +45,63 @@ export default {
       hljs: {
         lineNumber: true
       },
-      // cdn: `${process.env.VUE_APP_BASE_URL}`,
       after() {
         const outline = document.getElementById('outline')
         Vditor.outlineRender(preview, outline)
         if (outline.innerText.trim() !== '') {
           outline.style.display = 'block'
         }
-        _this.initOutline(preview)
+        const tocs = []
+        Array.from(preview.children).forEach((item, i) => {
+          if (
+            item.tagName.length === 2 &&
+            item.tagName !== 'HR' &&
+            item.tagName.indexOf('H') === 0
+          ) {
+            tocs.push({
+              id: item.id,
+              offsetTop: item.offsetTop
+            })
+          }
+        })
+        _this.hasOutline = Boolean(tocs.length)
+        if (tocs.length) {
+          tocs.unshift({
+            id: tocs[0].id,
+            offsetTop: 0
+          })
+          _this.tocs = Object.freeze(tocs)
+          _this.initOutline(tocs)
+        }
       }
     })
   },
   methods: {
-    initOutline(preview) {
-      const headerElements = []
-      const tocs = []
-      Array.from(preview.children).forEach((item) => {
-        if (
-          item.tagName.length === 2 &&
-          item.tagName !== 'HR' &&
-          item.tagName.indexOf('H') === 0
-        ) {
-          headerElements.push(item)
-        }
-      })
-      headerElements.forEach((item) => {
-        tocs.push({
-          id: item.id,
-          offsetTop: item.offsetTop
-        })
-      })
-      this.Vscoll(tocs)
-      window.addEventListener('scroll', () => this.Vscoll(tocs))
-      this.$once('hook:beforeDestroy', () => {
-        window.removeEventListener('scroll', () => this.Vscoll(tocs))
-      })
+    initOutline(tocs) {
+      this.Vscoll()
+      window.addEventListener('scroll', this.Vscoll, true)
     },
-    Vscoll(tocs) {
+    Vscoll() {
       const scrollTop = window.scrollY + 60
+      const index = this.tocs.findIndex(
+        (toc, i) =>
+          scrollTop >= toc.offsetTop &&
+          scrollTop < (this.tocs[i + 1]?.offsetTop || 1000000000)
+      )
       const currentElement = document.querySelector(
         '.vditor-outline__item--current'
       )
-      for (let i = 0, iMax = tocs.length; i < iMax; i++) {
-        if (scrollTop < tocs[i].offsetTop - 30) {
-          if (currentElement) {
-            currentElement.classList.remove('vditor-outline__item--current')
-          }
-          let index = i > 0 ? i - 1 : 0
-          document.querySelector(
-            'span[data-target-id="' + tocs[index].id + '"]'
-          ) &&
-            document
-              .querySelector('span[data-target-id="' + tocs[index].id + '"]')
-              .classList.add('vditor-outline__item--current')
-          break
-        }
-      }
+      currentElement &&
+        currentElement.classList.remove('vditor-outline__item--current')
+      const afterElement = document.querySelector(
+        `span[data-target-id=${this.tocs[index].id}]`
+      )
+      afterElement &&
+        afterElement.classList.add('vditor-outline__item--current')
     }
+  },
+  destroyed() {
+    window.removeEventListener('scroll', this.Vscoll, true)
   }
 }
 </script>
