@@ -119,7 +119,7 @@ export default {
     box-sizing: border-box;
     box-shadow: $box-shadow;
     .note-title-wrapper {
-      margin-bottom: 30px;
+      margin-bottom: 5px;
       border-bottom: 1px solid rgb(3, 179, 223);
       display: inline-flex;
       align-items: center;
