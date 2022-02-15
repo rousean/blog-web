@@ -46,13 +46,12 @@
           </div>
         </div>
         <el-pagination class="pagination"
+                       background
                        @current-change="handleCurChange"
                        :current-page="pageNum"
                        :page-size="pageSize"
-                       layout="total, prev, next"
+                       layout="prev, pager, next"
                        :total="pageTotal"
-                       prev-text="上一页"
-                       next-text="下一页"
                        hide-on-single-page></el-pagination>
       </div>
       <el-empty v-else
@@ -91,7 +90,7 @@
 import { reqGetNote, reqDeleteNote, reqTagOptions } from '@/api'
 export default {
   name: 'Learn',
-  data() {
+  data () {
     return {
       noteData: '',
       pageNum: 1,
@@ -102,7 +101,7 @@ export default {
       fullscreenLoading: true
     }
   },
-  async mounted() {
+  async mounted () {
     this.getData(this.pageNum, this.pageSize)
     const res = await reqTagOptions()
     if (res.code === 1) {
@@ -110,7 +109,7 @@ export default {
     }
   },
   methods: {
-    async getData(pageNum, pageSize) {
+    async getData (pageNum, pageSize) {
       const res = await reqGetNote({
         pageNum: pageNum,
         pageSize: pageSize,
@@ -130,19 +129,19 @@ export default {
       }
     },
     // 编辑文章
-    editNote(id) {
+    editNote (id) {
       this.$router.push({ path: '/markdown', query: { id: id } })
     },
     // 查看文章内容
-    showNote(id) {
+    showNote (id) {
       this.$router.push({ path: '/r/note', query: { id: id } })
     },
     // 新增文章
-    enterMarkdown() {
+    enterMarkdown () {
       this.$router.push('/markdown')
     },
     // 删除文章
-    deleteNote(id) {
+    deleteNote (id) {
       this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -166,11 +165,11 @@ export default {
         })
     },
     // 处理页面变化回调
-    handleCurChange(val) {
+    handleCurChange (val) {
       this.getData(val, this.pageSize)
     },
     // 点击标签回调
-    handleNoteTag(tag) {
+    handleNoteTag (tag) {
       this.selectTag = tag
       this.getData(1, 5)
     }

@@ -139,7 +139,7 @@ export default {
   computed: {
     // 计算属性,动态计算音乐的链接
     audioUrl() {
-      if (this.audioList) {
+      if (this.audioList.length > 1) {
         let audioName = this.audioList[this.audioId]['audioName']
         return `${process.env.VUE_APP_AUDIO_PATH}/${audioName}`
       } else {
@@ -153,6 +153,11 @@ export default {
       const res = await reqAudioList()
       if (res.code === 1) {
         this.audioList = res.data
+        this.audioList.push({
+          audioName: '',
+          audioTitle: '',
+          audioAuthor: ''
+        })
       }
     },
     // 处理当前时间

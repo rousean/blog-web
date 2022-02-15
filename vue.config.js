@@ -62,7 +62,22 @@ module.exports = {
     https: false,
     host: 'localhost',
     port: 8888,
-    hotOnly: true
+    hotOnly: true,
+    proxy: {
+      // 开发环境代理配置
+      // "/dev-api": {
+      [process.env.VUE_APP_BASE_API]: {
+        // 目标服务器地址，代理访问 http://localhost:8001
+        target: process.env.VUE_APP_BASE_URL,
+        // target: "http://localhost:8001",
+        changeOrigin: true, // 开启代理服务器
+        pathRewrite: {
+          // /dev-api/db.json 最终会发送 http://localhost:8001/db.json
+          // 将请求地址前缀 /dev-api 替换为空的
+          ['^' + process.env.VUE_APP_BASE_API]: ''
+        }
+      }
+    }
   },
   pwa: {
     iconPaths: {
