@@ -22,7 +22,7 @@ import { reqGetNoteById } from '@/api'
 import { throttle } from '@/utils'
 export default {
   name: 'Note',
-  data() {
+  data () {
     return {
       noteContent: '',
       noteTitle: '',
@@ -30,7 +30,7 @@ export default {
       tocs: ''
     }
   },
-  async mounted() {
+  async mounted () {
     window.scrollTo(0, 0)
     const _this = this
     const id = this.$route.query.id
@@ -45,7 +45,7 @@ export default {
       hljs: {
         lineNumber: true
       },
-      after() {
+      after () {
         const outline = document.getElementById('outline')
         Vditor.outlineRender(preview, outline)
         if (outline.innerText.trim() !== '') {
@@ -77,11 +77,11 @@ export default {
     })
   },
   methods: {
-    initOutline(tocs) {
+    initOutline (tocs) {
       this.Vscoll()
       window.addEventListener('scroll', this.Vscoll, true)
     },
-    Vscoll() {
+    Vscoll () {
       const scrollTop = window.scrollY + 60
       const index = this.tocs.findIndex(
         (toc, i) =>
@@ -100,7 +100,7 @@ export default {
         afterElement.classList.add('vditor-outline__item--current')
     }
   },
-  destroyed() {
+  destroyed () {
     window.removeEventListener('scroll', this.Vscoll, true)
   }
 }
@@ -144,7 +144,8 @@ export default {
   .outline-container {
     flex: 1;
     margin-left: 20px;
-    height: 500px;
+    height: 100%;
+    min-height: 600px;
     background-color: $background-color;
     border-radius: 5px;
     box-shadow: $box-shadow;
