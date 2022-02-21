@@ -144,8 +144,8 @@ export default {
   .outline-container {
     flex: 1;
     margin-left: 20px;
-    height: 100%;
-    min-height: 600px;
+    height: 600px;
+    overflow: auto;
     background-color: $background-color;
     border-radius: 5px;
     box-shadow: $box-shadow;
